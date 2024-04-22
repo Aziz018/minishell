@@ -10,18 +10,24 @@ void print_prompt()
     write(1, reset_color, ft_strlen(reset_color));
 }
 
+int check_command(char *command)
+{
+    if (ft_strnstr(command, "ls", ft_strlen(command)))
+    {
+        system("ls");
+    }
+}
+
 int main()
 {
     print_prompt();
-    char *line = get_next_line(0);
-    if (line == NULL || line[0] == '\0')
-        return 0;
-    while(line != NULL)
+    char *command;
+    while(command = get_next_line(0))
     {
-        print_prompt();
-        line = get_next_line(0);
-        if (line == NULL || line[0] == '\0')
+        if (command == NULL || command[0] == '\0')
             return 0;
+        check_command(command);
+        print_prompt();
     }
     return 0;
 }
