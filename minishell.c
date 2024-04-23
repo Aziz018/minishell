@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/04/23 13:43:04 by aelkheta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void print_prompt()
@@ -16,18 +28,23 @@ int check_command(char *command)
     {
         system("ls");
     }
+    return 0;
 }
 
 int main()
 {
     print_prompt();
     char *command;
-    while(command = get_next_line(0))
+    command = get_next_line(0);
+    if (command == NULL || command[0] == '\0')
+        return 0;
+    while(1)
     {
         if (command == NULL || command[0] == '\0')
             return 0;
         check_command(command);
         print_prompt();
+        command = get_next_line(0);
     }
     return 0;
 }

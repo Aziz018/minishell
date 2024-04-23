@@ -10,4 +10,7 @@
 #define GREEN_COLOR "\033[1;32m"
 #define RESET_COLOR "\033[0m"
 
+void print_prompt();
+
+
 #endif
