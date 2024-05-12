@@ -14,9 +14,14 @@
 
 void print_prompt()
 {
-    const char *prompt = "aziz@kali ~/desktop/minishell> ";
-    const char *output_color = GREEN_COLOR;
-    const char *reset_color = RESET_COLOR;
+    char *prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+
+    // char *prompt = "aziz@kali ~/desktop/minishell> ";
+    // printf("┌──(aziz㉿hostname)-[~/Desktop/minishell]\n");
+    // printf("└─$ ");
+    char *output_color = GREEN_COLOR;
+    char *reset_color = RESET_COLOR;
+    // printf("%s\n", prompt);
     write(1, output_color, ft_strlen(output_color));
     write(1, prompt, ft_strlen(prompt));
     write(1, reset_color, ft_strlen(reset_color));

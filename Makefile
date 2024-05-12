@@ -1,6 +1,7 @@
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
+RLFLAG = -lreadline
 SRC = minishell.c
 OBJ = $(SRC:.c=.o)
 LIBFT = ./libft/libft.a
@@ -12,7 +13,7 @@ all: $(NAME) clean
 
 $(NAME): $(OBJ)
 	@echo "Building..."
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $(OBJ) $(RLFLAG) $(LIBFT) -o $@
 	@echo "Building done"
 
 clean:
