@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/13 14:44:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/13 14:56:06 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,16 @@ int	check_command(char *command)
 
 int	main(void)
 {
+	char	*prompt;
 	char	*command;
 
-	print_prompt();
-	command = get_next_line(0);
-	if (command == NULL || command[0] == '\0')
-		return (0);
-	while (1)
+	prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+	command = readline(prompt);
+	while (command != NULL)
 	{
-		if (command == NULL || command[0] == '\0')
-			return (0);
 		check_command(command);
-		print_prompt();
-		command = get_next_line(0);
+		free(command);
+		command = readline(prompt);
 	}
 	return (0);
 }
