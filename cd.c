@@ -6,13 +6,14 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/14 16:43:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:04:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
@@ -34,38 +35,40 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	return (NULL);
 }
 
-char *get_pwd(char **env)
+char	*get_pwd(char **env)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    while(env[++i] != NULL)
-    {
-        if (ft_strnstr(env[i], "PWD=", 4))
-            return (env[i] + 4);
-    }
-    return NULL;
+	i = -1;
+	while (env[++i] != NULL)
+	{
+		if (ft_strnstr(env[i], "PWD=", 4))
+			return (env[i] + 4);
+	}
+	return (NULL);
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-    char *path;
-    bool flag;
+	char	*path;
+	bool	flag;
 
-    path = get_pwd(env);
-    flag = false;
-    if (ac == 2)
-    {
-        // printf("%s\n", path);
-        if (chdir(av[1]) == 0)
-            printf("done");
-        else
-            printf("not this time");
-    }
-    else if (ac > 2)
-    {
-        printf("cd: string not in pwd: %s", av[1]);
-        return (1);
-    }
-    return (0);
+	path = get_pwd(env);
+	flag = false;
+	if (ac == 2)
+	{
+		if (chdir(av[1]) == -1)
+		{
+			printf("cd: no such file or directory: %s\n", av[1]);
+			return (1);
+		}
+		system("pwd");
+		return (0);
+	}
+	else if (ac > 2)
+	{
+		printf("cd: string not in pwd: %s", av[1]);
+		return (1);
+	}
+	return (0);
 }

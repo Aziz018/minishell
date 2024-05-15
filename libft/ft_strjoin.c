@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 16:40:30 by aelkheta          #+#    #+#             */
-/*   Updated: 2023/11/23 10:48:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:03:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,6 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1 && !s2)
 		return (NULL);
-	if (!s1)
-	{
-		s1 = (char *)malloc(sizeof(char));
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
-	}
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	ptr = (char *)malloc((len_s1 + len_s2 + 1) * sizeof(char));
@@ -34,6 +27,5 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (ft_free(s1));
 	ft_strlcpy(ptr, s1, len_s1 + 1);
 	ft_strlcpy((ptr + len_s1), s2, (len_s2 + 1));
-	free(s1);
 	return (ptr);
 }

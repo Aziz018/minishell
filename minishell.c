@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/13 14:56:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:05:50 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,52 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-int	check_command(char *command)
+int	check_command(char *command, char **av, char **env)
 {
-	if (ft_strnstr(command, "ls", ft_strlen(command)))
+	pid_t	pid;
+	char	*cmd_path;
+
+	cmd_path = ft_strjoin("/bin/", command);
+	if (access(cmd_path, X_OK) == 0)
 	{
-		system("ls");
+		pid = fork();
+		if (pid == -1)
+			return (0);
+		else if (pid == 0)
+			execve(cmd_path, av, env);
+		else
+			wait(NULL);
 	}
+	free(cmd_path);
 	return (0);
 }
 
-int	main(void)
+void	print_minishell(void)
+{
+	printf("\n");
+	printf("███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗\n");
+	printf("████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║\n");
+	printf("██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║\n");
+	printf("██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║\n");
+	printf("██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███");
+	printf("████╗\n");
+	printf("╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══");
+	printf("════╝\n");
+	printf("\n");
+}
+
+int	main(int ac, char **av, char **env)
 {
 	char	*prompt;
 	char	*command;
 
+	(void)ac;
 	prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+	print_minishell();
 	command = readline(prompt);
 	while (command != NULL)
 	{
-		check_command(command);
+		check_command(command, av, env);
 		free(command);
 		command = readline(prompt);
 	}
