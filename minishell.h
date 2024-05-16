@@ -16,6 +16,9 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
+// # include <termios.h>
+# include <sys/stat.h>
 # include <sys/wait.h>
 # include "libft/libft.h"
 # include <readline/history.h>
