@@ -126,21 +126,21 @@ char	*get_prompt(void)
 	return (final_prompt);
 }
 
-void init_minishell(t_data *data, char **av,char **env)
+void	init_minishell(t_data *data, char **av, char **env)
 {
 	data->env = env;
 	data->av = av;
-	data->prompt = get_prompt();//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	data->prompt = get_prompt();
+		//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*command;
-	// char	*prompt;
+	t_data	data;
 
+	// char	*prompt;
 	(void)ac;
-	t_data data;
-	
 	init_minishell(&data, av, env);
 	// prompt = "┌──(aziz㉿aelkheta)-[~/Desktop/minishell]\n└─$ ";
 	// prompt = get_prompt();

@@ -42,7 +42,7 @@ int	cd(char *path, t_data *data)
 	{
 		if (errno == EACCES)
 			printf("minishell: cd: %s Permission denied\n", path);
-		else if(errno == ENOENT)
+		else if (errno == ENOENT)
 			printf("minishell: cd: %s Not such file or directory\n", path);
 		else if (errno == ENOTDIR)
 			printf("minishell: cd: %s Not such file or directory\n", path);
