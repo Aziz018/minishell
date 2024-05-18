@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/14 16:44:22 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/18 18:03:31 by aelkheta         ###   ########.fr       */
+/*   Created: 2024/05/18 15:27:48 by aelkheta          #+#    #+#             */
+/*   Updated: 2024/05/18 15:28:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	export(char *exprt_var, char **env)
+void	free_array(char **array)
 {
 	int	i;
 
 	i = -1;
-	while (env[++i] != NULL)
-	{
-		if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
-			modify_env_var(env[i]);
-	}
-	// printf("%s\n", env[i]);
+	while (array[++i] != NULL)
+		free(array[i]);
+	free(array);
 }

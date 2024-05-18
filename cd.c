@@ -6,34 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/15 11:04:18 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/18 20:37:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-char	*ft_strnstr(const char *big, const char *little, size_t len)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	if (*little == '\0')
-		return ((char *)big);
-	while (big[i] && i < len)
-	{
-		j = 0;
-		while (big[i + j] == little[j] && little[j] && (i + j) < len)
-			j++;
-		if (little[j] == '\0')
-			return ((char *)&big[i]);
-		i++;
-	}
-	return (NULL);
-}
+#include "minishell.h"
 
 char	*get_pwd(char **env)
 {
@@ -48,27 +25,29 @@ char	*get_pwd(char **env)
 	return (NULL);
 }
 
-int	main(int ac, char **av, char **env)
+int	cd(char *path, t_data *data)
 {
-	char	*path;
 	bool	flag;
 
-	path = get_pwd(env);
+	// char	*path;
 	flag = false;
-	if (ac == 2)
+	if (chdir(path) == 0)
 	{
-		if (chdir(av[1]) == -1)
-		{
-			printf("cd: no such file or directory: %s\n", av[1]);
-			return (1);
-		}
-		system("pwd");
-		return (0);
-	}
-	else if (ac > 2)
-	{
-		printf("cd: string not in pwd: %s", av[1]);
+		free(data->prompt);
+		data->prompt = get_prompt();
+		printf("%s\n", data->prompt);
 		return (1);
+	}
+	else
+	{
+		if (errno == EACCES)
+			printf("minishell: cd: %s Permission denied\n", path);
+		else if(errno == ENOENT)
+			printf("minishell: cd: %s Not such file or directory\n", path);
+		else if (errno == ENOTDIR)
+			printf("minishell: cd: %s Not such file or directory\n", path);
+		// else
+		// printf("minishell: cd failed\n");
 	}
 	return (0);
 }

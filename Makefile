@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/15 10:29:54 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/05/18 18:27:05 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,11 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 RLFLAG = -lreadline
-SRC = minishell.c
+SRC = 	minishell.c \
+		cleanup.c \
+		cd.c \
+
+		
 OBJ = $(SRC:.c=.o)
 LIBFT = ./libft/libft.a
 
