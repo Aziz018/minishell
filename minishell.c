@@ -64,15 +64,15 @@ void	print_minishell(void)
 	printf("\n");
 }
 
-void sig_handler(int signal)
+void	sig_handler(int signal)
 {
-	char *prompt;
+	char	*prompt;
 
 	prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
-    if (signal == SIGQUIT)
-        return;
-    if (signal == SIGINT)
-        printf("\n%s", prompt);
+	if (signal == SIGQUIT)
+		return ;
+	if (signal == SIGINT)
+		printf("\n%s", prompt);
 }
 
 int	main(int ac, char **av, char **env)
@@ -80,10 +80,9 @@ int	main(int ac, char **av, char **env)
 	char	*prompt;
 	char	*command;
 
-	(void) ac;
-	(void) av;
-	(void) env;
-	
+	(void)ac;
+	(void)av;
+	(void)env;
 	prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
 	print_minishell();
 	signal(SIGQUIT, sig_handler);
