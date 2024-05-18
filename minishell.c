@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/15 11:05:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:52:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	check_command(char *command, char **av, char **env)
 	pid_t	pid;
 	char	*cmd_path;
 
+	if (command == NULL || command[0] == 0)
+		return (0);
 	cmd_path = ft_strjoin("/bin/", command);
 	if (access(cmd_path, X_OK) == 0)
 	{
@@ -78,20 +80,20 @@ int	main(int ac, char **av, char **env)
 	char	*prompt;
 	char	*command;
 
-	(void)ac;
+	(void) ac;
+	(void) av;
+	(void) env;
+	
 	prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
 	print_minishell();
 	signal(SIGQUIT, sig_handler);
 	signal(SIGINT, sig_handler);
-	while (1)
+	command = readline(prompt);
+	while (command != NULL)
 	{
-		command = readline(prompt);
-		if (command == NULL)
-			break;
-		if (ft_strnstr("exit", command, ft_strlen(command)))
-			exit(0);
 		check_command(command, av, env);
 		free(command);
+		command = readline(prompt);
 	}
 	return (0);
 }
