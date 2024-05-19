@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/18 20:37:12 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:02:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int	cd(char *path, t_data *data)
 
 	// char	*path;
 	flag = false;
+	(void) data;
 	if (chdir(path) == 0)
 	{
-		free(data->prompt);
-		data->prompt = get_prompt();
-		printf("%s\n", data->prompt);
+		// data->prompt = get_prompt();
+		// free(data->prompt);
+		// printf("%s\n", data->prompt);
 		return (1);
 	}
 	else

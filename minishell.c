@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/18 20:39:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:04:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 	if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
 	{
 		cd(parsedcmd[1], data);
+		free(data->prompt);
+		data->prompt = get_prompt();
+		// free(data->prompt);
 	}
 	// if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
 	// {
@@ -123,6 +126,7 @@ char	*get_prompt(void)
 	prompt1 = ft_strjoin(prompt1, prompt2);
 	free(prompt2);
 	final_prompt = ft_strjoin(prompt1, "]\n└─$ ");
+	free(prompt1);
 	return (final_prompt);
 }
 
@@ -130,8 +134,7 @@ void	init_minishell(t_data *data, char **av, char **env)
 {
 	data->env = env;
 	data->av = av;
-	data->prompt = get_prompt();
-		//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	data->prompt = get_prompt(); //"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
 int	main(int ac, char **av, char **env)
@@ -157,5 +160,6 @@ int	main(int ac, char **av, char **env)
 		free(command);
 		command = readline(data.prompt);
 	}
+	free(data.prompt);
 	return (0);
 }
