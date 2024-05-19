@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/18 20:29:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:11:27 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ void		print_prompt(void);
 void		free_array(char **array);
 int			cd(char *path, t_data *data);
 char		*get_prompt(void);
+void		pwd();
 
 #endif

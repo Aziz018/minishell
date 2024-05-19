@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/19 15:04:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/19 15:16:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,13 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 		return (0);
 	if (ft_strncmp("exit", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
 		exit(0);
+	if (ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
+		pwd();
 	if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
 	{
 		cd(parsedcmd[1], data);
 		free(data->prompt);
 		data->prompt = get_prompt();
-		// free(data->prompt);
 	}
 	// if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
 	// {
@@ -109,10 +110,10 @@ int	parse_command(char *command, t_data *data)
 	char	**parsedcmd;
 
 	parsedcmd = ft_split(command, ' ');
-	print_char_array(parsedcmd);
+	// print_char_array(parsedcmd);
 	built_in_cmd(parsedcmd, data);
 	free_array(parsedcmd);
-	check_command(command, data);
+	// check_command(command, data);
 	return (0);
 }
 char	*get_prompt(void)
@@ -153,9 +154,6 @@ int	main(int ac, char **av, char **env)
 	command = readline(data.prompt);
 	while (command != NULL)
 	{
-		// char *cwd = getcwd(NULL, 0);
-		// printf ("cwd: %s\n", cwd);
-		// free(cwd);
 		parse_command(command, &data);
 		free(command);
 		command = readline(data.prompt);
