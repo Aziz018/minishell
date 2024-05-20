@@ -12,8 +12,10 @@
 
 #include "minishell.h"
 
-void	pwd()
+void	pwd(void)
 {
-	char *cwd = getcwd(NULL, 0);
+	char	*cwd;
+
+	cwd = getcwd(NULL, 0);
 	free(cwd);
 }

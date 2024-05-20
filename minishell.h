@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/19 15:11:27 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:49:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 typedef struct s_data
 {
+	int ac;
 	char	**av;
 	char	**env;
 	char	*prompt;
@@ -49,5 +50,9 @@ void		free_array(char **array);
 int			cd(char *path, t_data *data);
 char		*get_prompt(void);
 void		pwd();
+int			env(char **env);
+int			echo(char **cmd);
+int			export(t_data *data, char **cmd);
+
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/19 15:16:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/20 12:49:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	check_command(char *command, t_data *data)
 		else
 			wait(NULL);
 	}
-	// else
-	// 	printf("%s: command not found\n", command);
+	else
+		printf("%s: command not found\n", command);
 	free(cmd_path);
 	return (0);
 }
@@ -87,22 +87,22 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 {
 	if (parsedcmd == NULL || parsedcmd[0] == 0)
 		return (0);
-	if (ft_strncmp("exit", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
+	else if (!ft_strncmp("exit", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		exit(0);
-	if (ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
+	else if (!ft_strncmp("echo", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		echo(parsedcmd);
+	else if (!ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		pwd();
-	if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
-	{
+	else if (!ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		cd(parsedcmd[1], data);
-		free(data->prompt);
-		data->prompt = get_prompt();
-	}
-	// if (ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])) == 0)
-	// {
-	// 	env();
-	// 	exit(0);
-	// }
-	return (0);
+	else if (!ft_strncmp("env", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		env(data->env);
+	else if (!ft_strncmp("export", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		export(data, parsedcmd);
+	else
+		return (0);
+	free_array(parsedcmd);
+	return (1);
 }
 
 int	parse_command(char *command, t_data *data)
@@ -111,9 +111,10 @@ int	parse_command(char *command, t_data *data)
 
 	parsedcmd = ft_split(command, ' ');
 	// print_char_array(parsedcmd);
-	built_in_cmd(parsedcmd, data);
+	if (built_in_cmd(parsedcmd, data))
+		return (0);
 	free_array(parsedcmd);
-	// check_command(command, data);
+	check_command(command, data);
 	return (0);
 }
 char	*get_prompt(void)
@@ -131,11 +132,13 @@ char	*get_prompt(void)
 	return (final_prompt);
 }
 
-void	init_minishell(t_data *data, char **av, char **env)
+void	init_minishell(t_data *data, int ac, char **av, char **env)
 {
+	data->ac = ac;
 	data->env = env;
 	data->av = av;
-	data->prompt = get_prompt(); //"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	data->prompt = get_prompt();
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
 int	main(int ac, char **av, char **env)
@@ -144,8 +147,8 @@ int	main(int ac, char **av, char **env)
 	t_data	data;
 
 	// char	*prompt;
-	(void)ac;
-	init_minishell(&data, av, env);
+	// (void)ac;
+	init_minishell(&data, ac, av, env);
 	// prompt = "┌──(aziz㉿aelkheta)-[~/Desktop/minishell]\n└─$ ";
 	// prompt = get_prompt();
 	print_minishell();

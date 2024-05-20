@@ -6,17 +6,17 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/19 15:01:23 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/05/20 11:42:17 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 RLFLAG = -lreadline
 SRC = 	minishell.c \
+		built_in_commands.c \
 		cleanup.c \
-		cd.c \
 
 		
 OBJ = $(SRC:.c=.o)

@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-int unset()
+int	unset(void)
 {
-    
 }
