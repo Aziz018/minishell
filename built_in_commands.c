@@ -59,6 +59,7 @@ int	env(char **env)
 		printf("%s\n", env[i]);
 	return (0);
 }
+
 int	echo(char **cmd)
 {
 	int		i;
