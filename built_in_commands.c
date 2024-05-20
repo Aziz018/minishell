@@ -14,15 +14,21 @@
 
 int	cd(char *path, t_data *data)
 {
-	bool	flag;
-
-	flag = false;
-	(void)data;
+	if (path == NULL)
+	{
+		char *home = getenv("HOME");
+		if (home != NULL)
+		{
+			chdir(home);
+			free(data->prompt);
+			data->prompt = get_prompt();
+		}
+	}
 	if (chdir(path) == 0)
 	{
-		return (1);
 		free(data->prompt);
 		data->prompt = get_prompt();
+		return (1);
 	}
 	else
 	{
@@ -106,9 +112,9 @@ int	echo(char **cmd)
 
 int	export(t_data *data, char **cmd)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	if (cmd[1] == NULL)
 	{
 		env(data->env);
