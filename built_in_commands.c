@@ -16,13 +16,20 @@ int	cd(char *path, t_data *data)
 {
 	if (path == NULL)
 	{
-		char *home = getenv("HOME");
-		if (home != NULL)
+		path = getenv("HOME");
+		if (path != NULL)
 		{
-			chdir(home);
+			chdir(path);
 			free(data->prompt);
 			data->prompt = get_prompt();
 		}
+	}
+	if (!ft_strncmp("-", path, ft_strlen(path)))
+	{
+		path = getenv("OLDPWD");
+		chdir(path);
+		free(data->prompt);
+		data->prompt = get_prompt();
 	}
 	if (chdir(path) == 0)
 	{

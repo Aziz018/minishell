@@ -10,12 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+# define B_RED_COLOR "\033[1;31m" // ANSI color
+# define N_RED_COLOR "\033[0;31m" // ANSI color
+# define B_GREEN_COLOR "\033[1;32m" // ANSI color
+# define N_GREEN_COLOR "\033[0;32m" // ANSI color
+# define RESET_COLOR "\033[0m" // ANSI color
+# define YELLOW "\e[1;93m"
+# define BLUE "\e[1;94m"
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 typedef struct s_data
 {
-	int ac;
+	int 	ac;
 	char	**av;
 	char	**env;
 	char	*prompt;
@@ -38,12 +46,6 @@ typedef struct s_data
 # include <readline/readline.h> // readline GNU library
 # include <sys/wait.h>
 // for wating child process to terminate execution
-
-# define B_RED_COLOR "\033[1;31m" // ANSI color
-# define N_RED_COLOR "\033[0;31m" // ANSI color
-# define B_GREEN_COLOR "\033[1;32m" // ANSI color
-# define N_GREEN_COLOR "\033[0;32m" // ANSI color
-# define RESET_COLOR "\033[0m" // ANSI color
 
 void		print_prompt(void);
 void		free_array(char **array);
