@@ -123,11 +123,11 @@ char	*get_prompt(void)
 	char	*prompt2;
 	char	*final_prompt;
 
-	prompt1 = "┌──(aziz㉿aelkheta)-[";
+	prompt1 = YELLOW"┌──(aziz㉿aelkheta)-["RESET_COLOR;
 	prompt2 = getcwd(NULL, 0);
 	prompt1 = ft_strjoin(prompt1, prompt2);
 	free(prompt2);
-	final_prompt = ft_strjoin(prompt1, "]\n└─$ ");
+	final_prompt = ft_strjoin(prompt1, YELLOW"]\n└─$ "RESET_COLOR);
 	free(prompt1);
 	return (final_prompt);
 }
