@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/20 12:49:15 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:06:50 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,11 @@ char	*get_prompt(void)
 	char	*prompt2;
 	char	*final_prompt;
 
-	prompt1 = YELLOW"┌──(aziz㉿aelkheta)-["RESET_COLOR;
+	prompt1 = "┌──(aziz㉿aelkheta)-["RESET_COLOR;
 	prompt2 = getcwd(NULL, 0);
 	prompt1 = ft_strjoin(prompt1, prompt2);
 	free(prompt2);
-	final_prompt = ft_strjoin(prompt1, YELLOW"]\n└─$ "RESET_COLOR);
+	final_prompt = ft_strjoin(prompt1, "]\n└─$ "RESET_COLOR);
 	free(prompt1);
 	return (final_prompt);
 }

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/20 13:08:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/22 19:07:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,15 @@
 
 int	cd(char *path, t_data *data)
 {
-	char	*home;
-
 	if (path == NULL)
 	{
-<<<<<<< HEAD
-		home = getenv("HOME");
+		char *home = getenv("HOME");
 		if (home != NULL)
-=======
-		path = getenv("HOME");
-		if (path != NULL)
->>>>>>> 32e54d34a43a44ef3719460d43181a70c0abcb1e
 		{
-			chdir(path);
+			chdir(home);
 			free(data->prompt);
 			data->prompt = get_prompt();
 		}
-	}
-	if (!ft_strncmp("-", path, ft_strlen(path)))
-	{
-		path = getenv("OLDPWD");
-		chdir(path);
-		free(data->prompt);
-		data->prompt = get_prompt();
 	}
 	if (chdir(path) == 0)
 	{
@@ -81,6 +67,7 @@ int	echo(char **cmd)
 
 	i = 1;
 	flag = false;
+
 	if (!ft_strncmp("-n", cmd[i], ft_strlen(cmd[i])))
 	{
 		flag = true;
@@ -99,14 +86,15 @@ int	echo(char **cmd)
 
 // void modify_env_var(char *var, )
 // {
-
+	
 // }
+
 
 // int join_str(char **env, char **cmd)
 // {
 // 	int len;
 // 	char **new_env;
-
+	
 // 	len = -1;
 // 	while(env[++len] != NULL);
 // 	new_env = malloc((len + 1) * sizeof(char *));
@@ -126,6 +114,7 @@ int	echo(char **cmd)
 int	export(t_data *data, char **cmd)
 {
 	// int	i;
+
 	// i = 0;
 	if (cmd[1] == NULL)
 	{
@@ -134,8 +123,8 @@ int	export(t_data *data, char **cmd)
 	}
 	// while (env[++i] != NULL)
 	// {
-	// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
-	// 	modify_env_var(env);
+		// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
+		// 	modify_env_var(env);
 	// }
 	// join_str(data->env, cmd);
 	// printf("%s\n", env[i]);
