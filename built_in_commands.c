@@ -14,9 +14,11 @@
 
 int	cd(char *path, t_data *data)
 {
+	char	*home;
+
 	if (path == NULL)
 	{
-		char *home = getenv("HOME");
+		home = getenv("HOME");
 		if (home != NULL)
 		{
 			chdir(home);
@@ -67,7 +69,6 @@ int	echo(char **cmd)
 
 	i = 1;
 	flag = false;
-
 	if (!ft_strncmp("-n", cmd[i], ft_strlen(cmd[i])))
 	{
 		flag = true;
@@ -86,15 +87,14 @@ int	echo(char **cmd)
 
 // void modify_env_var(char *var, )
 // {
-	
-// }
 
+// }
 
 // int join_str(char **env, char **cmd)
 // {
 // 	int len;
 // 	char **new_env;
-	
+
 // 	len = -1;
 // 	while(env[++len] != NULL);
 // 	new_env = malloc((len + 1) * sizeof(char *));
@@ -114,7 +114,6 @@ int	echo(char **cmd)
 int	export(t_data *data, char **cmd)
 {
 	// int	i;
-
 	// i = 0;
 	if (cmd[1] == NULL)
 	{
@@ -123,8 +122,8 @@ int	export(t_data *data, char **cmd)
 	}
 	// while (env[++i] != NULL)
 	// {
-		// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
-		// 	modify_env_var(env);
+	// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
+	// 	modify_env_var(env);
 	// }
 	// join_str(data->env, cmd);
 	// printf("%s\n", env[i]);
