@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/22 19:06:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:58:55 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,29 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-int	check_command(char *command, t_data *data)
+int	exec_command(char *command, t_data *data)
 {
 	pid_t	pid;
 	char	*cmd_path;
-
+	(void) data;
+	char **parsedcmd = ft_split(command, ' ');
 	if (command == NULL || command[0] == 0)
 		return (0);
-	cmd_path = ft_strjoin("/bin/", command);
+	cmd_path = ft_strjoin("/bin/", parsedcmd[0]);
+	printf("command: %s <||> args: %s\n", parsedcmd[0], parsedcmd[1]);
 	if (access(cmd_path, X_OK) == 0)
 	{
 		pid = fork();
 		if (pid == -1)
 			return (0);
 		else if (pid == 0)
-			execve(cmd_path, data->av, data->env);
+			execve(cmd_path, &parsedcmd[1], data->env);
 		else
 			wait(NULL);
 	}
 	else
 		printf("%s: command not found\n", command);
+	free_array(parsedcmd);
 	free(cmd_path);
 	return (0);
 }
@@ -110,11 +113,10 @@ int	parse_command(char *command, t_data *data)
 	char	**parsedcmd;
 
 	parsedcmd = ft_split(command, ' ');
-	// print_char_array(parsedcmd);
 	if (built_in_cmd(parsedcmd, data))
 		return (0);
 	free_array(parsedcmd);
-	check_command(command, data);
+	exec_command(command, data);
 	return (0);
 }
 char	*get_prompt(void)
@@ -131,6 +133,13 @@ char	*get_prompt(void)
 	free(prompt1);
 	return (final_prompt);
 }
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
+
 
 void	init_minishell(t_data *data, int ac, char **av, char **env)
 {

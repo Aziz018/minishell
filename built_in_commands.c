@@ -6,26 +6,46 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/22 19:07:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/23 13:04:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// void print_path(char *path, )
+// {
+	
+// }
+
+void change_dir(char *path, t_data *data)
+{
+	chdir(path);
+	free(data->prompt);
+	data->prompt = get_prompt();
+}
+
 int	cd(char *path, t_data *data)
 {
-	if (path == NULL)
+	if (path != NULL && path[0] == '-' && path[1] == '\0')
 	{
-		char *home = getenv("HOME");
-		if (home != NULL)
-		{
-			chdir(home);
-			free(data->prompt);
-			data->prompt = get_prompt();
-		}
+		path = getenv("OLDPWD");
+		printf("%s\n", path);
+		chdir(path);
+		free(data->prompt);
+		data->prompt = get_prompt();
+		return (1);
 	}
-	if (chdir(path) == 0)
+	else if (path == NULL || (path[0] == '~' && path[1] == '\0'))
 	{
+		path = getenv("HOME");
+		chdir(path);
+		free(data->prompt);
+		data->prompt = get_prompt();
+		return (1);
+	}
+	else if (path != NULL)
+	{
+		chdir(path);
 		free(data->prompt);
 		data->prompt = get_prompt();
 		return (1);
