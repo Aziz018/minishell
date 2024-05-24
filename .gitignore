@@ -1,3 +1,5 @@
 .nfs*
 a.out
 *.o
+*.nfs*
+./minishell

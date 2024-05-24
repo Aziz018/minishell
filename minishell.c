@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/23 18:58:55 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:35:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,36 @@ int	parse_command(char *command, t_data *data)
 {
 	char	**parsedcmd;
 
+	// (void) data;
+
+	// int i = -1;
+	// int j = -1;
+	
+	// parsedcmd = ft_split(command, ' ');
+	
+	// while(parsedcmd[++i] != NULL)
+	// {
+	// 	j = -1;
+	// 	if (i == 0 || parsedcmd[i - 1][0] == '|')
+	// 		printf("command: %s\n", parsedcmd[i]);
+	// 	else if (parsedcmd[i][0] == '|')
+	// 		printf("pipe: %s\n", parsedcmd[i]);
+	// 	else
+	// 		printf("arg: %s\n", parsedcmd[i]);
+	// 	// while(parsedcmd[i][++j])
+	// 	// {
+			
+	// 	// }
+	// }
+
+	// free_array(parsedcmd);
+	
+
 	parsedcmd = ft_split(command, ' ');
+
+	printf("%s\n", command);
+	print_char_array(parsedcmd);
+
 	if (built_in_cmd(parsedcmd, data))
 		return (0);
 	free_array(parsedcmd);
@@ -133,13 +162,6 @@ char	*get_prompt(void)
 	free(prompt1);
 	return (final_prompt);
 }
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
-
 
 void	init_minishell(t_data *data, int ac, char **av, char **env)
 {

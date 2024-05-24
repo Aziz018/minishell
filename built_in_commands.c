@@ -6,22 +6,19 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/23 13:04:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:51:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void print_path(char *path, )
-// {
-	
-// }
-
-void change_dir(char *path, t_data *data)
+int change_dir(char *path, t_data *data)
 {
-	chdir(path);
+	if (chdir(path))
+		return 0;
 	free(data->prompt);
 	data->prompt = get_prompt();
+	return (1);
 }
 
 int	cd(char *path, t_data *data)
@@ -30,37 +27,29 @@ int	cd(char *path, t_data *data)
 	{
 		path = getenv("OLDPWD");
 		printf("%s\n", path);
-		chdir(path);
-		free(data->prompt);
-		data->prompt = get_prompt();
+		change_dir(path, data);
 		return (1);
 	}
 	else if (path == NULL || (path[0] == '~' && path[1] == '\0'))
 	{
 		path = getenv("HOME");
-		chdir(path);
-		free(data->prompt);
-		data->prompt = get_prompt();
+		change_dir(path, data);
 		return (1);
 	}
-	else if (path != NULL)
-	{
-		chdir(path);
-		free(data->prompt);
-		data->prompt = get_prompt();
+	else if (path != NULL && change_dir(path, data))
 		return (1);
-	}
 	else
 	{
 		if (errno == EACCES)
 			printf("minishell: cd: %s Permission denied\n", path);
 		else if (errno == ENOENT)
-			printf("minishell: cd: %s Not such file or directory\n", path);
+			printf("minishell: cd: %s No such file or directory\n", path);
 		else if (errno == ENOTDIR)
-			printf("minishell: cd: %s Not such file or directory\n", path);
+			printf("minishell: cd: %s No such file or directory\n", path);
 	}
 	return (0);
 }
+
 void	pwd(void)
 {
 	char	*cwd;
