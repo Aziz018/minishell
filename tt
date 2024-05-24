@@ -1,0 +1,27 @@
+aelkheta@c3r1p6:~/Desktop/minishell$ ech"o "abc
+echo abc: command not found
+aelkheta@c3r1p6:~/Desktop/minishell$ echo"" abc
+abc
+aelkheta@c3r1p6:~/Desktop/minishell$ ./
+built_in_cmd/                 .nfs000000000b50020d00005edf
+.git/                         tkherbi9/
+libft/                        .vscode/
+minishell                     
+aelkheta@c3r1p6:~/Desktop/minishell$ fish
+Welcome to fish, the friendly interactive shell
+Type help for instructions on how to use fish
+aelkheta@c3r1p6 ~/D/minishell (main)> ./minishell
+
+███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗
+████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║
+██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║
+██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║
+██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗
+╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+
+┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]
+└─$ echo"" abc
+command: echo"" <||> args: abc
+echo"" abc: command not found
+┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]
+└─$ 

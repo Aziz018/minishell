@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/24 11:51:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/24 15:12:05 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,21 @@ int	echo(char **cmd)
 
 	i = 1;
 	flag = false;
-
 	if (!ft_strncmp("-n", cmd[i], ft_strlen(cmd[i])))
 	{
 		flag = true;
 		++i;
+	}
+	if (cmd[i][0] == '$' && cmd[i][1] != '$' && cmd[i][1] != ' ')
+	{
+		char *path = getenv(&cmd[i][1]);
+		if(!path)
+		{
+			printf("\n");
+			return (0);
+		}
+		printf("%s\n", path);
+		return (0);
 	}
 	while (cmd[i] != NULL)
 	{

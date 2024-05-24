@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/24 12:10:09 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/24 16:18:31 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,10 @@ int	parse_command(char *command, t_data *data)
 	while(parsedcmd[++i] != NULL)
 	{
 		j = -1;
-		if (i == 0 || ft_strchr("<|&>", parsedcmd[i - 1][0]))
+		if (i == 0 || ft_strchr("|&;", parsedcmd[i - 1][0]))
 			printf("command: ------ %s\n", parsedcmd[i]);
+		else if (ft_strchr("<>", parsedcmd[i - 1][0]))
+			printf("file: ------ %s\n", parsedcmd[i]);
 		else if (ft_strchr("<|&>", parsedcmd[i][0]))
 		{
 			// parsedcmd[i][0] == '|' || (parsedcmd[i][0] == '&' && parsedcmd[i][1] == '&') || parsedcmd[i][0] == '&' || parsedcmd[i][0] == '<' || parsedcmd[i][0] == '>'
@@ -144,17 +146,18 @@ int	parse_command(char *command, t_data *data)
 		// {
 		// }
 	}
+	free_array(parsedcmd);
+
 	
 			// cd .. && cat file | grep hello
 
+	// printf("%s\n", command);
+	// print_char_array(parsedcmd);
 
-	free_array(parsedcmd);
 	
 
 	// parsedcmd = ft_split(command, ' ');
 
-	// printf("%s\n", command);
-	// print_char_array(parsedcmd);
 
 	// if (built_in_cmd(parsedcmd, data))
 	// 	return (0);
