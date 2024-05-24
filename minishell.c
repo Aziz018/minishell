@@ -108,6 +108,30 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 	return (1);
 }
 
+void parsing(char *command)
+{
+	int i = -1;
+	int j = -1;
+	char parenthes[100];
+
+	printf("%s\n", command);
+	while(command[++i])
+	{
+		if (command[i] == '(')
+			parenthes[++j] = '(';
+		else if (command[i] == ')' && parenthes[j] == '(')
+		{
+			if (j == -1)
+				return ;
+			j--;
+		}
+	}
+	if (j < 0)
+		return ;
+	char *line = readline("> ");
+	parsing(line);
+}
+
 int	parse_command(char *command, t_data *data)
 {
 	char	**parsedcmd;
@@ -117,11 +141,17 @@ int	parse_command(char *command, t_data *data)
 	int i = -1;
 	int j = -1;
 	
+
+	// return (0);
+
 	parsedcmd = ft_split(command, ' ');
 	
 	while(parsedcmd[++i] != NULL)
 	{
 		j = -1;
+		if (parsedcmd[i][++j] == '(')
+			parsing(command);
+		
 		if (i == 0 || ft_strchr("|&;", parsedcmd[i - 1][0]))
 			printf("command: ------ %s\n", parsedcmd[i]);
 		else if (ft_strchr("<>", parsedcmd[i - 1][0]))
@@ -140,11 +170,6 @@ int	parse_command(char *command, t_data *data)
 		}
 		else
 			printf("arg: ---------- %s\n", parsedcmd[i]);
-
-			
-		// while(parsedcmd[i][++j])
-		// {
-		// }
 	}
 	free_array(parsedcmd);
 
