@@ -34,8 +34,8 @@ void	print_prompt(void)
 	char	*reset_color;
 
 	prompt = "┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
-	output_color = N_GREEN_COLOR;
-	reset_color = RESET_COLOR;
+	output_color = GRN;
+	reset_color = CRESET;
 	write(1, output_color, ft_strlen(output_color));
 	write(1, prompt, ft_strlen(prompt));
 	write(1, reset_color, ft_strlen(reset_color));
@@ -69,13 +69,13 @@ int	exec_command(char *command)
 
 void	sig_handler(int signal)
 {
-	char	*prompt;
+	// char	*prompt;
 
-	prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+	// prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
 	if (signal == SIGQUIT)
 		return ;
-	if (signal == SIGINT)
-		printf("\n%s", prompt);
+	// if (signal == SIGINT)
+	// 	printf("\n%s", prompt);
 }
 
 void	print_char_array(char **array)
@@ -109,7 +109,7 @@ int	built_in_cmd(char **parsedcmd)
 	return (1);
 }
 
-void parsing(char *command)
+void parentheses(char *command)
 {
 	data->i = -1;
 	data->j = -1;
@@ -139,58 +139,152 @@ void parsing(char *command)
 	data->new_command = ft_strjoin(command, line);
 	free(line);
 	free(command);
-	parsing(data->new_command);
+	parentheses(data->new_command);
+}
+
+char *get_token_value(t_token *token, char *commads)
+{
+	char *token_val = NULL;
+
+	while(commads[token->i] && (commads[token->i] == ' ' || commads[token->i] == '\t' || commads[token->i] == '\v'))
+		token->i++;
+	token->index = token->i;
+	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
+		token->i++;
+	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
+	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
+		token->i++;
+	// if (commads[token->i] == '\0')
+	// 	token->i = 0;
+	token->index = token->i;
+	return (token_val);
+}
+
+int get_token_type(t_token *token)
+{
+	if (token->value[0] == '|' && token->value[1] == '\0')
+	{
+		printf("type: ---------- PIPE\n");
+		return (PIPE);
+	}
+	else if (token->value[0] == '>' && token->value[1] == '\0')
+	{
+		printf("type: ---------- RED_OUT\n");
+		return (RED_OUT);
+	}
+	else if (token->value[0] == '<' && token->value[1] == '\0')
+	{
+		printf("type: ---------- RED_IN\n");
+		return (RED_IN);
+	}
+	else if (token->value[0] == '&' && token->value[1] == '\0')
+	{
+		printf("type: ---------- BACK\n");
+		return (BACK);
+	}
+	else if (token->value[0] == '&' && token->value[1] == '&' && token->value[2] == '\0')
+	{
+		printf("type: ---------- AND_OP\n");
+		return (AND_OP);
+	}
+	else if (token->value[0] == '|' && token->value[1] == '|' && token->value[2] == '\0')
+	{
+		printf("type: ---------- OR_OP\n");
+		return (OR_OP);
+	}
+	else
+	{
+		printf("type: ---------- CMD\n");
+		return (CMD);
+	}
+	// else
+	// {
+	// 	printf("type: ---------- ARG\n");
+	// 	return (ARG);
+	// }
+}
+
+t_token *tokenizer_command(char *commads)
+{
+	t_token *token = (t_token *)malloc(sizeof(t_token));
+	// int i = -1;
+	token->i = 0;
+	token->index = 0;
+	if (commads[token->i] == 0)
+		return NULL;
+	while(commads[token->i])
+	{
+		// if (i == 0)
+		{
+			token->value = get_token_value(token, commads);
+			printf("token: --------- %s\n", token->value);
+			token->type = get_token_type(token);
+			printf("\n");
+		}
+	}
+	return (token);
 }
 
 int	parse_command(char *command)
 {
-	char	**parsedcmd;
 
-	int i = -1;
-	int j = -1;
-	
-	parsedcmd = ft_split(command, ' ');
-	
-	while(parsedcmd[++i] != NULL)
+
+	t_token *tokens = tokenizer_command(command);
+
+	// printf("token: --------- %s\n", tokens->value);
+	// printf("type: ---------- %d\n", tokens->type);
+	if (tokens != NULL)
 	{
-		j = 0;
-		if (parsedcmd[i][j] == '(' || parsedcmd[i][j] == ')')
-		{
-			parsing(command);
-			j++;
-		}
-		
-		if (i == 0 || ft_strchr("|&;", parsedcmd[i - 1][0]))
-			printf("command: ------ %s\n", parsedcmd[i]);
-		else if (ft_strchr("<>", parsedcmd[i - 1][0]))
-			printf("file: ------ %s\n", parsedcmd[i]);
-		else if (ft_strchr("<|&>", parsedcmd[i][0]))
-		{
-			// parsedcmd[i][0] == '|' || (parsedcmd[i][0] == '&' && parsedcmd[i][1] == '&') || parsedcmd[i][0] == '&' || parsedcmd[i][0] == '<' || parsedcmd[i][0] == '>'
-			if (parsedcmd[i][0] == '|')
-				printf("pipe: --------- %s\n", parsedcmd[i]);
-			else if (parsedcmd[i][0] == '&' && parsedcmd[i][1] == '&')
-				printf("and oprt: ----- %s\n", parsedcmd[i]);
-			else if (parsedcmd[i][0] == '<')
-				printf("red-in: ------- %s\n", parsedcmd[i]);
-			else if (parsedcmd[i][0] == '>')
-				printf("red-out: ------ %s\n", parsedcmd[i]);
-		}
-		else
-			printf("arg: ---------- %s\n", parsedcmd[i]);
+		if (tokens->value != NULL)
+			free(tokens->value);
+		free(tokens);
 	}
-	free_array(parsedcmd);
+
+	// char	**parsedcmd;
+
+	// int i = -1;
+	// int j = -1;
+	
+	// parsedcmd = ft_split(command, ' ');
+	// while(parsedcmd[++i] != NULL)
+	// {
+	// 	j = 0;
+	// 	if (parsedcmd[i][j] == '(' || parsedcmd[i][j] == ')')
+	// 	{
+	// 		parentheses(command);
+	// 		j++;
+	// 	}
+	// 	// parsedcmd[i][0] == '|' || (parsedcmd[i][0] == '&' && parsedcmd[i][1] == '&') || parsedcmd[i][0] == '&' || parsedcmd[i][0] == '<' || parsedcmd[i][0] == '>'
+		
+	// 	if (i == 0 || ft_strchr("|&;", parsedcmd[i - 1][0]))
+	// 		printf("command: ------ %s\n", parsedcmd[i]);
+	// 	else if (ft_strchr("<>", parsedcmd[i - 1][0]))
+	// 		printf("file: ------ %s\n", parsedcmd[i]);
+	// 	else if (ft_strchr("<|&>", parsedcmd[i][0]))
+	// 	{
+	// 		if (parsedcmd[i][0] == '|')
+	// 			printf("pipe: --------- %s\n", parsedcmd[i]);
+	// 		else if (parsedcmd[i][0] == '&' && parsedcmd[i][1] == '&')
+	// 			printf("and oprt: ----- %s\n", parsedcmd[i]);
+	// 		else if (parsedcmd[i][0] == '<')
+	// 			printf("red-in: ------- %s\n", parsedcmd[i]);
+	// 		else if (parsedcmd[i][0] == '>')
+	// 			printf("red-out: ------ %s\n", parsedcmd[i]);
+	// 	}
+	// 	else
+	// 		printf("arg: ---------- %s\n", parsedcmd[i]);
+	// }
+	// free_array(parsedcmd);
 
 	
+
 			// cd ->-> && cat file | grep hello
 
 	// printf("%s\n", command);
 	// print_char_array(parsedcmd);
 
-	
-
 	// parsedcmd = ft_split(command, ' ');
-
 
 	// if (built_in_cmd(parsedcmd, data))
 	// 	return (0);
@@ -198,17 +292,21 @@ int	parse_command(char *command)
 	// exec_command(command, data);
 	return (0);
 }
+
 char	*get_prompt(void)
 {
 	
 	char	*prompt1;
 	char	*prompt2;
+	char	*prompt3;
 	char	*final_prompt;
-	prompt1 = "┌──(aziz㉿aelkheta)-["RESET_COLOR;
+	prompt1 = BBLU"┌──(aziz㉿aelkheta)-["COLOR_RESET;
 	prompt2 = getcwd(NULL, 0);
-	prompt1 = ft_strjoin(prompt1, prompt2);
+	prompt3 = ft_strjoin(BWHT, prompt2);
 	free(prompt2);
-	final_prompt = ft_strjoin(prompt1, "]\n└─$ "RESET_COLOR);
+	prompt1 = ft_strjoin(prompt1, prompt3);
+	free(prompt3);
+	final_prompt = ft_strjoin(prompt1, BBLU"]\n└─$ "COLOR_RESET);
 	free(prompt1);
 	return (final_prompt);
 }
@@ -220,6 +318,7 @@ void	init_minishell(int ac, char **av, char **env)
 	data->av = av;
 	data->prompt = get_prompt();
 	data->new_command = NULL;
+	
 	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
@@ -227,8 +326,6 @@ int	main(int ac, char **av, char **env)
 {
 	char	*command;
 
-	// char	*prompt;
-	// (void)ac;
 	data = (t_data *)malloc(sizeof(t_data));
 	init_minishell(ac, av, env);
 	
@@ -238,15 +335,16 @@ int	main(int ac, char **av, char **env)
 	print_minishell();
 	
 	signal(SIGQUIT, sig_handler);
-	signal(SIGINT, sig_handler);
+	// signal(SIGINT, sig_handler);
 	command = readline(data->prompt);
 	while (command != NULL)
 	{
 		parse_command(command);
+		
 		// free(command);
 		command = readline(data->prompt);
 	}
-	free(data->prompt);
 	free(data->new_command);
+	free(data->prompt);
 	return (0);
 }

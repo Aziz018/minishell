@@ -13,13 +13,19 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define EXEC 1
-# define RDRC 2
-# define PIPE 3
-# define LIST 4
-# define BACK 5
+# define CMD 		0
 
-# define MAX_ARGS 15
+# define EXEC 		1
+# define RED_OUT 	2
+# define RED_IN 	3
+# define PIPE 		4
+# define LIST 		5
+# define BACK 		6
+# define ARG 		7
+# define OR_OP 		8
+# define AND_OP 	9
+
+# define MAX_ARGS 	15
 
 typedef struct s_command
 {
@@ -71,31 +77,33 @@ typedef struct s_data
 	
 }				t_data;
 
-extern t_data *data;
+typedef struct s_token 
+{
+	int			index;		// to point to the location of the next token
+	int 		type;		// for the type of the token PIPE REDER ...
+	char 		*value;		// token value if it's a pipe the value is "|"
+	int 		i;
+} t_token;
 
-# include <dirent.h> // for directory handling
-# include <errno.h> // for errors specification
-# include <signal.h> // for kill and signal handling
-# include <stdbool.h> // for boolean vars
-# include <stdio.h> // for printf
-# include <stdlib.h> // for malloc and free
-# include <sys/types.h> //
-# include <unistd.h> // for system calls
+extern t_data *data;					// for use this global var from all files
+
+#include "colors.h" 					// for colors
+# include "libft/libft.h" 				// libft functions
+
+# include <errno.h> 					// for errors specification
+# include <stdio.h> 					// for printf
+# include <stdlib.h> 					// for malloc and free
+# include <signal.h> 					// for kill and signal handling
+# include <unistd.h> 					// for system calls
+# include <dirent.h> 					// for directory handling
+# include <stdbool.h> 					// for boolean vars
+# include <sys/types.h> 				// 
+# include <sys/wait.h> 					// for wating child process to terminate execution
+# include <readline/history.h> 			// readline GNU library
+# include <readline/readline.h> 		// readline GNU library
 
 // # include <termios.h>
 // # include <sys/stat.h>
-
-# include "libft/libft.h" // libft functions
-# include <readline/history.h> // readline GNU library
-# include <readline/readline.h> // readline GNU library
-# include <sys/wait.h>
-// for wating child process to terminate execution
-
-# define B_RED_COLOR "\033[1;31m" // ANSI color
-# define N_RED_COLOR "\033[0;31m" // ANSI color
-# define B_GREEN_COLOR "\033[1;32m" // ANSI color
-# define N_GREEN_COLOR "\033[0;32m" // ANSI color
-# define RESET_COLOR "\033[0m" // ANSI color
 
 void			print_prompt(void);
 void			free_array(char **array);
