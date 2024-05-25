@@ -222,6 +222,13 @@ t_token *tokenizer_command(char *commads)
 			token->type = get_token_type(token);
 			printf("\n");
 		}
+		if (token != NULL)
+		{
+			if (token->value != NULL)
+				free(token->value);
+			// free(tokens);
+		}
+
 	}
 	return (token);
 }
@@ -234,13 +241,13 @@ int	parse_command(char *command)
 
 	// printf("token: --------- %s\n", tokens->value);
 	// printf("type: ---------- %d\n", tokens->type);
+
 	if (tokens != NULL)
 	{
-		if (tokens->value != NULL)
-			free(tokens->value);
+		// if (tokens->value != NULL)
+		// 	free(tokens->value);
 		free(tokens);
 	}
-
 	// char	**parsedcmd;
 
 	// int i = -1;
