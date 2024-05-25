@@ -6,13 +6,13 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/24 15:12:05 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:56:49 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int change_dir(char *path, t_data *data)
+int change_dir(char *path)
 {
 	if (chdir(path))
 		return 0;
@@ -21,22 +21,22 @@ int change_dir(char *path, t_data *data)
 	return (1);
 }
 
-int	cd(char *path, t_data *data)
+int	cd(char *path)
 {
 	if (path != NULL && path[0] == '-' && path[1] == '\0')
 	{
 		path = getenv("OLDPWD");
 		printf("%s\n", path);
-		change_dir(path, data);
+		change_dir(path);
 		return (1);
 	}
 	else if (path == NULL || (path[0] == '~' && path[1] == '\0'))
 	{
 		path = getenv("HOME");
-		change_dir(path, data);
+		change_dir(path);
 		return (1);
 	}
-	else if (path != NULL && change_dir(path, data))
+	else if (path != NULL && change_dir(path))
 		return (1);
 	else
 	{
@@ -130,7 +130,7 @@ int	echo(char **cmd)
 // 	return (1);
 // }
 
-int	export(t_data *data, char **cmd)
+int	export(char **cmd)
 {
 	// int	i;
 

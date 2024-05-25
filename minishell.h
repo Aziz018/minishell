@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/22 19:05:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/25 13:58:39 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,17 @@ typedef struct s_listcmd
 
 typedef struct s_data
 {
+	int 		i;
+	int 		j;
 	int			ac;
 	char		**av;
 	char		**env;
 	char		*prompt;
+	char 		*new_command;
+	
 }				t_data;
+
+extern t_data *data;
 
 # include <dirent.h> // for directory handling
 # include <errno.h> // for errors specification
@@ -93,11 +99,11 @@ typedef struct s_data
 
 void			print_prompt(void);
 void			free_array(char **array);
-int				cd(char *path, t_data *data);
+int				cd(char *path);
 char			*get_prompt(void);
 void			pwd(void);
 int				env(char **env);
 int				echo(char **cmd);
-int				export(t_data *data, char **cmd);
+int				export(char **cmd);
 
 #endif

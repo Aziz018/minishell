@@ -6,11 +6,13 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/24 16:18:31 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/25 14:01:55 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_data *data = NULL;
 
 void	print_minishell(void)
 {
@@ -39,11 +41,10 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-int	exec_command(char *command, t_data *data)
+int	exec_command(char *command)
 {
 	pid_t	pid;
 	char	*cmd_path;
-	(void) data;
 	char **parsedcmd = ft_split(command, ' ');
 	if (command == NULL || command[0] == 0)
 		return (0);
@@ -86,7 +87,7 @@ void	print_char_array(char **array)
 		printf("%s\n", array[i]);
 }
 
-int	built_in_cmd(char **parsedcmd, t_data *data)
+int	built_in_cmd(char **parsedcmd)
 {
 	if (parsedcmd == NULL || parsedcmd[0] == 0)
 		return (0);
@@ -97,11 +98,11 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 	else if (!ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		pwd();
 	else if (!ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		cd(parsedcmd[1], data);
+		cd(parsedcmd[1]);
 	else if (!ft_strncmp("env", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		env(data->env);
 	else if (!ft_strncmp("export", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		export(data, parsedcmd);
+		export(parsedcmd);
 	else
 		return (0);
 	free_array(parsedcmd);
@@ -110,47 +111,54 @@ int	built_in_cmd(char **parsedcmd, t_data *data)
 
 void parsing(char *command)
 {
-	int i = -1;
-	int j = -1;
-	char parenthes[100];
-
-	printf("%s\n", command);
-	while(command[++i])
+	data->i = -1;
+	data->j = -1;
+	while(command[++data->i])
 	{
-		if (command[i] == '(')
-			parenthes[++j] = '(';
-		else if (command[i] == ')' && parenthes[j] == '(')
+		if (command[data->i] == '(')
+			++data->j;
+		else
 		{
-			if (j == -1)
+			if (data->j == -1)
+			{
+				printf("minishell: syntax error near unexpected token `)'\n");
 				return ;
-			j--;
+			}
+			if (command[data->i] == ')')
+				--data->j;
+		}
+		if (data->j < -1)
+		{
+			printf("minishell: syntax error near unexpected token `)'\n");
+			return ;
 		}
 	}
-	if (j < 0)
+	if (data->j == -1)
 		return ;
 	char *line = readline("> ");
-	parsing(line);
+	data->new_command = ft_strjoin(command, line);
+	free(line);
+	free(command);
+	parsing(data->new_command);
 }
 
-int	parse_command(char *command, t_data *data)
+int	parse_command(char *command)
 {
 	char	**parsedcmd;
-
-	(void) data;
 
 	int i = -1;
 	int j = -1;
 	
-
-	// return (0);
-
 	parsedcmd = ft_split(command, ' ');
 	
 	while(parsedcmd[++i] != NULL)
 	{
-		j = -1;
-		if (parsedcmd[i][++j] == '(')
+		j = 0;
+		if (parsedcmd[i][j] == '(' || parsedcmd[i][j] == ')')
+		{
 			parsing(command);
+			j++;
+		}
 		
 		if (i == 0 || ft_strchr("|&;", parsedcmd[i - 1][0]))
 			printf("command: ------ %s\n", parsedcmd[i]);
@@ -174,7 +182,7 @@ int	parse_command(char *command, t_data *data)
 	free_array(parsedcmd);
 
 	
-			// cd .. && cat file | grep hello
+			// cd ->-> && cat file | grep hello
 
 	// printf("%s\n", command);
 	// print_char_array(parsedcmd);
@@ -192,10 +200,10 @@ int	parse_command(char *command, t_data *data)
 }
 char	*get_prompt(void)
 {
+	
 	char	*prompt1;
 	char	*prompt2;
 	char	*final_prompt;
-
 	prompt1 = "┌──(aziz㉿aelkheta)-["RESET_COLOR;
 	prompt2 = getcwd(NULL, 0);
 	prompt1 = ft_strjoin(prompt1, prompt2);
@@ -205,35 +213,40 @@ char	*get_prompt(void)
 	return (final_prompt);
 }
 
-void	init_minishell(t_data *data, int ac, char **av, char **env)
+void	init_minishell(int ac, char **av, char **env)
 {
 	data->ac = ac;
 	data->env = env;
 	data->av = av;
 	data->prompt = get_prompt();
+	data->new_command = NULL;
 	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char	*command;
-	t_data	data;
 
 	// char	*prompt;
 	// (void)ac;
-	init_minishell(&data, ac, av, env);
+	data = (t_data *)malloc(sizeof(t_data));
+	init_minishell(ac, av, env);
+	
 	// prompt = "┌──(aziz㉿aelkheta)-[~/Desktop/minishell]\n└─$ ";
 	// prompt = get_prompt();
+	
 	print_minishell();
+	
 	signal(SIGQUIT, sig_handler);
 	signal(SIGINT, sig_handler);
-	command = readline(data.prompt);
+	command = readline(data->prompt);
 	while (command != NULL)
 	{
-		parse_command(command, &data);
-		free(command);
-		command = readline(data.prompt);
+		parse_command(command);
+		// free(command);
+		command = readline(data->prompt);
 	}
-	free(data.prompt);
+	free(data->prompt);
+	free(data->new_command);
 	return (0);
 }
