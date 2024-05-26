@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 14:58:04 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:14:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,6 @@ char *get_token_value(t_token *token, char *commads)
 	}
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
-	// while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
-	// 	token->i++;
 	token->index = token->i;
 	return (token_val);
 }
