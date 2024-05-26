@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 14:38:11 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:58:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,25 @@ char *get_token_value(t_token *token, char *commads)
 	while(commads[token->i] && (commads[token->i] == ' ' || commads[token->i] == '\t' || commads[token->i] == '\v'))
 		token->i++;	
 	token->index = token->i;
-	if (token->index == 0)
-		token->prev_type = -1;
-	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
+	if (commads[token->i] == '"')
+	{
 		token->i++;
+		while(commads[token->i] != '"')
+			token->i++;
+		token->i++;
+	}
+	else if (commads[token->i] == '\'')
+	{
+		token->i++;
+		while(commads[token->i] != '\'')
+			token->i++;
+		token->i++;
+	}
+	else
+	{
+		while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
+			token->i++;
+	}
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
 	// while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
