@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 11:48:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:24:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ int	exec_command(char *command)
 
 void	sig_handler(int signal)
 {
-	// char	*prompt;
+	char	*prompt;
 
-	// prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+	prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
 	if (signal == SIGQUIT)
 		return ;
-	// if (signal == SIGINT)
-	// 	printf("\n%s", prompt);
+	if (signal == SIGINT)
+		printf("\n%s", prompt);
 }
 
 void	print_char_array(char **array)
@@ -145,90 +145,115 @@ void parentheses(char *command)
 char *get_token_value(t_token *token, char *commads)
 {
 	char *token_val = NULL;
-
+	if (token->index == 0)
+		token->prev_type = -1;
+			
 	while(commads[token->i] && (commads[token->i] == ' ' || commads[token->i] == '\t' || commads[token->i] == '\v'))
-		token->i++;
+		token->i++;	
 	token->index = token->i;
+	if (token->index == 0)
+		token->prev_type = -1;
 	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
 	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
 		token->i++;
-	// if (commads[token->i] == '\0')
-	// 	token->i = 0;
 	token->index = token->i;
 	return (token_val);
 }
 
-int get_token_type(t_token *token)
+void get_token_type(t_token *token)
 {
+	printf("token->prev_type: %d\n", token->prev_type);
 	if (token->value[0] == '|' && token->value[1] == '\0')
 	{
+		token->type = PIPE;
+		token->prev_type = PIPE;
 		printf("type: ---------- PIPE\n");
-		return (PIPE);
+		// return (PIPE);
 	}
 	else if (token->value[0] == '>' && token->value[1] == '\0')
 	{
+		token->type = RED_OUT;
+		token->prev_type = RED_OUT;
 		printf("type: ---------- RED_OUT\n");
-		return (RED_OUT);
+		// return (RED_OUT);
 	}
 	else if (token->value[0] == '<' && token->value[1] == '\0')
 	{
+		token->type = RED_IN;
+		token->prev_type = RED_IN;
 		printf("type: ---------- RED_IN\n");
-		return (RED_IN);
+		// return (RED_IN);
 	}
 	else if (token->value[0] == '&' && token->value[1] == '\0')
 	{
+		token->type = BACK;
+		token->prev_type = BACK;
 		printf("type: ---------- BACK\n");
-		return (BACK);
+		// return (BACK);
 	}
 	else if (token->value[0] == '&' && token->value[1] == '&' && token->value[2] == '\0')
 	{
+		token->type = AND_OP;
+		token->prev_type = AND_OP;
 		printf("type: ---------- AND_OP\n");
-		return (AND_OP);
+		// return (AND_OP);
 	}
 	else if (token->value[0] == '|' && token->value[1] == '|' && token->value[2] == '\0')
 	{
+		token->type = OR_OP;
+		token->prev_type = OR_OP;
 		printf("type: ---------- OR_OP\n");
-		return (OR_OP);
+		// return (OR_OP);
 	}
-	else
+	else if (token->prev_type == CMD || token->prev_type == ARG)
 	{
-		printf("type: ---------- CMD\n");
-		return (CMD);
+		token->type = ARG;
+		token->prev_type = ARG;
+		printf("type: ---------- ARG\n");
+		// return (ARG);
 	}
-	// else
-	// {
-	// 	printf("type: ---------- ARG\n");
-	// 	return (ARG);
-	// }
+	else if (token->prev_type == RED_OUT || token->prev_type == RED_IN)
+	{
+		token->type = FLE;
+		token->prev_type = FLE;
+		printf("type: ---------- FILE\n");
+		// return (FLE);
+	}
+	else if (token->prev_type == -1 || token->prev_type == PIPE)
+	{
+		token->type = CMD;
+		token->prev_type = CMD;
+		printf("type: ---------- CMD\n");
+		// return (CMD);
+	}
 }
 
 t_token *tokenizer_command(char *commads)
 {
 	t_token *token = (t_token *)malloc(sizeof(t_token));
-	// int i = -1;
 	token->i = 0;
 	token->index = 0;
 	if (commads[token->i] == 0)
 		return NULL;
 	while(commads[token->i])
 	{
-		// if (i == 0)
 		{
 			token->value = get_token_value(token, commads);
 			printf("token: --------- %s\n", token->value);
-			token->type = get_token_type(token);
+			// token->type = get_token_type(token);
+			get_token_type(token);
+			printf("\ntype: ---------- %d\n\n", token->type);
 			printf("\n");
 		}
 		if (token != NULL)
 		{
 			if (token->value != NULL)
 				free(token->value);
-			// free(tokens);
+			// free(token);
 		}
-
 	}
 	return (token);
 }
@@ -236,8 +261,11 @@ t_token *tokenizer_command(char *commads)
 int	parse_command(char *command)
 {
 
-
+	while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
+		command++;
+	// printf("commnd: %s\n", command);
 	t_token *tokens = tokenizer_command(command);
+	
 	// t_parse *parser = parser_command();
 	// printf("token: --------- %s\n", tokens->value);
 	// printf("type: ---------- %d\n", tokens->type);
@@ -248,6 +276,11 @@ int	parse_command(char *command)
 		// 	free(tokens->value);
 		free(tokens);
 	}
+
+
+	
+	// this for parsing 
+
 	// char	**parsedcmd;
 
 	// int i = -1;
@@ -291,12 +324,15 @@ int	parse_command(char *command)
 	// printf("%s\n", command);
 	// print_char_array(parsedcmd);
 
-	// parsedcmd = ft_split(command, ' ');
 
-	// if (built_in_cmd(parsedcmd, data))
+	// for execute commands
+
+	// char **parsedcmd = ft_split(command, ' ');
+
+	// if (built_in_cmd(parsedcmd))
 	// 	return (0);
 	// free_array(parsedcmd);
-	// exec_command(command, data);
+	// exec_command(command);
 	return (0);
 }
 

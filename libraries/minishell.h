@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/25 13:58:39 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 13:51:13 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define ARG 		7
 # define OR_OP 		8
 # define AND_OP 	9
+# define FLE		10
 
 # define MAX_ARGS 	15
 
@@ -79,10 +80,11 @@ typedef struct s_data
 
 typedef struct s_token 
 {
+	int 		i;
+	int			prev_type;
 	int			index;		// to point to the location of the next token
 	int 		type;		// for the type of the token PIPE REDER ...
 	char 		*value;		// token value if it's a pipe the value is "|"
-	int 		i;
 } t_token;
 
 extern t_data *data;					// for use this global var from all files
