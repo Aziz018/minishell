@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/25 14:01:55 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 11:48:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../libraries/minishell.h"
 
 t_data *data = NULL;
 
@@ -238,7 +238,7 @@ int	parse_command(char *command)
 
 
 	t_token *tokens = tokenizer_command(command);
-
+	// t_parse *parser = parser_command();
 	// printf("token: --------- %s\n", tokens->value);
 	// printf("type: ---------- %d\n", tokens->type);
 

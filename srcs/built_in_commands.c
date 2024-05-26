@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/25 13:56:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 11:48:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../libraries/minishell.h"
 
 int change_dir(char *path)
 {

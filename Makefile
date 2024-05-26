@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/20 11:42:17 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/05/26 11:58:33 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,17 +14,21 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 RLFLAG = -lreadline
-SRC = 	minishell.c \
-		built_in_commands.c \
-		cleanup.c \
+SRCDIR = ./srcs
+OBJDIR = ./objs
 
-		
-OBJ = $(SRC:.c=.o)
-LIBFT = ./libft/libft.a
+SRC = 	$(SRCDIR)/minishell.c \
+		$(SRCDIR)/built_in_commands.c \
+		$(SRCDIR)/cleanup.c
 
-all: $(NAME) clean
+OBJ = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC)) # for pathern substitution // $(patsubst pattern,replacement,text)
 
-%.o: %.c
+LIBFT = ./libraries/libft/libft.a
+
+all: $(NAME)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(OBJDIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
@@ -34,7 +38,7 @@ $(NAME): $(OBJ)
 
 clean:
 	@echo "Removing object files..."
-	@rm -f $(OBJ)
+	@rm -rf $(OBJDIR)
 	@echo "Removing object files done"
 
 fclean: clean

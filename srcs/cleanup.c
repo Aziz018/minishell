@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 15:27:48 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/18 15:28:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/26 11:48:52 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../libraries/minishell.h"
 
 void	free_array(char **array)
 {
