@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 15:14:04 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:10:59 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	exec_command(char *command)
 		if (pid == -1)
 			return (0);
 		else if (pid == 0)
-			execve(cmd_path, &parsedcmd[1], data->env);
+			execve(cmd_path, &parsedcmd[1], NULL);
 		else
 			wait(NULL);
 	}
@@ -263,21 +263,21 @@ t_token *tokenizer_command(char *commads)
 int	parse_command(char *command)
 {
 
-	while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
-		command++;
-	// printf("commnd: %s\n", command);
-	t_token *tokens = tokenizer_command(command);
+	// while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
+	// 	command++;
+	// // printf("commnd: %s\n", command);
+	// t_token *tokens = tokenizer_command(command);
 	
-	// t_parse *parser = parser_command();
-	// printf("token: --------- %s\n", tokens->value);
-	// printf("type: ---------- %d\n", tokens->type);
+	// // t_parse *parser = parser_command();
+	// // printf("token: --------- %s\n", tokens->value);
+	// // printf("type: ---------- %d\n", tokens->type);
 
-	if (tokens != NULL)
-	{
-		// if (tokens->value != NULL)
-		// 	free(tokens->value);
-		free(tokens);
-	}
+	// if (tokens != NULL)
+	// {
+	// 	// if (tokens->value != NULL)
+	// 	// 	free(tokens->value);
+	// 	free(tokens);
+	// }
 
 
 	
@@ -329,12 +329,12 @@ int	parse_command(char *command)
 
 	// for execute commands
 
-	// char **parsedcmd = ft_split(command, ' ');
+	char **parsedcmd = ft_split(command, ' ');
 
-	// if (built_in_cmd(parsedcmd))
-	// 	return (0);
-	// free_array(parsedcmd);
-	// exec_command(command);
+	if (built_in_cmd(parsedcmd))
+		return (0);
+	free_array(parsedcmd);
+	exec_command(command);
 	return (0);
 }
 
@@ -356,10 +356,49 @@ char	*get_prompt(void)
 	return (final_prompt);
 }
 
+void	add_back(t_env **lst, t_env *new)
+{
+	t_env	*temp;
+
+	if (!lst || !new)
+		return ;
+	if (!*lst)
+		*lst = new;
+	else
+	{
+		temp = *lst;
+		while (temp->next)
+			temp = temp->next;
+		temp->next = new;
+	}
+}
+
+t_env	*lstnew(char *content)
+{
+	t_env	*new_node;
+
+	new_node = (t_env *)malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	new_node->value = content;
+	new_node->next = NULL;
+	return (new_node);
+}
+
+
+t_env *creat_env(char **env)
+{
+	t_env *head = NULL;
+	int i = -1;
+	while(env[++i] != NULL)
+		add_back(&head, lstnew(env[i]));
+	return (head);
+}
+
 void	init_minishell(int ac, char **av, char **env)
 {
 	data->ac = ac;
-	data->env = env;
+	data->env = creat_env(env);
 	data->av = av;
 	data->prompt = get_prompt();
 	data->new_command = NULL;
@@ -370,7 +409,7 @@ void	init_minishell(int ac, char **av, char **env)
 int	main(int ac, char **av, char **env)
 {
 	char	*command;
-
+	
 	data = (t_data *)malloc(sizeof(t_data));
 	init_minishell(ac, av, env);
 	
@@ -381,6 +420,7 @@ int	main(int ac, char **av, char **env)
 	
 	signal(SIGQUIT, sig_handler);
 	// signal(SIGINT, sig_handler);
+	
 	command = readline(data->prompt);
 	while (command != NULL)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_in_commands.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 11:48:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:12:18 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,13 @@ void	pwd(void)
 	free(cwd);
 }
 
-int	env(char **env)
+int	env(t_env *env)
 {
-	int	i;
-
-	i = -1;
-	while (env[++i] != NULL)
-		printf("%s\n", env[i]);
+	while (env != NULL)
+	{
+		printf("%s\n", env->value);
+		env = env->next;
+	}
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/26 13:51:13 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/27 09:10:16 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@
 # define FLE		10
 
 # define MAX_ARGS 	15
+
+
+typedef struct s_env
+{
+	char 			*value;
+	struct s_env 	*next;
+} t_env;
 
 typedef struct s_command
 {
@@ -72,7 +79,7 @@ typedef struct s_data
 	int 		j;
 	int			ac;
 	char		**av;
-	char		**env;
+	t_env		*env;
 	char		*prompt;
 	char 		*new_command;
 	
@@ -112,7 +119,7 @@ void			free_array(char **array);
 int				cd(char *path);
 char			*get_prompt(void);
 void			pwd(void);
-int				env(char **env);
+int				env(t_env *env);
 int				echo(char **cmd);
 int				export(char **cmd);
 
