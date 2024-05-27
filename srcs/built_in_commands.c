@@ -6,7 +6,7 @@
 /*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:12:18 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/27 09:49:08 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,18 @@ int	echo(char **cmd)
 // 	return (1);
 // }
 
-int	export(char **cmd)
+int	export(char *cmd)
 {
 	// int	i;
 
 	// i = 0;
-	if (cmd[1] == NULL)
-	{
-		env(data->env);
-		return (0);
-	}
+
+	printf("%s\n", cmd);
+	// if (cmd[1] == NULL)
+	// {
+	// 	env(data->env);
+	// 	return (0);
+	// }
 	// while (env[++i] != NULL)
 	// {
 		// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)

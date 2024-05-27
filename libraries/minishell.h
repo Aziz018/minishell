@@ -6,7 +6,7 @@
 /*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:10:16 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/27 09:49:20 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,6 @@ char			*get_prompt(void);
 void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
-int				export(char **cmd);
+int				export(char *cmd);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:10:59 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/27 09:49:38 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	built_in_cmd(char **parsedcmd)
 	else if (!ft_strncmp("env", parsedcmd[0], ft_strlen(parsedcmd[0])))
 		env(data->env);
 	else if (!ft_strncmp("export", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		export(parsedcmd);
+		export(parsedcmd[1]);
 	else
 		return (0);
 	free_array(parsedcmd);
