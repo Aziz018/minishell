@@ -6,7 +6,7 @@
 /*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:49:20 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/27 10:44:37 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define OR_OP 		8
 # define AND_OP 	9
 # define FLE		10
+# define APP		11
 
 # define MAX_ARGS 	15
 

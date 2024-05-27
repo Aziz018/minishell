@@ -6,7 +6,7 @@
 /*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:49:38 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/27 10:47:06 by yumi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,12 @@ void get_token_type(t_token *token)
 		token->prev_type = RED_OUT;
 		printf("type: ---------- RED_OUT\n");
 	}
+	else if (token->value[0] == '>' && token->value[1] == '>' && token->value[2] == '\0')
+	{
+		token->type = APP;
+		token->prev_type = APP;
+		printf("type: ---------- APP\n");
+	}
 	else if (token->value[0] == '<' && token->value[1] == '\0')
 	{
 		token->type = RED_IN;
@@ -219,7 +225,7 @@ void get_token_type(t_token *token)
 		token->prev_type = ARG;
 		printf("type: ---------- ARG\n");
 	}
-	else if (token->prev_type == RED_OUT || token->prev_type == RED_IN)
+	else if (token->prev_type == RED_OUT || token->prev_type == RED_IN || token->prev_type == APP)
 	{
 		token->type = FLE;
 		token->prev_type = FLE;
@@ -263,21 +269,21 @@ t_token *tokenizer_command(char *commads)
 int	parse_command(char *command)
 {
 
-	// while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
-	// 	command++;
-	// // printf("commnd: %s\n", command);
-	// t_token *tokens = tokenizer_command(command);
+	while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
+		command++;
+	// printf("commnd: %s\n", command);
+	t_token *tokens = tokenizer_command(command);
 	
-	// // t_parse *parser = parser_command();
-	// // printf("token: --------- %s\n", tokens->value);
-	// // printf("type: ---------- %d\n", tokens->type);
+	// t_parse *parser = parser_command();
+	// printf("token: --------- %s\n", tokens->value);
+	// printf("type: ---------- %d\n", tokens->type);
 
-	// if (tokens != NULL)
-	// {
-	// 	// if (tokens->value != NULL)
-	// 	// 	free(tokens->value);
-	// 	free(tokens);
-	// }
+	if (tokens != NULL)
+	{
+		// if (tokens->value != NULL)
+		// 	free(tokens->value);
+		free(tokens);
+	}
 
 
 	
@@ -329,12 +335,12 @@ int	parse_command(char *command)
 
 	// for execute commands
 
-	char **parsedcmd = ft_split(command, ' ');
+	// char **parsedcmd = ft_split(command, ' ');
 
-	if (built_in_cmd(parsedcmd))
-		return (0);
-	free_array(parsedcmd);
-	exec_command(command);
+	// if (built_in_cmd(parsedcmd))
+	// 	return (0);
+	// free_array(parsedcmd);
+	// exec_command(command);
 	return (0);
 }
 
