@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 10:40:36 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/28 14:26:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,11 +97,17 @@ void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
 int				export(char *cmd);
+int				built_in_cmd(char **parsedcmd);
 
 // utiles for linked list: 
 
 void			add_back_list(t_command **lst, t_command *new);
-void			clear_list(t_command **lst, void (*del)(int));
-t_command	*new_node(int type, char *value);
+t_command		*new_node(int type, char *value);
+
+
+// parsing and toknizing functions
+
+char *get_token_value(t_token *token, char *commads);
+int get_token_type(t_token *token);
 
 #endif

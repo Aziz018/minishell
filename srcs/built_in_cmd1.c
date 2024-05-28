@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_in_commands.c                                :+:      :+:    :+:   */
+/*   built_in_cmd1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 09:49:08 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/28 14:25:59 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,6 @@ int	cd(char *path)
 	return (0);
 }
 
-void	pwd(void)
-{
-	char	*cwd;
-
-	cwd = getcwd(NULL, 0);
-	printf("%s\n", cwd);
-	free(cwd);
-}
-
 int	env(t_env *env)
 {
 	while (env != NULL)
@@ -67,6 +58,16 @@ int	env(t_env *env)
 		env = env->next;
 	}
 	return (0);
+}
+
+void echo_it(char **cmd, int i)
+{
+	while (cmd[i] != NULL)
+	{
+		printf("%s", cmd[i]);
+		printf(" ");
+		i++;
+	}
 }
 
 int	echo(char **cmd)
@@ -92,62 +93,29 @@ int	echo(char **cmd)
 		printf("%s\n", path);
 		return (0);
 	}
-	while (cmd[i] != NULL)
-	{
-		printf("%s", cmd[i]);
-		printf(" ");
-		i++;
-	}
+	echo_it(cmd, i);
 	if (!flag)
 		printf("\n");
 	return (0);
 }
-
-// void modify_env_var(char *var, )
-// {
-	
-// }
-
-
-// int join_str(char **env, char **cmd)
-// {
-// 	int len;
-// 	char **new_env;
-	
-// 	len = -1;
-// 	while(env[++len] != NULL);
-// 	new_env = malloc((len + 1) * sizeof(char *));
-// 	if (!new_env)
-// 		return (0);
-// 	len = -1;
-// 	while(env[++len])
-// 	{
-// 		// new_env[len] = malloc((env[len] + 1) * sizeof(char));
-// 		new_env[len] = ft_strdup(env[len]);
-// 	}
-// 	new_env[len] = ft_strdup(cmd[1]);
-// 	new_env[++len] = NULL;
-// 	return (1);
-// }
-
-int	export(char *cmd)
+int	built_in_cmd(char **parsedcmd)
 {
-	// int	i;
-
-	// i = 0;
-
-	printf("%s\n", cmd);
-	// if (cmd[1] == NULL)
-	// {
-	// 	env(data->env);
-	// 	return (0);
-	// }
-	// while (env[++i] != NULL)
-	// {
-		// if (ft_strncmp(exprt_var, env[i], ft_strlen(env[i])) == 0)
-		// 	modify_env_var(env);
-	// }
-	// join_str(data->env, cmd);
-	// printf("%s\n", env[i]);
-	return (0);
+	if (parsedcmd == NULL || parsedcmd[0] == 0)
+		return (0);
+	else if (!ft_strncmp("exit", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		exit(0);
+	else if (!ft_strncmp("echo", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		echo(parsedcmd);
+	else if (!ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		pwd();
+	else if (!ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		cd(parsedcmd[1]);
+	else if (!ft_strncmp("env", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		env(data->env);
+	else if (!ft_strncmp("export", parsedcmd[0], ft_strlen(parsedcmd[0])))
+		export(parsedcmd[1]);
+	else
+		return (0);
+	free_array(parsedcmd);
+	return (1);
 }
