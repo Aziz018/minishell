@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 09:26:32 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/28 10:40:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,6 @@ int				export(char *cmd);
 
 void			add_back_list(t_command **lst, t_command *new);
 void			clear_list(t_command **lst, void (*del)(int));
-t_command		*new_node(int type);
+t_command	*new_node(int type, char *value);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/26 14:19:00 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/05/28 10:41:18 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ OBJDIR = ./objs
 
 SRC = 	$(SRCDIR)/minishell.c \
 		$(SRCDIR)/built_in_commands.c \
-		$(SRCDIR)/cleanup.c
+		$(SRCDIR)/cleanup.c \
+		$(SRCDIR)/mini_utiles.c
 
 OBJ = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC)) # for pathern substitution // $(patsubst pattern,replacement,text)
 

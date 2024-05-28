@@ -6,11 +6,11 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 09:09:06 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 09:26:09 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/28 10:42:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libraries/minishell.h"
+#include "../libraries/minishell.h"
 
 void	add_back_list(t_command **lst, t_command *new)
 {
@@ -29,23 +29,23 @@ void	add_back_list(t_command **lst, t_command *new)
 	}
 }
 
-void	clear_list(t_command **lst, void (*del)(int))
-{
-	t_command	*node;
-	t_command	*ptr;
+// void	clear_list(t_command **lst, void (*del)(int))
+// {
+// 	t_command	*node;
+// 	t_command	*ptr;
 
-	if (!lst || !del)
-		return ;
-	node = *lst;
-	while (node)
-	{
-		ptr = node->next;
-		del(node->content);
-		free(node);
-		node = ptr;
-	}
-	*lst = NULL;
-}
+// 	if (!lst || !del)
+// 		return ;
+// 	node = *lst;
+// 	while (node)
+// 	{
+// 		ptr = node->next;
+// 		del(node->content);
+// 		free(node);
+// 		node = ptr;
+// 	}
+// 	*lst = NULL;
+// }
 
 t_command	*new_node(int type, char *value)
 {
