@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 11:00:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/28 13:50:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ void	sig_handler(int signal)
 {
 	char	*prompt;
 
-	prompt = "\n┌──(aziz㉿hostname)-[~/Desktop/minishell]\n└─$ ";
+	prompt = get_prompt();
 	if (signal == SIGQUIT)
 		return ;
 	if (signal == SIGINT)
 		printf("\n%s", prompt);
+	free(prompt);
 }
 
 void	print_char_array(char **array)
@@ -446,15 +447,11 @@ int	main(int ac, char **av, char **env)
 	char	*command;
 	
 	data = (t_data *)malloc(sizeof(t_data));
-	init_minishell(ac, av, env);
-	
-	// prompt = "┌──(aziz㉿aelkheta)-[~/Desktop/minishell]\n└─$ ";
-	// prompt = get_prompt();
-	
+	init_minishell(ac, av, env);	
 	print_minishell();
 	
 	signal(SIGQUIT, sig_handler);
-	// signal(SIGINT, sig_handler);
+	signal(SIGINT, sig_handler);
 	
 	command = readline(data->prompt);
 	while (command != NULL)
