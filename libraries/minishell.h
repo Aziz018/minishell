@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yumi <yumi@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/27 10:44:37 by yumi             ###   ########.fr       */
+/*   Updated: 2024/05/28 09:26:32 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,41 +38,12 @@ typedef struct s_env
 
 typedef struct s_command
 {
-	int			type;
+	int					type;
+	char				*file;
+	char				*value;
+	char 				**args;
+	struct s_command	*next;
 }				t_command;
-
-typedef struct s_exec
-{
-	int			type;
-	char		*argv[MAX_ARGS];
-	char		*eargv[MAX_ARGS];
-}				t_exec;
-
-typedef struct s_redirec
-{
-	int			type;
-	t_command	*cmd;
-	char		*file;
-	char		*efile;
-	int			mode;
-	int			fd;
-}				t_redirec;
-
-typedef struct s_pipe
-{
-	int			type;
-	t_command	*left;
-	t_command	*right;
-
-}				t_pipe;
-
-typedef struct s_listcmd
-{
-	int			type;
-	t_command	*left;
-	t_command	*right;
-
-}				t_listcmd;
 
 typedef struct s_data
 {
@@ -117,11 +88,20 @@ extern t_data *data;					// for use this global var from all files
 
 void			print_prompt(void);
 void			free_array(char **array);
+
+// buit-in commands:
+
 int				cd(char *path);
 char			*get_prompt(void);
 void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
 int				export(char *cmd);
+
+// utiles for linked list: 
+
+void			add_back_list(t_command **lst, t_command *new);
+void			clear_list(t_command **lst, void (*del)(int));
+t_command		*new_node(int type);
 
 #endif
