@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/29 10:56:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:50:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ int	exec_command(char *command)
 	if (command == NULL || command[0] == 0)
 		return (0);
 	cmd_path = ft_strjoin("/bin/", parsedcmd[0]);
-	printf("command: %s <||> args: %s\n", parsedcmd[0], parsedcmd[1]);
 	if (access(cmd_path, X_OK) == 0)
 	{
 		pid = fork();
@@ -135,6 +134,11 @@ t_command *tokenizer_command(char *commads)
 			// printf("\ncommads[%d]: %d\n", token.i, commads[token.i]);
 			
 			token.value = get_token_value(&token, commads);
+			if(token.value == NULL)
+			{
+				printf("minishell: syntax error near unexpected token `%s`\n", commads);
+				return NULL;
+			}
 			token.type = get_token_type(&token);
 			
 			add_back_list(&head, new_node(token.type, token.value));
@@ -321,7 +325,7 @@ int	main(int ac, char **av, char **env)
 	print_minishell();
 	
 	signal(SIGQUIT, sig_handler);
-	signal(SIGINT, sig_handler);
+	// signal(SIGINT, sig_handler);
 	
 	command = readline(data->prompt);
 	while (command != NULL)
