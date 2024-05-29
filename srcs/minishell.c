@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/29 11:58:10 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/29 13:39:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,6 @@ t_command *tokenizer_command(char *commads)
 			// printf("\ncommads[%d]: %d\n", token.i, commads[token.i]);
 			
 			token.value = get_token_value(&token, commads);
-			if(token.value == NULL)
-			{
-				printf("minishell: syntax error near unexpected token `%s`\n", commads);
-				return NULL;
-			}
 			token.type = get_token_type(&token);
 			
 			add_back_list(&head, new_node(token.type, token.value));
@@ -162,12 +157,40 @@ t_command *tokenizer_command(char *commads)
 	return (head);
 }
 
+char *skip_white_spaces(char *command)
+{
+	while(*command && (*command == ' ' || *command == '\t' || *command == '\r' || *command == '\v'))
+		command++;
+	return (command);
+}
+
+int check_syntax(char *command)
+{
+	int i = -1;
+	// int stack[100];
+
+	command = skip_white_spaces(command);
+	printf("%s\n", command);
+	while(command[++i])
+	{
+		if ((i == 0 && command[i] == ';') || (command[i] == ';' && command[i + 1] == ';'))
+		{
+			printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
+			break;
+		}
+			
+	}
+	
+	return (0);
+}
+
 int	parse_command(char *command)
 {
-
-	while(*command && (*command == ' ' || *command == '\t' || *command == '\v'))
-		command++;
-	// printf("commnd: %s\n", command);
+	if (!check_syntax(command))
+	{
+		printf("%s\n", command);
+		return 0;
+	}
 	t_command *tokens = tokenizer_command(command);
 	while(tokens != NULL)
 	{

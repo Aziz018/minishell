@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/29 11:57:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/29 11:59:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ char *get_token_value(t_token *token, char *commads)
 		token->i++;
 		while(commads[token->i] && commads[token->i] != '\'')
 			token->i++;
-		
 		// token->i++;
 	}
 	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
