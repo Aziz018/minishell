@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 14:25:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/29 10:56:49 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,8 +141,8 @@ t_command *tokenizer_command(char *commads)
 			
 			while(commads[token.i] == ' ')
 				token.i++;
+			
 			// free(token.value);
-		
 			
 			// token.type = get_token_type(&token);
 			// new_node(token->type, token->value);
