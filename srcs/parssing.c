@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/31 06:55:03 by aziz             ###   ########.fr       */
+/*   Updated: 2024/05/31 14:30:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,15 @@ int check_syntax(char *command)
 		command = skip_white_spaces(command);
 		if (!*command)
 			break;
-		if ((*command == ';'))
+		if (*command == ';')
 			printf("minishell: syntax error near unexpected token `%c'\n", *command);
 		command = skip_command(command);
-		printf("%s\n", command);
 		if (!*command)
 			break;
-		if ((*command == ';'))
+		
+		printf("%s\n", command);
+		
+		if (*command == ';')
 		{
 			command = skip_white_spaces(command);
 			if (!*command)
