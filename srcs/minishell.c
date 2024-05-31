@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/29 13:39:04 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/31 06:44:23 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,31 +164,53 @@ char *skip_white_spaces(char *command)
 	return (command);
 }
 
+char *skip_command(char *command)
+{
+	while(*command && ft_isalnum(*command))
+		command++;
+	command = skip_white_spaces(command);
+	if (*command == ';')
+		command++;
+	return (command);
+}
+
 int check_syntax(char *command)
 {
-	int i = -1;
+	// int i = -1;
 	// int stack[100];
 
-	command = skip_white_spaces(command);
-	printf("%s\n", command);
-	while(command[++i])
+	while(*command)
 	{
-		if ((i == 0 && command[i] == ';') || (command[i] == ';' && command[i + 1] == ';'))
-		{
-			printf("minishell: syntax error near unexpected token `%c'\n", command[i]);
+		command = skip_white_spaces(command);
+		if (!*command)
 			break;
-		}
+		if ((*command == ';'))
+			printf("minishell: syntax error near unexpected token `%c'\n", *command);
+		command = skip_command(command);
+		printf("%s\n", command);
+		if (!*command)
+			break;
+		if ((*command == ';'))
+		{
+			command = skip_white_spaces(command);
+			if (!*command)
+				break;
+			else if (*command == ';')
+				printf("minishell: syntax error near unexpected token `%c'\n", *command);
 			
+		}
+		command++;
+		// command = skip_white_spaces(command[++i]);	
 	}
-	
 	return (0);
+	// return (1);
 }
 
 int	parse_command(char *command)
 {
 	if (!check_syntax(command))
 	{
-		printf("%s\n", command);
+		// printf("%s\n", command);
 		return 0;
 	}
 	t_command *tokens = tokenizer_command(command);
