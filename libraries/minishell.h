@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 14:26:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/31 06:52:48 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@
 # define AND_OP 	9
 # define FLE		10
 # define APP		11
-
-# define MAX_ARGS 	15
-
 
 typedef struct s_env
 {
@@ -99,6 +96,13 @@ int				echo(char **cmd);
 int				export(char *cmd);
 int				built_in_cmd(char **parsedcmd);
 
+
+// general purpose utiles
+
+char 			*skip_white_spaces(char *command);
+char 			*skip_command(char *command);
+
+
 // utiles for linked list: 
 
 void			add_back_list(t_command **lst, t_command *new);
@@ -107,7 +111,13 @@ t_command		*new_node(int type, char *value);
 
 // parsing and toknizing functions
 
-char *get_token_value(t_token *token, char *commads);
-int get_token_type(t_token *token);
+int				parse_command(char *command);
+t_command 		*tokenizer_command(char *commads);
+char 			*get_token_value(t_token *token, char *commads);
+int 			get_token_type(t_token *token);
+void			parentheses(char *command);
+int 			check_syntax(char *command);
+
+
 
 #endif

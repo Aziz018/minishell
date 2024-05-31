@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 09:18:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 09:18:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/05/31 06:50:55 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 #define TYPES_H
+
+# define MAX_ARGS 	15
 
 typedef struct s_exec
 {

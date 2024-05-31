@@ -6,7 +6,7 @@
 #    By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/31 06:28:03 by aziz             ###   ########.fr        #
+#    Updated: 2024/05/31 06:53:30 by aziz             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC = 	$(SRCDIR)/minishell.c \
 		$(SRCDIR)/cleanup.c \
 		$(SRCDIR)/mini_utiles.c \
 		$(SRCDIR)/tokenizer.c \
+		$(SRCDIR)/parssing.c \
 
 OBJ = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC)) # for pathern substitution // $(patsubst pattern,replacement,text)
 
