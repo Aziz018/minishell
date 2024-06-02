@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+         #
+#    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/05/31 06:53:30 by aziz             ###   ########.fr        #
+#    Updated: 2024/06/02 16:29:00 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ $(NAME): $(OBJ)
 
 clean:
 	@echo "Removing object files..."
-	@rm -rf $(OBJDIR)
+	@rm -rf $(OBJDIR)/*.o
 	@echo "Removing object files done"
 
 fclean: clean
