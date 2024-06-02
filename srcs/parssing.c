@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/02 16:36:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/02 17:22:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,38 +139,107 @@ int	parse_command(char *command)
 	// }
 	int i = 0;
 	t_command *tokens = tokenizer_command(command);
+	// t_command *ptr = tokens;
+	
 	printf("\n\n");
+	
+	// while(ptr != NULL)
+	// {
+	// 	t_command *tmp = ptr;
+	// 	ptr = ptr->next;
+	// 	if (!ptr)
+	// 		break;
+	// 	if (tmp->type == CMD)
+	// 	{
+	// 		int i = 0;
+	// 		tmp->args = malloc(100 * sizeof(char *));
+	// 		{		
+	// 			while(ptr != NULL && ptr->type == ARG)
+	// 			{
+	// 				ptr->args[i++] = ptr->value;
+	// 				ptr = ptr->next;
+	// 			}
+	// 			ptr->args[i] = NULL;
+	// 		}	
+	// 	}
+	// 	else if (tmp->type == RED_OUT || tmp->type == RED_IN)
+	// 	{
+	// 		tmp->args = malloc(sizeof(char *));
+	// 		tmp->args[0] = ptr->value;
+	// 		tmp->args[1] = NULL;
+	// 	}
+	// }
+
+
 	while(tokens != NULL)
 	{
 		printf("=> node: %d\n+---------------------------+\n| token: ---------- %s\n", ++i, tokens->value);
-		if (tokens->type == 0)
+		if (tokens->type == CMD)
 			printf("| type: ----------- CMD     |\n+---------------------------+\n\n");
-		if (tokens->type == 2)
+		if (tokens->type == RED_OUT)
 			printf("| type: ----------- RED_OUT |\n+---------------------------+\n\n");
-		if (tokens->type == 3)
+		if (tokens->type == RED_IN)
 			printf("| type: ----------- RED_IN  |\n+---------------------------+\n\n");
-		if (tokens->type == 4)
+		if (tokens->type == PIPE)
 			printf("| type: ----------- PIPE    |\n+---------------------------+\n\n");
-		if (tokens->type == 5)
+		if (tokens->type == LIST)
 			printf("| type: ----------- LIST    |\n+---------------------------+\n\n");
-		if (tokens->type == 6)
+		if (tokens->type == BACK)
 			printf("| type: ----------- BACK    |\n+---------------------------+\n\n");
-		if (tokens->type == 7)
+		if (tokens->type == ARG)
 			printf("| type: ----------- ARG     |\n+---------------------------+\n\n");
-		if (tokens->type == 8)
+		if (tokens->type == OR_OP)
 			printf("| type: ----------- OR_OP   |\n+---------------------------+\n\n");
-		if (tokens->type == 9)
+		if (tokens->type == AND_OP)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
-		if (tokens->type == 10)
+		if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
-		if (tokens->type == 11)
+		if (tokens->type == APP)
 			printf("| type: ----------- APP     |\n+---------------------------+\n\n");
 		t_command *tmp = tokens->next;
 		free(tokens->value);
-		free(tokens);
+		free(tokens); 
 		tokens = tmp;	
 		// tokens = tokens->next;
 	}
+	
+	// for debuging:
+	
+	// while(tokens != NULL)
+	// {
+	// 	printf("=> node: %d\n+---------------------------+\n| token: ---------- %s\n", ++i, tokens->value);
+	// 	if (tokens->type == CMD)
+	// 		printf("| type: ----------- CMD     |\n+---------------------------+\n\n");
+	// 	if (tokens->type == RED_OUT)
+	// 		printf("| type: ----------- RED_OUT |\n+---------------------------+\n\n");
+	// 	if (tokens->type == RED_IN)
+	// 		printf("| type: ----------- RED_IN  |\n+---------------------------+\n\n");
+	// 	if (tokens->type == PIPE)
+	// 		printf("| type: ----------- PIPE    |\n+---------------------------+\n\n");
+	// 	if (tokens->type == LIST)
+	// 		printf("| type: ----------- LIST    |\n+---------------------------+\n\n");
+	// 	if (tokens->type == BACK)
+	// 		printf("| type: ----------- BACK    |\n+---------------------------+\n\n");
+	// 	if (tokens->type == ARG)
+	// 		printf("| type: ----------- ARG     |\n+---------------------------+\n\n");
+	// 	if (tokens->type == OR_OP)
+	// 		printf("| type: ----------- OR_OP   |\n+---------------------------+\n\n");
+	// 	if (tokens->type == AND_OP)
+	// 		printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
+	// 	if (tokens->type == FLE)
+	// 		printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
+	// 	if (tokens->type == APP)
+	// 		printf("| type: ----------- APP     |\n+---------------------------+\n\n");
+	// 	t_command *tmp = tokens->next;
+	// 	free(tokens->value);
+	// 	free(tokens); 
+	// 	tokens = tmp;	
+	// 	// tokens = tokens->next;
+	// }
+
+
+
+	
 	// t_parse *parser = parser_command();
 	// printf("token: --------- %s\n", tokens->value);
 	// printf("type: ---------- %d\n", tokens->type);
@@ -181,7 +250,6 @@ int	parse_command(char *command)
 		// 	free(tokens->value);
 		free(tokens);
 	}
-
 
 	
 	// this for parsing 
