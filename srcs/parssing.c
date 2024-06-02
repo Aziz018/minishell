@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/31 14:30:36 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/02 12:05:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,11 @@ int check_syntax(char *command)
 
 int	parse_command(char *command)
 {
-	if (!check_syntax(command))
-	{
-		// printf("%s\n", command);
-		return 0;
-	}
+	// if (!check_syntax(command))
+	// {
+	// 	// printf("%s\n", command);
+	// 	return 0;
+	// }
 	t_command *tokens = tokenizer_command(command);
 	while(tokens != NULL)
 	{

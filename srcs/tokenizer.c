@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/29 11:59:01 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/02 12:52:11 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,14 @@ int get_token_type(t_token *token)
 		// printf("type: ---------- ARG\n");
 		return(ARG);
 	}
-	else if (token->prev_type == RED_OUT || token->prev_type == RED_IN || token->prev_type == APP)
+	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP)
 	{
 		token->type = FLE;
 		token->prev_type = FLE;
 		// printf("type: ---------- FILE\n");
 		return(FLE);
 	}
-	else if (token->prev_type == -1 || token->prev_type == PIPE)
+	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN)
 	{
 		token->type = CMD;
 		token->prev_type = CMD;
