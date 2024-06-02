@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/02 17:22:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/02 13:50:59 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ t_command *tokenizer_command(char *commads)
 	t_command *head = NULL;
 	token.i = 0;
 	token.index = 0;
-	if (commads[token.i] == 0)
+	commads = skip_white_spaces(commads);
+	if (commads[token.i] == '\0')
 		return NULL;
 	while(commads[token.i])
 	{
@@ -139,36 +140,49 @@ int	parse_command(char *command)
 	// }
 	int i = 0;
 	t_command *tokens = tokenizer_command(command);
-	// t_command *ptr = tokens;
-	
+	if (!tokens)
+		return 0;
+	t_command *ptr = tokens;
+	t_command *temp = ptr;
+	temp->args = NULL;
 	printf("\n\n");
 	
-	// while(ptr != NULL)
-	// {
-	// 	t_command *tmp = ptr;
-	// 	ptr = ptr->next;
-	// 	if (!ptr)
-	// 		break;
-	// 	if (tmp->type == CMD)
-	// 	{
-	// 		int i = 0;
-	// 		tmp->args = malloc(100 * sizeof(char *));
-	// 		{		
-	// 			while(ptr != NULL && ptr->type == ARG)
-	// 			{
-	// 				ptr->args[i++] = ptr->value;
-	// 				ptr = ptr->next;
-	// 			}
-	// 			ptr->args[i] = NULL;
-	// 		}	
-	// 	}
-	// 	else if (tmp->type == RED_OUT || tmp->type == RED_IN)
-	// 	{
-	// 		tmp->args = malloc(sizeof(char *));
-	// 		tmp->args[0] = ptr->value;
-	// 		tmp->args[1] = NULL;
-	// 	}
-	// }
+	while(ptr != NULL)
+	{
+		temp = ptr;
+		ptr = ptr->next;
+		if (!ptr)
+			break;
+		if (temp->type == CMD)
+		{
+			if (ptr->type == ARG)
+			{
+				int i = 0;
+				temp->args = malloc(100 * sizeof(char *));
+				{		
+					while(ptr != NULL && ptr->type == ARG)
+					{
+						temp->args[i++] = ptr->value;
+						ptr = ptr->next;
+					}
+					temp->args[i] = NULL;
+				}
+			}
+			else
+				temp->args = NULL;
+			temp->next = ptr;
+		}
+		else if (temp->type == RED_OUT || temp->type == RED_IN)
+		{
+			temp->args = malloc(sizeof(char *));
+			temp->args[0] = ptr->value;
+			temp->args[1] = NULL;
+			temp->next = ptr;
+		}
+	}
+	if (temp->args != NULL)	
+		free(temp->args);
+
 
 
 	while(tokens != NULL)
