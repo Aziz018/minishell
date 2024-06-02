@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/31 06:49:55 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/02 11:31:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,8 @@ int	main(int ac, char **av, char **env)
 	{
 		parse_command(command);
 		
-		// free(command);
 		add_history(command);
+		free(command);
 		command = readline(data->prompt);
 	}
 	clear_history();
