@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/03 10:51:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:38:55 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,9 @@ int	parse_command(char *command)
 				while(ptr != NULL && ptr->type == ARG)
 				{
 					temp->args[i++] = ptr->value;
-					ptr = ptr->next;
+					t_command *aziz = ptr->next;
+					free(ptr);
+					ptr = aziz;
 				}
 				temp->args[i] = NULL;
 			}
@@ -188,7 +190,10 @@ int	parse_command(char *command)
 			temp->args = malloc(2 * sizeof(char *));
 			temp->args[0] = ptr->value;
 			temp->args[1] = NULL;
-			ptr = ptr->next;
+			t_command *aziz = ptr->next;
+			free(ptr);
+			ptr = aziz;
+			// ptr = ptr->next;
 			temp->next = ptr;
 		}
 	}
@@ -209,8 +214,11 @@ int	parse_command(char *command)
 				printf("	+---------------------------+\n");
 				printf("	| arg[%d]: ------------- [%s]\n", i + 1, tokens->args[i]);
 				printf("	+---------------------------+\n");
+				free(tokens->args[i]);
 				i++;
 			}
+			if (tokens->args != NULL)
+				free(tokens->args);
 			printf("\n");
 		}
 			
@@ -227,6 +235,8 @@ int	parse_command(char *command)
 			printf("	| arg[%d]: ----------- [%s]\n", 1, tokens->args[0]);
 			printf("	+---------------------------+\n");
 			printf("\n");
+			free(tokens->args[0]);
+			free(tokens->args);
 		}
 		
 		if (tokens->type == PIPE)
@@ -243,11 +253,11 @@ int	parse_command(char *command)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
 		if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
-		t_command *tmp = tokens->next;
-		free(tokens->value);
-		free(tokens); 
-		tokens = tmp;	
-		// tokens = tokens->next;
+		t_command *tmp = tokens;
+		tokens = tokens->next;
+		free(tmp->value);
+		free(tmp);
+		// tokens = tmp;
 	}
 	
 	// for debuging:

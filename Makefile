@@ -6,14 +6,14 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/06/02 17:02:14 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/06/03 14:37:38 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g3 #-g3 -fsanitize=address
 RLFLAG = -lreadline
 SRCDIR = ./srcs
 OBJDIR = ./objs
