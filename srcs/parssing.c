@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/03 14:38:55 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:48:37 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,27 @@ int get_args_size(t_command *token)
 	return (i);
 }
 
+void print_args(t_command *token)
+{
+	int i = 0;
+	
+	// if (token->args == NULL)
+	// {
+	// 	printf("=================> NULL <===============\n");
+	// 	return ;
+	// }
+	while(token->args != NULL && token->args[i] != NULL)
+	{
+		printf("	+---------------------------+\n");
+		printf("	| arg[%d]: ------------- [%s]\n", i + 1, token->args[i]);
+		printf("	+---------------------------+\n");
+		free(token->args[i]);
+		i++;
+	}
+	if (token->args != NULL)
+		free(token->args);
+}
+
 int	parse_command(char *command)
 {
 	// if (!check_syntax(command))
@@ -156,7 +177,7 @@ int	parse_command(char *command)
 	if (!tokens)
 		return 0;
 	t_command *ptr = tokens;
-	t_command *temp = ptr;
+	t_command *temp = tokens;
 	temp->args = NULL;
 	printf("\n\n");
 	
@@ -164,10 +185,12 @@ int	parse_command(char *command)
 	{
 		temp = ptr;
 		ptr = ptr->next;
+		temp->args = NULL;
 		if (!ptr)
 			break;
 		if (temp->type == CMD)
 		{
+			temp->args = NULL;
 			if (ptr->type == ARG)
 			{
 				int i = 0;
@@ -179,10 +202,9 @@ int	parse_command(char *command)
 					free(ptr);
 					ptr = aziz;
 				}
+				// printf("\n\n============ i ==== %d ===============\n\n", i);
 				temp->args[i] = NULL;
 			}
-			else
-				temp->args = NULL;
 			temp->next = ptr;
 		}
 		else if (temp->type == RED_OUT || temp->type == RED_IN || temp->type == APP)
@@ -207,18 +229,9 @@ int	parse_command(char *command)
 		printf("=> node: %d\n+---------------------------+\n| token: ---------- %s\n", ++i, tokens->value);
 		if (tokens->type == CMD)
 		{
-			int i = 0;
+			// int i = 0;
 			printf("| type: ----------- CMD     |\n+---------------------------+\n");
-			while(tokens->args != NULL && tokens->args[i] != NULL)
-			{
-				printf("	+---------------------------+\n");
-				printf("	| arg[%d]: ------------- [%s]\n", i + 1, tokens->args[i]);
-				printf("	+---------------------------+\n");
-				free(tokens->args[i]);
-				i++;
-			}
-			if (tokens->args != NULL)
-				free(tokens->args);
+			print_args(tokens);
 			printf("\n");
 		}
 			
