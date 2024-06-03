@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/02 12:52:11 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/03 09:26:45 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@ char *get_token_value(t_token *token, char *commads)
 	if (token->index == 0)
 		token->prev_type = -1;
 	while(commads[token->i] && (commads[token->i] == ' ' || commads[token->i] == '\t' || commads[token->i] == '\v'))
-		token->i++;	
+		token->i++;
+	if (commads[token->i] == '\0')
+		return (NULL);
 	token->index = token->i;
 	if (commads[token->i] == '"')
 	{
