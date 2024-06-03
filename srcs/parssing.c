@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/03 17:48:37 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/03 17:50:28 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,6 @@ int	parse_command(char *command)
 			break;
 		if (temp->type == CMD)
 		{
-			temp->args = NULL;
 			if (ptr->type == ARG)
 			{
 				int i = 0;
