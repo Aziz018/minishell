@@ -17,7 +17,7 @@ char *get_token_value(t_token *token, char *commads)
 	char *token_val = NULL;
 	if (token->index == 0)
 		token->prev_type = -1;
-	while(commads[token->i] && (commads[token->i] == ' ' || commads[token->i] == '\t' || commads[token->i] == '\v'))
+	while(commads[token->i] && ft_strchr(" \t\v", commads[token->i]))
 		token->i++;
 	if (commads[token->i] == '\0')
 		return (NULL);
@@ -36,7 +36,7 @@ char *get_token_value(t_token *token, char *commads)
 			token->i++;
 		// token->i++;
 	}
-	while(commads[token->i] && commads[token->i] != ' ' && commads[token->i] != '\t' && commads[token->i] != '\v')
+	while(commads[token->i] && !ft_strchr(" \t\v", commads[token->i]))
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
