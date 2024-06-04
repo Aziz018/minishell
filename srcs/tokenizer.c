@@ -3,44 +3,64 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/03 09:26:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:26:45 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libraries/minishell.h"
 
-char *get_token_value(t_token *token, char *commads)
+char *get_token_value(t_token *token, char *command)
 {
 	char *token_val = NULL;
 	if (token->index == 0)
 		token->prev_type = -1;
-	while(commads[token->i] && ft_strchr(" \t\v", commads[token->i]))
+	while(command[token->i] && ft_strchr(" \t\v", command[token->i]))
 		token->i++;
-	if (commads[token->i] == '\0')
+	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (commads[token->i] == '"')
+	if (command[token->i] == '"')
 	{
 		token->i++;
-		while(commads[token->i] != '"')
+		while(command[token->i] && command[token->i] != '"')
 			token->i++;
-		// token->i++;
+		while(command[++token->i] && ft_isalnum(command[token->i]));
+		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
+		token->index = token->i;
+		return (token_val);
 	}
-	else if (commads[token->i] == '\'')
+	else if (command[token->i] == '\'')
 	{
 		token->i++;
-		while(commads[token->i] && commads[token->i] != '\'')
+		while(command[token->i] && command[token->i] != '\'')
 			token->i++;
-		// token->i++;
+		while(command[++token->i] && ft_isalnum(command[token->i]));
+		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
+		token->index = token->i;
+		return (token_val);
 	}
-	while(commads[token->i] && !ft_strchr(" \t\v", commads[token->i]))
+	if (command[token->i] && ft_strchr("<|>", command[token->i]))
+	{
+		token_val = malloc(2 * sizeof(char));
+		token_val[0] = command[token->i];
+		token_val[1] = '\0';
+		token->i++;
+		token->index = token->i;
+		return (token_val);
+		// printf("\n%c\n", command[token->i]);
+		
+	}
+	while(command[token->i] && ft_isalnum(command[token->i]))
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-	ft_strlcpy(token_val, &commads[token->index], (token->i - token->index + 1));
+	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
 	token->index = token->i;
+	// printf("token: %s\n", token_val);
 	return (token_val);
 }
 
