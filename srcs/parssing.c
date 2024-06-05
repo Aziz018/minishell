@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/03 17:50:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/04 11:55:45 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,8 @@ int	parse_command(char *command)
 	t_command *ptr = tokens;
 	t_command *temp = tokens;
 	temp->args = NULL;
-	printf("\n\n");
+	
+	// printf("\n\n");
 	
 	while(ptr != NULL)
 	{
