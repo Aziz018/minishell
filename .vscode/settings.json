@@ -4,7 +4,8 @@
         "libft.h": "c",
         "wait.h": "c",
         "stdbool.h": "c",
-        "colors.h": "c"
+        "colors.h": "c",
+        "errno.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

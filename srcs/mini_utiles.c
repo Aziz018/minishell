@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_utiles.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 09:09:06 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 10:42:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/05 10:53:43 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,23 +29,27 @@ void	add_back_list(t_command **lst, t_command *new)
 	}
 }
 
-// void	clear_list(t_command **lst, void (*del)(int))
-// {
-// 	t_command	*node;
-// 	t_command	*ptr;
+void	clear_list(t_command **lst)
+{
+	t_command	*node;
+	t_command	*ptr;
 
-// 	if (!lst || !del)
-// 		return ;
-// 	node = *lst;
-// 	while (node)
-// 	{
-// 		ptr = node->next;
-// 		del(node->content);
-// 		free(node);
-// 		node = ptr;
-// 	}
-// 	*lst = NULL;
-// }
+	if (!lst)
+		return ;
+	node = *lst;
+	while (node)
+	{
+		ptr = node->next;
+		if (node->value != NULL)
+			free(node->value);
+		if (node->args != NULL)
+			free_array(node->args);
+		// ft_bzero(node->content);
+		free(node);
+		node = ptr;
+	}
+	*lst = NULL;
+}
 
 t_command	*new_node(int type, char *value)
 {

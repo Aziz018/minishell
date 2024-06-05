@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 09:57:33 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/05 10:43:39 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int syntax_error(char *command)
 		while(command[++i] && ft_strchr(" \t\v", command[i])); // ++i to skip the char and start from the char after
 		if (command[i] == ';')
 		{
+			data->syntax_error = true;
 			write(2, "minishell: syntax error near unexpected token ';'\n", 51);
 			return (1);
 		}
@@ -37,15 +38,23 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (command[token->i] == '"' || command[token->i] == '\'')
+	if (ft_strchr("'\"[{(", command[token->i])) // command[token->i] == '"' || command[token->i] == '\''
 	{
-		char quote = command[token->i];
+		char special = command[token->i];
+		if (command[token->i] == '[')
+			special = ']';
+		else if (command[token->i] == '{')
+			special = '}';
+		else if (command[token->i] == '(')
+			special = ')';
+		
 		token->i++;
-		while(command[token->i] && command[token->i] != quote)
+		while(command[token->i] && command[token->i] != special)
 			token->i++;
 		if (!command[token->i])
 		{
 			write(2, "minishell: syntax error near unexpected token ';'\n", 51);
+			data->syntax_error = true;
 			return NULL;
 		}
 		while(command[++token->i] && ft_isalnum(command[token->i]));
@@ -68,9 +77,8 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		if (syntax_error(&command[token->i]))
-		{
 			return (NULL);
-		}
+			
 		token_val = malloc(2 * sizeof(char));
 		token_val[0] = command[token->i];
 		token_val[1] = '\0';
@@ -80,7 +88,7 @@ char *get_token_value(t_token *token, char *command)
 		// printf("\n%c\n", command[token->i]);
 		
 	}
-	while(command[token->i] && !ft_strchr(" \t\v<|>&;", command[token->i])) // ft_isalnum(command[token->i])
+	while(command[token->i] && !ft_strchr(" \t\v<|>&;'\"", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));

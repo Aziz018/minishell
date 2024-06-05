@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/04 11:55:45 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/05 11:03:09 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,14 +173,18 @@ int	parse_command(char *command)
 	// }
 	
 	int i = 0;
-	t_command *tokens = tokenizer_command(command);
+	t_command *tokens = tokenizer_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
 	if (!tokens)
 		return 0;
 	t_command *ptr = tokens;
 	t_command *temp = tokens;
 	temp->args = NULL;
 	
-	// printf("\n\n");
+	// if (data->syntax_error)
+	// {
+	// 	clear_list(&tokens);
+	// 	return (0);
+	// }
 	
 	while(ptr != NULL)
 	{
@@ -273,6 +277,7 @@ int	parse_command(char *command)
 		// tokens = tmp;
 	}
 	
+	
 	// for debuging:
 	
 	// while(tokens != NULL)
@@ -314,12 +319,12 @@ int	parse_command(char *command)
 	// printf("token: --------- %s\n", tokens->value);
 	// printf("type: ---------- %d\n", tokens->type);
 
-	if (tokens != NULL)
-	{
+	// if (tokens != NULL)
+	// {
 		// if (tokens->value != NULL)
 		// 	free(tokens->value);
-		free(tokens);
-	}
+	// 	free(tokens);
+	// }
 
 	
 	// this for parsing 
