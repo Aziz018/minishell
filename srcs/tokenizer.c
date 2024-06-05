@@ -6,7 +6,7 @@
 /*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/04 11:26:45 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/05 09:57:33 by aziz             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,34 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (command[token->i] == '"')
+	if (command[token->i] == '"' || command[token->i] == '\'')
 	{
+		char quote = command[token->i];
 		token->i++;
-		while(command[token->i] && command[token->i] != '"')
+		while(command[token->i] && command[token->i] != quote)
 			token->i++;
+		if (!command[token->i])
+		{
+			write(2, "minishell: syntax error near unexpected token ';'\n", 51);
+			return NULL;
+		}
 		while(command[++token->i] && ft_isalnum(command[token->i]));
 		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
 		token->index = token->i;
 		return (token_val);
 	}
-	else if (command[token->i] == '\'')
-	{
-		token->i++;
-		while(command[token->i] && command[token->i] != '\'')
-			token->i++;
-		while(command[++token->i] && ft_isalnum(command[token->i]));
-		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
-		token->index = token->i;
-		return (token_val);
-	}
+	// else if (command[token->i] == '\'')
+	// {
+	// 	token->i++;
+	// 	while(command[token->i] && command[token->i] != '\'')
+	// 		token->i++;
+	// 	while(command[++token->i] && ft_isalnum(command[token->i]));
+	// 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+	// 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
+	// 	token->index = token->i;
+	// 	return (token_val);
+	// }
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		if (syntax_error(&command[token->i]))
