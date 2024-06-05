@@ -44,8 +44,18 @@ char *get_token_value(t_token *token, char *command)
 		token->index = token->i;
 		return (token_val);
 	}
-	if (command[token->i] && ft_strchr("<|>", command[token->i]))
+	if (command[token->i] && ft_strchr("<|>;", command[token->i]))
 	{
+		int i = 0;
+		if (command[token->i] == ';')
+		{
+			while(command[token->i + ++i] && ft_strchr(" \t\v", command[token->i + i])); // ++i to skip the char and start from the char after
+			if (command[token->i + i] == ';')
+			{
+				write(2, "minishell: syntax error near unexpected token ';'\n", 51);
+				return (NULL);
+			}
+		}
 		token_val = malloc(2 * sizeof(char));
 		token_val[0] = command[token->i];
 		token_val[1] = '\0';
@@ -55,7 +65,7 @@ char *get_token_value(t_token *token, char *command)
 		// printf("\n%c\n", command[token->i]);
 		
 	}
-	while(command[token->i] && ft_isalnum(command[token->i]))
+	while(command[token->i] && !ft_strchr(" \t\v<|>;", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
