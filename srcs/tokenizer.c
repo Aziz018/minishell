@@ -59,7 +59,7 @@ char *get_token_value(t_token *token, char *command)
 		token->index = token->i;
 		return (token_val);
 	}
-	if (command[token->i] && ft_strchr("<|>;", command[token->i]))
+	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		if (syntax_error(&command[token->i]))
 		{
@@ -74,7 +74,7 @@ char *get_token_value(t_token *token, char *command)
 		// printf("\n%c\n", command[token->i]);
 		
 	}
-	while(command[token->i] && !ft_strchr(" \t\v<|>;", command[token->i])) // ft_isalnum(command[token->i])
+	while(command[token->i] && !ft_strchr(" \t\v<|>&;", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
