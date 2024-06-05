@@ -12,6 +12,21 @@
 
 #include "../libraries/minishell.h"
 
+int syntax_error(char *command)
+{
+	int i = 0;
+	if (command[i] == ';')
+	{
+		while(command[++i] && ft_strchr(" \t\v", command[i])); // ++i to skip the char and start from the char after
+		if (command[i] == ';')
+		{
+			write(2, "minishell: syntax error near unexpected token ';'\n", 51);
+			return (1);
+		}
+	}
+	return (0);
+}
+
 char *get_token_value(t_token *token, char *command)
 {
 	char *token_val = NULL;
@@ -46,15 +61,9 @@ char *get_token_value(t_token *token, char *command)
 	}
 	if (command[token->i] && ft_strchr("<|>;", command[token->i]))
 	{
-		int i = 0;
-		if (command[token->i] == ';')
+		if (syntax_error(&command[token->i]))
 		{
-			while(command[token->i + ++i] && ft_strchr(" \t\v", command[token->i + i])); // ++i to skip the char and start from the char after
-			if (command[token->i + i] == ';')
-			{
-				write(2, "minishell: syntax error near unexpected token ';'\n", 51);
-				return (NULL);
-			}
+			return (NULL);
 		}
 		token_val = malloc(2 * sizeof(char));
 		token_val[0] = command[token->i];
@@ -126,6 +135,13 @@ int get_token_type(t_token *token)
 		// printf("type: ---------- OR_OP\n");
 		return(OR_OP);
 	}
+	else if (token->value[0] == ';')
+	{
+		token->type = LIST;
+		token->prev_type = LIST;
+		// printf("type: ---------- CMD\n");
+		return(LIST);
+	}
 	else if (token->prev_type == CMD || token->prev_type == ARG)
 	{
 		token->type = ARG;
@@ -140,7 +156,7 @@ int get_token_type(t_token *token)
 		// printf("type: ---------- FILE\n");
 		return(FLE);
 	}
-	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN)
+	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
 	{
 		token->type = CMD;
 		token->prev_type = CMD;
