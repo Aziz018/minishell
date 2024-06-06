@@ -15,10 +15,11 @@
 int syntax_error(char *command)
 {
 	int i = 0;
-	if (command[i] == ';')
+	if (ft_strchr(";<|>", command[i]))
 	{
+		char special = command[i];
 		while(command[++i] && ft_strchr(" \t\v", command[i])); // ++i to skip the char and start from the char after
-		if (command[i] == ';')
+		if (command[i] == special || (ft_strchr("<|>", special) && !command[i]))
 		{
 			data->syntax_error = true;
 			write(2, "minishell: syntax error near unexpected token ';'\n", 51);

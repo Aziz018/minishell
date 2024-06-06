@@ -246,7 +246,7 @@ int	parse_command(char *command)
 		if (tokens->type == APP)
 			printf("| type: ----------- APP     |\n+---------------------------+\n\n");
 			
-		if (tokens->type == RED_OUT || tokens->type == RED_IN || tokens->type == APP)
+		if ((tokens->type == RED_OUT || tokens->type == RED_IN || tokens->type == APP) && tokens->args != NULL)
 		{
 			printf("	+---------------------------+\n");
 			printf("	| arg[%d]: ----------- [%s]\n", 1, tokens->args[0]);
