@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 10:43:39 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/07 10:09:47 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char *get_token_value(t_token *token, char *command)
 	// 	token->index = token->i;
 	// 	return (token_val);
 	// }
+	
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		if (syntax_error(&command[token->i]))
@@ -98,85 +99,122 @@ char *get_token_value(t_token *token, char *command)
 	return (token_val);
 }
 
+int set_token_type(t_token *token, int type)
+{
+	token->type = type;
+	token->prev_type = type;
+	return (type);
+}
 
 int get_token_type(t_token *token)
 {
 	if (token->value[0] == '|' && token->value[1] == '\0')
-	{
-		token->type = PIPE;
-		token->prev_type = PIPE;
-		// printf("type: ---------- PIPE\n");
-		return (PIPE);
-	}
+		return (set_token_type(token, PIPE));
 	else if (token->value[0] == '>' && token->value[1] == '\0')
-	{
-		token->type = RED_OUT;
-		token->prev_type = RED_OUT;
-		// printf("type: ---------- RED_OUT\n");
-		return(RED_OUT);
-	}
+		return (set_token_type(token, RED_OUT));
 	else if (token->value[0] == '>' && token->value[1] == '>' && token->value[2] == '\0')
-	{
-		token->type = APP;
-		token->prev_type = APP;
-		// printf("type: ---------- APP\n");
-		return(APP);
-	}
+		return (set_token_type(token, APP));
 	else if (token->value[0] == '<' && token->value[1] == '\0')
-	{
-		token->type = RED_IN;
-		token->prev_type = RED_IN;
-		// printf("type: ---------- RED_IN\n");
-		return(RED_IN);
-	}
+		return (set_token_type(token, RED_IN));
 	else if (token->value[0] == '&' && token->value[1] == '\0')
-	{
-		token->type = BACK;
-		token->prev_type = BACK;
-		// printf("type: ---------- BACK\n");
-		return(BACK);
-	}
+		return (set_token_type(token, BACK));
 	else if (token->value[0] == '&' && token->value[1] == '&' && token->value[2] == '\0')
-	{
-		token->type = AND_OP;
-		token->prev_type = AND_OP;
-		// printf("type: ---------- AND_OP\n");
-		return(AND_OP);
-	}
+		return (set_token_type(token, AND_OP));
 	else if (token->value[0] == '|' && token->value[1] == '|' && token->value[2] == '\0')
-	{
-		token->type = OR_OP;
-		token->prev_type = OR_OP;
-		// printf("type: ---------- OR_OP\n");
-		return(OR_OP);
-	}
+		return (set_token_type(token, OR_OP));
 	else if (token->value[0] == ';')
-	{
-		token->type = LIST;
-		token->prev_type = LIST;
-		// printf("type: ---------- CMD\n");
-		return(LIST);
-	}
+		return (set_token_type(token, LIST));
 	else if (token->prev_type == CMD || token->prev_type == ARG)
-	{
-		token->type = ARG;
-		token->prev_type = ARG;
-		// printf("type: ---------- ARG\n");
-		return(ARG);
-	}
+		return (set_token_type(token, ARG));
 	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP)
-	{
-		token->type = FLE;
-		token->prev_type = FLE;
-		// printf("type: ---------- FILE\n");
-		return(FLE);
-	}
+		return (set_token_type(token, FLE));
 	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
-	{
-		token->type = CMD;
-		token->prev_type = CMD;
-		// printf("type: ---------- CMD\n");
-		return(CMD);
-	}
+		return (set_token_type(token, CMD));
 	return (0);
 }
+
+
+
+
+// int get_token_type(t_token *token)
+// {
+// 	if (token->value[0] == '|' && token->value[1] == '\0')
+// 	{
+// 		// token->type = PIPE;
+// 		// token->prev_type = PIPE;
+// 		// // printf("type: ---------- PIPE\n");
+// 		// return (PIPE);
+// 		return (set_token_type(token, PIPE));
+// 	}
+// 	else if (token->value[0] == '>' && token->value[1] == '\0')
+// 	{
+// 		token->type = RED_OUT;
+// 		token->prev_type = RED_OUT;
+// 		// printf("type: ---------- RED_OUT\n");
+// 		return(RED_OUT);
+// 	}
+// 	else if (token->value[0] == '>' && token->value[1] == '>' && token->value[2] == '\0')
+// 	{
+// 		token->type = APP;
+// 		token->prev_type = APP;
+// 		// printf("type: ---------- APP\n");
+// 		return(APP);
+// 	}
+// 	else if (token->value[0] == '<' && token->value[1] == '\0')
+// 	{
+// 		token->type = RED_IN;
+// 		token->prev_type = RED_IN;
+// 		// printf("type: ---------- RED_IN\n");
+// 		return(RED_IN);
+// 	}
+// 	else if (token->value[0] == '&' && token->value[1] == '\0')
+// 	{
+// 		token->type = BACK;
+// 		token->prev_type = BACK;
+// 		// printf("type: ---------- BACK\n");
+// 		return(BACK);
+// 	}
+// 	else if (token->value[0] == '&' && token->value[1] == '&' && token->value[2] == '\0')
+// 	{
+// 		token->type = AND_OP;
+// 		token->prev_type = AND_OP;
+// 		// printf("type: ---------- AND_OP\n");
+// 		return(AND_OP);
+// 	}
+// 	else if (token->value[0] == '|' && token->value[1] == '|' && token->value[2] == '\0')
+// 	{
+// 		token->type = OR_OP;
+// 		token->prev_type = OR_OP;
+// 		// printf("type: ---------- OR_OP\n");
+// 		return(OR_OP);
+// 	}
+// 	else if (token->value[0] == ';')
+// 	{
+// 		token->type = LIST;
+// 		token->prev_type = LIST;
+// 		// printf("type: ---------- CMD\n");
+// 		return(LIST);
+// 	}
+// 	else if (token->prev_type == CMD || token->prev_type == ARG)
+// 	{
+// 		token->type = ARG;
+// 		token->prev_type = ARG;
+// 		// printf("type: ---------- ARG\n");
+// 		return(ARG);
+// 	}
+// 	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP)
+// 	{
+// 		token->type = FLE;
+// 		token->prev_type = FLE;
+// 		// printf("type: ---------- FILE\n");
+// 		return(FLE);
+// 	}
+// 	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
+// 	{
+// 		token->type = CMD;
+// 		token->prev_type = CMD;
+// 		// printf("type: ---------- CMD\n");
+// 		return(CMD);
+// 	}
+// 	return (0);
+// }

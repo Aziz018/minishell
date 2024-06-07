@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 10:50:44 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/07 10:03:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@
 # include <sys/wait.h> 					// for wating child process to terminate execution
 # include <readline/history.h> 			// readline GNU library
 # include <readline/readline.h> 		// readline GNU library
+
+typedef enum s_types
+{
+	CMD,
+	RED_OUT,
+	RED_IN,
+	PIPE,
+	LIST,
+	BACK,
+	ARG,
+	OR_OP,
+	AND_OP,
+	FLE,
+	APP,
+	HER_DOC
+} t_types;
 
 # define CMD 			0
 	
