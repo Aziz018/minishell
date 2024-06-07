@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/07 10:03:33 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:13:31 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef enum s_types
 # define AND_OP 		9
 # define FLE			10
 # define APP			11
+# define HER_DOC		12
 
 typedef struct s_env
 {

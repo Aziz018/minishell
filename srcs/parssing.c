@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 11:03:09 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/07 10:15:06 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,6 @@ char *skip_command(char *command)
 
 int check_syntax(char *command)
 {
-	// int i = -1;
-	// int stack[100];
-
 	while(*command)
 	{
 		command = skip_white_spaces(command);
@@ -147,11 +144,6 @@ void print_args(t_command *token)
 {
 	int i = 0;
 	
-	// if (token->args == NULL)
-	// {
-	// 	printf("=================> NULL <===============\n");
-	// 	return ;
-	// }
 	while(token->args != NULL && token->args[i] != NULL)
 	{
 		printf("	+---------------------------+\n");
@@ -166,11 +158,6 @@ void print_args(t_command *token)
 
 int	parse_command(char *command)
 {
-	// if (!check_syntax(command))
-	// {
-	// 	// printf("%s\n", command);
-	// 	return 0;
-	// }
 	
 	int i = 0;
 	t_command *tokens = tokenizer_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
@@ -270,6 +257,8 @@ int	parse_command(char *command)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
 		if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
+		if (tokens->type == HER_DOC)
+			printf("| type: ----------- HER_DOC |\n+---------------------------+\n\n");
 		t_command *tmp = tokens;
 		tokens = tokens->next;
 		free(tmp->value);

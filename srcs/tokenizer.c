@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/07 10:09:47 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/07 10:23:02 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int syntax_error(char *command)
 {
 	int i = 0;
-	if (ft_strchr(";<|>", command[i]))
+	if (ft_strchr("<|>&;", command[i])) //<|>&;
 	{
 		char special = command[i];
 		while(command[++i] && ft_strchr(" \t\v", command[i])); // ++i to skip the char and start from the char after
@@ -39,7 +39,7 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (ft_strchr("'\"[{(", command[token->i])) // command[token->i] == '"' || command[token->i] == '\''
+	if (ft_strchr("'\"[{(", command[token->i]))
 	{
 		char special = command[token->i];
 		if (command[token->i] == '[')
@@ -64,40 +64,38 @@ char *get_token_value(t_token *token, char *command)
 		token->index = token->i;
 		return (token_val);
 	}
-	// else if (command[token->i] == '\'')
-	// {
-	// 	token->i++;
-	// 	while(command[token->i] && command[token->i] != '\'')
-	// 		token->i++;
-	// 	while(command[++token->i] && ft_isalnum(command[token->i]));
-	// 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-	// 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
-	// 	token->index = token->i;
-	// 	return (token_val);
-	// }
-	
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
-		if (syntax_error(&command[token->i]))
-			return (NULL);
-			
-		token_val = malloc(2 * sizeof(char));
-		token_val[0] = command[token->i];
-		token_val[1] = '\0';
-		token->i++;
-		token->index = token->i;
-		return (token_val);
-		// printf("\n%c\n", command[token->i]);
-		
+		// if (syntax_error(&command[token->i]))
+		// 	return (NULL);
+		if ((command[token->i] == '<' && command[token->i + 1] == '<') || (command[token->i] == '>' && command[token->i + 1] == '>') || (command[token->i] == '|' && command[token->i + 1] == '|') || (command[token->i] == '&' && command[token->i + 1] == '&'))
+		{
+			token_val = malloc(3 * sizeof(char));
+			token_val[0] = command[token->i];
+			token_val[1] = command[token->i + 1];
+			token_val[2] = '\0';
+			token->i += 2;
+			token->index = token->i;
+			return (token_val);
+		}
+		else
+		{
+			token_val = malloc(2 * sizeof(char));
+			token_val[0] = command[token->i];
+			token_val[1] = '\0';
+			token->i++;
+			token->index = token->i;
+			return (token_val);
+		}
 	}
 	while(command[token->i] && !ft_strchr(" \t\v<|>&;'\"", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
 	token->index = token->i;
-	// printf("token: %s\n", token_val);
 	return (token_val);
 }
+
 
 int set_token_type(t_token *token, int type)
 {
@@ -114,6 +112,8 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, RED_OUT));
 	else if (token->value[0] == '>' && token->value[1] == '>' && token->value[2] == '\0')
 		return (set_token_type(token, APP));
+	else if (token->value[0] == '<' && token->value[1] == '<' && token->value[2] == '\0')
+		return (set_token_type(token, HER_DOC));
 	else if (token->value[0] == '<' && token->value[1] == '\0')
 		return (set_token_type(token, RED_IN));
 	else if (token->value[0] == '&' && token->value[1] == '\0')
