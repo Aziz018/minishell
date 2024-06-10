@@ -99,8 +99,8 @@ char *get_token_value(t_token *token, char *command)
 
 int set_token_type(t_token *token, int type)
 {
+    token->prev_type = type;
 	token->type = type;
-	token->prev_type = type;
 	return (type);
 }
 
@@ -128,7 +128,7 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, ARG));
 	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP)
 		return (set_token_type(token, FLE));
-	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
+	else //if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
 		return (set_token_type(token, CMD));
 	return (0);
 }

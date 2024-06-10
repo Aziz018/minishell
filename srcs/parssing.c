@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/07 10:15:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/10 11:06:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,9 @@ int	parse_command(char *command)
 			temp->next = ptr;
 		}
 	}
-	// if (temp->args != NULL)	
-	// 	free(temp->args);
+	
+	//  if (temp->args != NULL)
+	//  	free(temp->args);
 
 
 
