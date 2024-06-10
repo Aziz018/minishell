@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/07 10:23:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/10 18:10:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ char *get_token_value(t_token *token, char *command)
 		else if (command[token->i] == '(')
 			special = ')';
 		
-		token->i++;
+		// token->i++;
+		while(command[++token->i] && command[token->i] == special);
+			// token->i++;
+		token->index = token->i;
 		while(command[token->i] && command[token->i] != special)
 			token->i++;
 		if (!command[token->i])
