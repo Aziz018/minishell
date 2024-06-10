@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/10 11:06:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/10 13:48:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ void print_args(t_command *token)
 	while(token->args != NULL && token->args[i] != NULL)
 	{
 		printf("	+---------------------------+\n");
-		printf("	| arg[%d]: ------------- [%s]\n", i + 1, token->args[i]);
+		printf("	| arg[%d]: ------------- [%s]\n", i, token->args[i]);
 		printf("	+---------------------------+\n");
 		free(token->args[i]);
 		i++;
@@ -185,7 +185,8 @@ int	parse_command(char *command)
 			if (ptr->type == ARG)
 			{
 				int i = 0;
-				temp->args = malloc((get_args_size(ptr) + 1) * sizeof(char *));
+				temp->args = malloc((get_args_size(ptr) + 2) * sizeof(char *));
+				temp->args[i++] = temp->value;
 				while(ptr != NULL && ptr->type == ARG)
 				{
 					temp->args[i++] = ptr->value;
@@ -262,7 +263,7 @@ int	parse_command(char *command)
 			printf("| type: ----------- HER_DOC |\n+---------------------------+\n\n");
 		t_command *tmp = tokens;
 		tokens = tokens->next;
-		free(tmp->value);
+		// free(tmp->value);
 		free(tmp);
 		// tokens = tmp;
 	}
