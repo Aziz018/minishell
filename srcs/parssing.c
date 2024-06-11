@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/10 13:48:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/11 13:31:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,13 +156,8 @@ void print_args(t_command *token)
 		free(token->args);
 }
 
-int	parse_command(char *command)
+t_command *parser_command(t_command *tokens)
 {
-	
-	int i = 0;
-	t_command *tokens = tokenizer_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
-	if (!tokens)
-		return 0;
 	t_command *ptr = tokens;
 	t_command *temp = tokens;
 	temp->args = NULL;
@@ -211,11 +206,12 @@ int	parse_command(char *command)
 			temp->next = ptr;
 		}
 	}
-	
-	//  if (temp->args != NULL)
-	//  	free(temp->args);
+	return (tokens);
+}
 
-
+void print_list(t_command *tokens)
+{
+	int i = 0;
 
 	while(tokens != NULL)
 	{
@@ -267,9 +263,10 @@ int	parse_command(char *command)
 		free(tmp);
 		// tokens = tmp;
 	}
-	
-	
-	// for debuging:
+
+
+
+		// for debuging:
 	
 	// while(tokens != NULL)
 	// {
@@ -303,42 +300,17 @@ int	parse_command(char *command)
 	// 	// tokens = tokens->next;
 	// }
 
+}
 
-
+int	parse_command(char *command)
+{
 	
-	// t_parse *parser = parser_command();
-	// printf("token: --------- %s\n", tokens->value);
-	// printf("type: ---------- %d\n", tokens->type);
+	t_command *tokens = tokenizer_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
+	if (!tokens)
+		return 0;
+	tokens = parser_command(tokens);
+	print_list(tokens);
 
-	// if (tokens != NULL)
-	// {
-		// if (tokens->value != NULL)
-		// 	free(tokens->value);
-	// 	free(tokens);
-	// }
-
-	
-	// this for parsing 
-
-	// char	**parsedcmd;
-
-	// int i = -1;
-	// int j = -1;
-	
-	// parsedcmd = ft_split(command, ' ');
-	// while(parsedcmd[++i] != NULL)
-	// {
-	// 	j = 0;
-	// 	if (parsedcmd[i][j] == '(' || parsedcmd[i][j] == ')')
-	// 	{
-	// 		parentheses(command);
-	// 		j++;
-	// 	}
-
-			// cd ->-> && cat file | grep hello
-
-	// printf("%s\n", command);
-	// print_char_array(parsedcmd);
 
 
 	// for execute commands
