@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/11 13:31:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/11 18:44:48 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void parentheses(char *command)
 	parentheses(data->new_command);
 }
 
-t_command *tokenizer_command(char *commads)
+t_command *tokenize_command(char *commads)
 {
 	t_token token;
 	t_command *head = NULL;
@@ -265,7 +265,6 @@ void print_list(t_command *tokens)
 	}
 
 
-
 		// for debuging:
 	
 	// while(tokens != NULL)
@@ -305,7 +304,7 @@ void print_list(t_command *tokens)
 int	parse_command(char *command)
 {
 	
-	t_command *tokens = tokenizer_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
+	t_command *tokens = tokenize_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
 	if (!tokens)
 		return 0;
 	tokens = parser_command(tokens);
@@ -315,11 +314,8 @@ int	parse_command(char *command)
 
 	// for execute commands
 
-	// char **parsedcmd = ft_split(command, ' ');
-
 	// if (built_in_cmd(parsedcmd))
 	// 	return (0);
-	// free_array(parsedcmd);
 	// exec_command(command);
     
 	return (0);
