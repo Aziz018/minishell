@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/12 10:34:14 by kali             ###   ########.fr       */
+/*   Updated: 2024/06/12 11:03:43 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,14 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
-		if ((command[token->i] == '<' && command[token->i + 1] == '<') || (command[token->i] == '>' && command[token->i + 1] == '>') || (command[token->i] == '|' && command[token->i + 1] == '|') || (command[token->i] == '&' && command[token->i + 1] == '&'))
-		{
-			token_val = malloc(3 * sizeof(char));
-			token_val[0] = command[token->i];
-			token_val[1] = command[token->i + 1];
-			token_val[2] = '\0';
-			token->i += 2;
-			token->index = token->i;
-			return (token_val);
-		}
-		else
-		{
-			token_val = malloc(2 * sizeof(char));
-			token_val[0] = command[token->i];
-			token_val[1] = '\0';
+		while(command[token->i] && command[token->i] == command[token->index])
 			token->i++;
-			token->index = token->i;
-			return (token_val);
-		}
+		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));				
+		token->index = token->i;
+		return (token_val);
 	}
 	while(command[token->i] && !ft_strchr(" \t\v<|>&;'\"", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;

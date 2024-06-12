@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 10:46:13 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/12 10:59:04 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,14 +145,13 @@ t_env *creat_env(char **env)
 
 void	init_minishell(int ac, char **av, char **env)
 {
+	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 	data->ac = ac;
 	data->env = creat_env(env);
 	data->av = av;
 	data->syntax_error = false;
 	data->prompt = get_prompt();
 	data->new_command = NULL;
-	// data->special_chars = " \t\v<|>&;'\"";
-	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 }
 
 int	main(int ac, char **av, char **env)
@@ -164,7 +163,7 @@ int	main(int ac, char **av, char **env)
 	print_minishell();
 	
 	signal(SIGQUIT, sig_handler);
-	signal(SIGINT, sig_handler);
+	// signal(SIGINT, sig_handler);
 	
 	command = readline(data->prompt);
 	while (command != NULL)
