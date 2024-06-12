@@ -181,7 +181,7 @@ t_command *parser_command(t_command *tokens)
 			{
 				int i = 0;
 				temp->args = malloc((get_args_size(ptr) + 2) * sizeof(char *));
-				temp->args[i++] = temp->value;
+				temp->args[i++] = ft_strdup(temp->value);
 				while(ptr != NULL && ptr->type == ARG)
 				{
 					temp->args[i++] = ptr->value;
@@ -257,7 +257,7 @@ void print_list(t_command *tokens)
 		
 		t_command *tmp = tokens;
 		tokens = tokens->next;
-		// free(tmp->value);
+		free(tmp->value);
 		free(tmp);
 		// tokens = tmp;
 	}

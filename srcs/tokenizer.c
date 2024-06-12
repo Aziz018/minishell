@@ -39,34 +39,34 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (ft_strchr("'\"[{(", command[token->i]))
-	{
-		char special = command[token->i];
-		if (command[token->i] == '[')
-			special = ']';
-		else if (command[token->i] == '{')
-			special = '}';
-		else if (command[token->i] == '(')
-			special = ')';
+	// if (ft_strchr("'\"[{(", command[token->i]))
+	// {
+	// 	char special = command[token->i];
+	// 	if (command[token->i] == '[')
+	// 		special = ']';
+	// 	else if (command[token->i] == '{')
+	// 		special = '}';
+	// 	else if (command[token->i] == '(')
+	// 		special = ')';
 		
-		// token->i++;
-		while(command[++token->i] && command[token->i] == special);
-			// token->i++;
-		token->index = token->i;
-		while(command[token->i] && command[token->i] != special)
-			token->i++;
-		if (!command[token->i])
-		{
-			write(2, "minishell: syntax error near unexpected token ';'\n", 51);
-			data->syntax_error = true;
-			return NULL;
-		}
-		while(command[++token->i] && ft_isalnum(command[token->i]));
-		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
-		token->index = token->i;
-		return (token_val);
-	}
+	// 	// token->i++;
+	// 	while(command[++token->i] && command[token->i] == special);
+	// 		// token->i++;
+	// 	token->index = token->i;
+	// 	while(command[token->i] && command[token->i] != special)
+	// 		token->i++;
+	// 	if (!command[token->i])
+	// 	{
+	// 		write(2, "minishell: syntax error near unexpected token ';'\n", 51);
+	// 		data->syntax_error = true;
+	// 		return NULL;
+	// 	}
+	// 	while(command[++token->i] && ft_isalnum(command[token->i]));
+	// 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+	// 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
+	// 	token->index = token->i;
+	// 	return (token_val);
+	// }
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		// if (syntax_error(&command[token->i]))
