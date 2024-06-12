@@ -189,12 +189,11 @@ t_command *parser_command(t_command *tokens)
 					free(ptr);
 					ptr = aziz;
 				}
-				// printf("\n\n============ i ==== %d ===============\n\n", i);
 				temp->args[i] = NULL;
 			}
 			temp->next = ptr;
 		}
-		else if (temp->type == RED_OUT || temp->type == RED_IN || temp->type == APP)
+		else if (temp->type == RED_OUT || temp->type == RED_IN || temp->type == APP || temp->type == HER_DOC)
 		{
 			temp->args = malloc(2 * sizeof(char *));
 			temp->args[0] = ptr->value;
@@ -230,17 +229,8 @@ void print_list(t_command *tokens)
 			printf("| type: ----------- RED_IN  |\n+---------------------------+\n\n");
 		if (tokens->type == APP)
 			printf("| type: ----------- APP     |\n+---------------------------+\n\n");
-			
-		if ((tokens->type == RED_OUT || tokens->type == RED_IN || tokens->type == APP) && tokens->args != NULL)
-		{
-			printf("	+---------------------------+\n");
-			printf("	| arg[%d]: ----------- [%s]\n", 1, tokens->args[0]);
-			printf("	+---------------------------+\n");
-			printf("\n");
-			free(tokens->args[0]);
-			free(tokens->args);
-		}
-		
+		if (tokens->type == HER_DOC)
+			printf("| type: ----------- HER_DOC |\n+---------------------------+\n\n");
 		if (tokens->type == PIPE)
 			printf("| type: ----------- PIPE    |\n+---------------------------+\n\n");
 		if (tokens->type == LIST)
@@ -255,8 +245,16 @@ void print_list(t_command *tokens)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
 		if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
-		if (tokens->type == HER_DOC)
-			printf("| type: ----------- HER_DOC |\n+---------------------------+\n\n");
+		if ((tokens->type == RED_OUT || tokens->type == RED_IN || tokens->type == APP || tokens->type == HER_DOC) && tokens->args != NULL)
+		{
+			printf("	+---------------------------+\n");
+			printf("	| arg[%d]: ----------- [%s]\n", 1, tokens->args[0]);
+			printf("	+---------------------------+\n");
+			printf("\n");
+			free(tokens->args[0]);
+			free(tokens->args);
+		}
+		
 		t_command *tmp = tokens;
 		tokens = tokens->next;
 		// free(tmp->value);

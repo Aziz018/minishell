@@ -129,14 +129,12 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, LIST));
 	else if (token->prev_type == CMD || token->prev_type == ARG)
 		return (set_token_type(token, ARG));
-	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP)
+	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP || token->prev_type == HER_DOC)
 		return (set_token_type(token, FLE));
 	else //if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == RED_IN || token->prev_type == LIST)
 		return (set_token_type(token, CMD));
 	return (0);
 }
-
-
 
 
 // int get_token_type(t_token *token)
