@@ -6,7 +6,7 @@
 /*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/12 11:03:43 by kali             ###   ########.fr       */
+/*   Updated: 2024/06/12 11:29:15 by kali             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ char *get_token_value(t_token *token, char *command)
 	char *token_val = NULL;
 	if (token->index == 0)
 		token->prev_type = -1;
-	while(command[token->i] && ft_strchr(" \t\v", command[token->i]))
+	while(command[token->i] && ft_strchr(" \t\v\n", command[token->i]))
 		token->i++;
 	if (command[token->i] == '\0')
 		return (NULL);
 	token->index = token->i;
-	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
+	if (command[token->i] && ft_strchr("<|>&;'\"", command[token->i]))
 	{
 		while(command[token->i] && command[token->i] == command[token->index])
 			token->i++;
@@ -55,7 +55,7 @@ char *get_token_value(t_token *token, char *command)
 		token->index = token->i;
 		return (token_val);
 	}
-	while(command[token->i] && !ft_strchr(" \t\v<|>&;'\"", command[token->i])) // ft_isalnum(command[token->i])
+	while(command[token->i] && !ft_strchr(" \t\v\n<|>&;'\"", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;
 	token_val = malloc((token->i - token->index) * sizeof(char) + 1);
 	ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
