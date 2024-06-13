@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/12 10:32:32 by kali             ###   ########.fr       */
+/*   Updated: 2024/06/13 15:15:21 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,8 @@ void print_list(t_command *tokens)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
 		else if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
-			
+		else
+			printf("syntax error: \n");
 		print_args(tokens);
 		t_command *tmp = tokens;
 		tokens = tokens->next;

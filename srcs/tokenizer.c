@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kali <kali@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/12 11:29:15 by kali             ###   ########.fr       */
+/*   Updated: 2024/06/13 15:17:22 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,10 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, ARG));
 	else if (token->prev_type == RED_IN || token->prev_type == RED_OUT || token->prev_type == APP || token->prev_type == HER_DOC)
 		return (set_token_type(token, FLE));
-	else 
+	else if (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == FLE)
 		return (set_token_type(token, CMD));
+	else
+		return (-1);
 	return (0);
 }
 
