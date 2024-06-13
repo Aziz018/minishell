@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/13 15:15:21 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:25:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,6 @@ int	parse_command(char *command)
 		return 0;
 	tokens = parser_command(tokens);
 	print_list(tokens);
-
 
 
 	// for execute commands
