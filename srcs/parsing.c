@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parssing.c                                         :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/13 15:25:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/13 15:36:22 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,12 @@ void print_list(t_command *tokens)
 
 	while(tokens != NULL)
 	{
+		if (tokens->type == -1)
+		{
+			printf("minishell: syntax error near unexpected token `%s`\n", tokens->value);
+			clear_list(&tokens);
+			return ;
+		}
 		printf("=> node: %d\n+---------------------------+\n| token: ---------- %s\n", ++i, tokens->value);
 		if (tokens->type == CMD)
 			printf("| type: ----------- CMD     |\n+---------------------------+\n");
@@ -138,8 +144,6 @@ void print_list(t_command *tokens)
 			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
 		else if (tokens->type == FLE)
 			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
-		else
-			printf("syntax error: \n");
 		print_args(tokens);
 		t_command *tmp = tokens;
 		tokens = tokens->next;
