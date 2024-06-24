@@ -141,7 +141,7 @@ t_command *parser_command(t_command *tokens)
 			ptr2->next = ptr->next;
 			ptr2->args[0] = ptr->value;
 			ptr2->args[1] = NULL;
-			free(ptr);
+//			free(ptr);
 		}
 		if (ptr2 != NULL)
 			ptr2 = ptr2->next;
