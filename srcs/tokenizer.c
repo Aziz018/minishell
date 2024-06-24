@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 11:22:34 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 14:57:48 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,16 +67,13 @@ char *get_token_value(t_token *token, char *command)
 		char special = command[token->i];
 		// while(command[token->i] && command[token->i] == command[token->index])
 		// 	token->i++;
-		if (command[token->i] == special)
-		{
-			while(command[token->i] && command[token->i] == special && token->i - token->index < 2)
-				token->i++;
-			token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-			ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));				
-			token->index = token->i;
-			printf("%s\n", token_val);
-			return (token_val);
-		}
+		while(command[token->i] && command[token->i] == special && token->i - token->index < 2)
+			token->i++;
+		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
+		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));				
+		token->index = token->i;
+		// printf("%s\n", token_val);
+		return (token_val);
 	}
 	while(command[token->i] && !ft_strchr(" \t\v\n<|>&;", command[token->i])) // ft_isalnum(command[token->i])
 		token->i++;

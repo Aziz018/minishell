@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 11:31:26 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:14:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,42 @@ char *skip_white_spaces(char *command)
 	while(*command && (*command == ' ' || *command == '\t' || *command == '\r' || *command == '\v'))
 		command++;
 	return (command);
+}
+void print_type(t_command *tokens)
+{
+	while (tokens != NULL)
+	{
+		printf("+---------------------------+\n");
+		printf("| value: ----------- %s\n", tokens->value);
+		if (tokens->type == CMD)
+			printf("| type: ----------- CMD     |\n+---------------------------+\n");
+		else if (tokens->type == RED_OUT)
+			printf("| type: ----------- RED_OUT |\n+---------------------------+\n\n");
+		else if (tokens->type == RED_IN)
+			printf("| type: ----------- RED_IN  |\n+---------------------------+\n\n");
+		else if (tokens->type == APP)
+			printf("| type: ----------- APP     |\n+---------------------------+\n\n");
+		else if (tokens->type == HER_DOC)
+			printf("| type: ----------- HER_DOC |\n+---------------------------+\n\n");
+		else if (tokens->type == PIPE)
+			printf("| type: ----------- PIPE    |\n+---------------------------+\n\n");
+		else if (tokens->type == LIST)
+			printf("| type: ----------- LIST    |\n+---------------------------+\n\n");
+		else if (tokens->type == BACK)
+			printf("| type: ----------- BACK    |\n+---------------------------+\n\n");
+		else if (tokens->type == ARG)
+			printf("| type: ----------- ARG     |\n+---------------------------+\n\n");
+		else if (tokens->type == OR_OP)
+			printf("| type: ----------- OR_OP   |\n+---------------------------+\n\n");
+		else if (tokens->type == AND_OP)
+			printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
+		else if (tokens->type == FLE)
+			printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
+		t_command *ptr = tokens->next;
+		free(tokens->value);
+		free(tokens);
+		tokens = ptr;
+	}
 }
 
 t_command *tokenize_command(char *commads)
@@ -33,7 +69,7 @@ t_command *tokenize_command(char *commads)
 		token.value = get_token_value(&token, commads);
 		if (!token.value)
 			break;
-		token.type = get_token_type(&token);		
+		token.type = get_token_type(&token);
 		add_back_list(&head, new_node(token.type, token.value));
 	}
 	return (head);
@@ -158,8 +194,9 @@ int	parse_command(char *command)
 	t_command *tokens = tokenize_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
 	if (!tokens)
 		return 0;
-	tokens = parser_command(tokens);
-	print_list(tokens);
+	print_type(tokens);
+	// tokens = parser_command(tokens);
+	// print_list(tokens);
 
 
 	// for execute commands
