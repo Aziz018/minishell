@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 17:53:43 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 19:42:03 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,14 @@ char *get_token_value(t_token *token, char *command)
 	token->index = token->i;
 	if (command[token->i] == '\'' || command[token->i] == '"')
 	{
-		char quote = command[token->i];
-		while(command[token->i] && command[token->i] == quote)	
+		while(command[token->i] && (command[token->i] == '\'' || command[token->i] == '"'))
 			token->i++;
 		token->index = token->i;
-		while(command[token->i] && command[token->i] != quote)
+		while(command[token->i] && command[token->i] != '\'' && command[token->i] != '"')
 			token->i++;
 		token_val = malloc((token->i - token->index) * sizeof(char) + 1);
-		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));		
-		while (command[token->i] && command[token->i] == quote)
+		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
+		while (command[token->i] && !ft_strchr("'\"", command[token->i]))
 			token->i++;
 		token->index = token->i;
 		return (token_val);
@@ -70,7 +69,6 @@ char *get_token_value(t_token *token, char *command)
 	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		char special = command[token->i];
-			
 		// while(command[token->i] && command[token->i] == command[token->index])
 		// 	token->i++;
 		while(command[token->i] && command[token->i] == special && token->i - token->index < 2)
