@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 15:31:24 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:51:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,15 @@ char *get_token_value(t_token *token, char *command)
 		return (token_val);
 	}
 	// token->index = token->i;
-	if (command[token->i] && ft_strchr("<|>&", command[token->i]))
+	if (command[token->i] == ';')
+	{
+		token->i++;
+		return (ft_strdup(";"));
+	}
+	if (command[token->i] && ft_strchr("<|>&;", command[token->i]))
 	{
 		char special = command[token->i];
+			
 		// while(command[token->i] && command[token->i] == command[token->index])
 		// 	token->i++;
 		while(command[token->i] && command[token->i] == special && token->i - token->index < 2)
@@ -101,7 +107,7 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, AND_OP));
 	else if (token->value[0] == '|' && token->value[1] == '|' && token->value[2] == '\0')
 		return (set_token_type(token, OR_OP));
-	else if (token->value[0] == ';')
+	else if (token->value[0] == ';' && token->value[1] == '\0')
 		return (set_token_type(token, LIST));
 	else if (token->prev_type == CMD || token->prev_type == ARG)
 		return (set_token_type(token, ARG));

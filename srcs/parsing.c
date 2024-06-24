@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 17:04:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:14:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,8 @@ void print_args(t_command *token)
 
 t_command *parser_command(t_command *tokens)
 {
+	t_command *tmp;
 	t_command *ptr = tokens;
-	// t_command *temp = tokens;
 	t_command *ptr2 = ptr;
 	ptr->args = NULL;
 	while(ptr2 != NULL)
@@ -121,7 +121,9 @@ t_command *parser_command(t_command *tokens)
 			while(ptr != NULL && ptr->type == ARG)
 			{
 				ptr2->args[i++] = ptr->value;
-				ptr = ptr->next;
+				tmp = ptr->next;
+				free(ptr);
+				ptr = tmp;
 			}
 			// if (ptr != NULL)
 			ptr2->next = ptr;
@@ -139,6 +141,7 @@ t_command *parser_command(t_command *tokens)
 			ptr2->next = ptr->next;
 			ptr2->args[0] = ptr->value;
 			ptr2->args[1] = NULL;
+			free(ptr);
 		}
 		if (ptr2 != NULL)
 			ptr2 = ptr2->next;
