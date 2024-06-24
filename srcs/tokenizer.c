@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 14:57:48 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:31:24 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,8 @@ int get_token_type(t_token *token)
 		return (set_token_type(token, FLE));
 	else if (ft_strisalnum(token->value) && (token->prev_type == -1 || token->prev_type == PIPE || token->prev_type == FLE))
 		return (set_token_type(token, CMD));
-	else
-		return (-1);
+	// else
+	// 	return (-1);
 	return (0);
 }
 
