@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/13 15:36:22 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:31:26 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_command *parser_command(t_command *tokens)
 		if (temp->type == CMD && ptr->type == ARG)
 		{
 			int i = 0;
-			temp->args = malloc((get_args_size(ptr) + 2) * sizeof(char *));
+			temp->args = malloc((get_args_size(ptr) + 2) * sizeof(char *)); // why + 2 one for the name of the command and ther other for NULL ptr
 			temp->args[i++] = ft_strdup(temp->value);
 			while(ptr != NULL && ptr->type == ARG)
 			{
