@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 13:51:08 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/24 19:50:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/25 10:22:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ int syntax_error(char *command)
 	return (0);
 }
 
+char *quoting(char *token_val, t_token *token, char *command)
+{
+	while(command[token->i] && ft_strchr("'\"", command[token->i]))
+	{
+		while(command[token->i] && (command[token->i] == '\'' || command[token->i] == '"'))
+			token->i++;
+		token->index = token->i;
+		while(command[token->i] && command[token->i] != '\'' && command[token->i] != '"')
+			token->i++;
+		char *token_val_ = malloc((token->i - token->index) * sizeof(char) + 1);
+		ft_strlcpy(token_val_, &command[token->index], (token->i - token->index + 1));
+		token_val = ft_strjoin(token_val, token_val_);
+		// token->index = token->i;
+	}
+	return (token_val);
+}
+
 char *get_token_value(t_token *token, char *command)
 {
 	char *token_val = NULL;
@@ -57,20 +74,7 @@ char *get_token_value(t_token *token, char *command)
 		ft_strlcpy(token_val, &command[token->index], (token->i - token->index + 1));
 		token->index = token->i;
 		if (command[token->i] == '\'' || command[token->i] == '"')
-		{
-			while(command[token->i] && ft_strchr("'\"", command[token->i]))
-			{
-				while(command[token->i] && (command[token->i] == '\'' || command[token->i] == '"'))
-					token->i++;
-				token->index = token->i;
-				while(command[token->i] && command[token->i] != '\'' && command[token->i] != '"')
-					token->i++;
-				char *token_val_ = malloc((token->i - token->index) * sizeof(char) + 1);
-				ft_strlcpy(token_val_, &command[token->index], (token->i - token->index + 1));
-				token_val = ft_strjoin(token_val, token_val_);
-				// token->index = token->i;
-			}
-		}
+			token_val = quoting(token_val, token, command);
 		return (token_val);
 	}
 	// token->index = token->i;
