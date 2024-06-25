@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/25 20:52:28 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:33:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ char *get_token(char *command_line, int *i)
 		while(command_line[j] && ft_strchr(" \t\v", command_line[j]))
 			j++;
 		*i = j;
+		if (command_line[j] == '\'' || command_line[j] == '"')
+		{
+			char quote = command_line[j++];
+			while(command_line[j] && command_line[j] != quote)
+				j++;
+		}
+		if (command_line[j] == '<' || command_line[j] == '>' || command_line[j] == '|')
+		{
+			char special = command_line[j];
+			while (command_line[j] && command_line[j] == special)
+				j++;
+			token_val = malloc((j - *i) * sizeof(char) + 1);
+			ft_strlcpy(token_val, &command_line[*i], j - *i + 1);
+			*i = j;
+			printf("token value: %s\n", token_val);
+			free(token_val);
+			// return (token_val);
+		}
 		while(command_line[j] &&  !ft_strchr(" \t\v<|>", command_line[j]))
 			j++;
 		token_val = malloc((j - *i) * sizeof(char) + 1);
