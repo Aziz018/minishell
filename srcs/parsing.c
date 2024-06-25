@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/25 21:33:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:40:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,21 +67,18 @@ char *get_token(char *command_line, int *i)
 			token_val = malloc((j - *i) * sizeof(char) + 1);
 			ft_strlcpy(token_val, &command_line[*i], j - *i + 1);
 			*i = j;
-			printf("token value: %s\n", token_val);
-			free(token_val);
-			// return (token_val);
+			// printf("token value: %s\n", token_val);
+			// free(token_val);
+			return (token_val);
 		}
 		while(command_line[j] &&  !ft_strchr(" \t\v<|>", command_line[j]))
 			j++;
 		token_val = malloc((j - *i) * sizeof(char) + 1);
 		ft_strlcpy(token_val, &command_line[*i], j - *i + 1);
 		*i = j;
-		// return (token_val);
-		printf("token value: %s\n", token_val);
-		free(token_val);
-		// if (!command_line[j])
-		// 	break;
-		// (*i)++;
+		return (token_val);
+		// printf("token value: %s\n", token_val);
+		// free(token_val);
 	}
 	return (NULL);
 }
@@ -89,13 +86,16 @@ char *get_token(char *command_line, int *i)
 t_command *tokensizer(char *command_line)
 {
 	int i = 0;
-	t_command table;
+	t_command *table = NULL;
 	while(command_line[i])
 	{
-		table.value = get_token(command_line, &i);
-		printf("token value: %s\n", table.value);
+		char *token = get_token(command_line, &i);
+		printf("token value: %s\n", token);
+		add_back_list(&table, new_node(0, token));
+		// free(table.value);
 		// table.type = get_token_type(table.value);
 	}
+	clear_list(&table);
 	return NULL;
 }
 

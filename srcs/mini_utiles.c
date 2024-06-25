@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_utiles.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziz <aziz@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 09:09:06 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/05 10:53:43 by aziz             ###   ########.fr       */
+/*   Updated: 2024/06/25 21:42:53 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	clear_list(t_command **lst)
 		ptr = node->next;
 		if (node->value != NULL)
 			free(node->value);
-		if (node->args != NULL)
-			free_array(node->args);
+		// if (node->args != NULL)
+		// 	free_array(node->args);
 		// ft_bzero(node->content);
 		free(node);
 		node = ptr;
