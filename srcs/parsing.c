@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/25 21:40:16 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:48:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,45 @@ char *get_token(char *command_line, int *i)
 	return (NULL);
 }
 
+void print_type(int type)
+{
+	if (type == CMD)
+		printf("| type: ----------- CMD     |\n+---------------------------+\n");
+	else if (type == RED_OUT)
+		printf("| type: ----------- RED_OUT |\n+---------------------------+\n");
+	else if (type == RED_IN)
+		printf("| type: ----------- RED_IN  |\n+---------------------------+\n");
+	else if (type == APP)
+		printf("| type: ----------- APP     |\n+---------------------------+\n");
+	else if (type == HER_DOC)
+		printf("| type: ----------- HER_DOC |\n+---------------------------+\n");
+	else if (type == PIPE)
+		printf("| type: ----------- PIPE    |\n+---------------------------+\n\n");
+	else if (type == LIST)
+		printf("| type: ----------- LIST    |\n+---------------------------+\n\n");
+	else if (type == BACK)
+		printf("| type: ----------- BACK    |\n+---------------------------+\n\n");
+	else if (type == ARG)
+		printf("| type: ----------- ARG     |\n+---------------------------+\n\n");
+	else if (type == OR_OP)
+		printf("| type: ----------- OR_OP   |\n+---------------------------+\n\n");
+	else if (type == AND_OP)
+		printf("| type: ----------- AND_OP  |\n+---------------------------+\n\n");
+	else if (type == FLE)
+		printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
+}
+
+void print_list(t_command *table)
+{
+	while (table != NULL)
+	{
+		printf("+---------------------------+\n");
+		printf("| token: ---------- [%s]\n", table->value);
+		print_type(table->type);
+		table = table->next;
+	}
+}
+
 t_command *tokensizer(char *command_line)
 {
 	int i = 0;
@@ -90,11 +129,11 @@ t_command *tokensizer(char *command_line)
 	while(command_line[i])
 	{
 		char *token = get_token(command_line, &i);
-		printf("token value: %s\n", token);
 		add_back_list(&table, new_node(0, token));
 		// free(table.value);
 		// table.type = get_token_type(table.value);
 	}
+	print_list(table);
 	clear_list(&table);
 	return NULL;
 }
