@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/25 21:48:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/25 21:49:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ t_command *tokensizer(char *command_line)
 	{
 		char *token = get_token(command_line, &i);
 		add_back_list(&table, new_node(0, token));
-		// free(table.value);
 		// table.type = get_token_type(table.value);
 	}
 	print_list(table);
