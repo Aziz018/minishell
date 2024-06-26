@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 16:16:51 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:17:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char *skip_white_spaces(char *command)
 int check_unqoted(char *line)
 {
 	int i = 0;
-	printf("line: %s\n", line);
+	// printf("line: %s\n", line);
 	while(line[i])
 	{
 		if (line[i] == '\'')
@@ -243,6 +243,7 @@ t_command *free_node(t_command *_tokens_list)
 	t_command *ptr = _tokens_list->next;
 	free(_tokens_list->value);
 	free(_tokens_list);
+	_tokens_list = NULL;
 	return (ptr);
 }
 int get_args_size(t_command *list)
@@ -284,11 +285,9 @@ t_command *parser_command(t_command *_tokens_list)
 			if (!_tokens_list)
 			{
 				printf("syntax error\n");
-				free(list_command->value);
-				free(list_command);
+				free_node(list_command);
 				clear_list(&head);
-				list_command = NULL;
-				break;
+				return (NULL);
 			}
 			list_command->args = malloc(2 * sizeof(char *));
 			list_command->args[0] = ft_strdup(_tokens_list->value);
@@ -299,6 +298,13 @@ t_command *parser_command(t_command *_tokens_list)
 		{
 			list_command->value = ft_strdup(_tokens_list->value);
 			_tokens_list = free_node(_tokens_list);
+			if (!_tokens_list)
+			{
+				printf("syntax error\n");
+				free_node(list_command);
+				clear_list(&head);
+				return (NULL);
+			}
 		}
 		add_back_list(&head, list_command);
 	}
@@ -309,15 +315,16 @@ int	parse_command(char *line)
 {
 	// printf("line befor lexer: %s\n", line);
 	line = lexer_command(line);
-	if (line != NULL && line[0])
-		printf("line after lexer: %s\n", line);
+	// if (line != NULL && line[0])
+		// printf("line after lexer: %s\n", line);
 	t_command *tokens_list = tokenzer_command(line);
 	// print_list(tokens_list);
 	t_command *list = parser_command(tokens_list);
+	free(line);
+	if (!list)
+		return (0);
 	print_list(list);
 	clear_list(&list);
-	// clear_list(&tokens_list);
-	free(line);
 	return (0);
 }	
 
