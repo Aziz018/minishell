@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 17:17:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 17:51:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,6 +235,7 @@ t_command *tokenzer_command(char *command_line)
 		int type = get_token_type(token);
 		add_back_list(&table, new_node(type, token));
 	}
+	free(command_line);
 	return table;
 }
 
@@ -311,6 +312,46 @@ t_command *parser_command(t_command *_tokens_list)
 	return (head);
 }
 
+t_command *expander_command(t_command *list)
+{
+	int i;
+	t_command *head = list;
+
+	while(list != NULL)
+	{
+		i = 0;
+		if (list->type == -1)
+		{
+			printf("syntax error\n");
+			clear_list(&head);
+			return (NULL);
+		}	
+		while(list->args != NULL && list->args[i] != NULL)
+		{
+			int j = 0;
+			int k = 0;
+			char *argument = ft_calloc((ft_strlen(list->args[i]) + 1), sizeof(char));
+			while(list->args[i][j])
+			{
+				if (list->args[i][j] == '\'' || list->args[i][j] == '"')
+				{
+					char quote = list->args[i][j++];
+					while(list->args[i][j] && list->args[i][j] != quote)
+						argument[k++] = list->args[i][j++];
+					j++;
+				}
+				else
+					argument[k++] = list->args[i][j++];
+			}
+			free(list->args[i]);
+			list->args[i] = argument;
+			i++;
+		}
+		list = list->next;
+	}
+	return (head);
+}
+
 int	parse_command(char *line)
 {
 	// printf("line befor lexer: %s\n", line);
@@ -320,9 +361,8 @@ int	parse_command(char *line)
 	t_command *tokens_list = tokenzer_command(line);
 	// print_list(tokens_list);
 	t_command *list = parser_command(tokens_list);
-	free(line);
-	if (!list)
-		return (0);
+	// print_list(list);
+	list = expander_command(list);
 	print_list(list);
 	clear_list(&list);
 	return (0);
