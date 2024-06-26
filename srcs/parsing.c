@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 10:52:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:10:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ char *lexer(char *line)
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '\'')
 					unquoted_line[j++] = trimed_line[i++];
+				if (!unquoted_line[i])
+					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
 			else
@@ -75,6 +77,8 @@ char *lexer(char *line)
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '"')
 					unquoted_line[j++] = trimed_line[i++];
+				if (!unquoted_line[i])
+					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
 			else
@@ -217,8 +221,8 @@ int	parse_command(char *line)
 	line = lexer(line);
 	if (line != NULL && line[0])
 		printf("line after lexer: %s\n", line);
-	// t_command *tokens = tokensizer(line);
-	// (void)tokens;
+	t_command *tokens = tokensizer(line);
+	(void)tokens;
 	free(line);
 	return (0);
 }	
