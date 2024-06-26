@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 17:51:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 18:37:12 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ char *get_token(char *command_line, int *i)
 				if (command_line[j] == quote)
 					j++;
 			}		
-			if (command_line[j])
+			else if (command_line[j])
 				j++;
 		}
 		token_val = malloc((j - *i) * sizeof(char) + 1);
