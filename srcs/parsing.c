@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 12:54:57 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:40:41 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ char *get_token(char *command_line, int *i)
 			char quote = command_line[j++];
 			while(command_line[j] && command_line[j] != quote)
 				j++;
+			if (command_line[j] == quote)
+				j++;
 		}
 		if (command_line[j] == '<' || command_line[j] == '>' || command_line[j] == '|')
 		{
@@ -125,7 +127,7 @@ char *get_token(char *command_line, int *i)
 			*i = j;
 			return (token_val);
 		}
-		while(command_line[j] &&  !ft_strchr(" \t\v<|>", command_line[j]))
+		while(command_line[j] && !ft_strchr(" \t\v<|>", command_line[j]))
 		{
 			if (command_line[j] == '\'' || command_line[j] == '"')
 			{
