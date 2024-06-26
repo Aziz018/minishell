@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 10:51:02 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:52:59 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,23 +26,19 @@ int check_unqoted(char *line)
 		if (line[i] == '\'')
 		{
 			while(line[++i] && line[i] != '\'');
-				// i++;
 			if (!line[i])
 				return (1);
-			// else
 			i++;
 		}
 		else if (line[i] == '"')
 		{
 			while(line[++i] && line[i] != '"');
-				// i++;
 			if (!line[i])
 				return (1);
 			i++;
 		}
 		else
 			i++;
-		// i++;
 	}
 	return (0);
 }
@@ -53,7 +49,6 @@ char *lexer(char *line)
 	int j = 0;
 	char *trimed_line = ft_strtrim(line, " \t\n\v");
 	free(line);
-	// printf("trimed: |%s|\n", trimed_line);
 	char *unquoted_line = ft_calloc(ft_strlen(trimed_line) + 1, sizeof(char));
 	while(trimed_line[i])
 	{
@@ -218,9 +213,10 @@ t_command *tokensizer(char *command_line)
 
 int	parse_command(char *line)
 {
-	printf("line befor lexer: %s\n", line);
+	// printf("line befor lexer: %s\n", line);
 	line = lexer(line);
-	printf("line after lexer: %s\n", line);
+	if (line != NULL && line[0])
+		printf("line after lexer: %s\n", line);
 	// t_command *tokens = tokensizer(line);
 	// (void)tokens;
 	free(line);
