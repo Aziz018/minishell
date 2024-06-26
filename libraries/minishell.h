@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 08:53:55 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 14:56:15 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef enum s_types
 	HER_DOC
 } t_types;
 
-# define CMD 			0
+# define TOKEN			0 //CMD 			0
 	
 # define EXEC 			1
 # define RED_OUT 		2

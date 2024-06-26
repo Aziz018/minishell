@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 14:40:41 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 16:16:51 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int check_unqoted(char *line)
 	return (0);
 }
 
-char *lexer(char *line)
+char *lexer_command(char *line)
 {
 	int i = 0;
 	int j = 0;
@@ -102,7 +102,6 @@ char *get_token(char *command_line, int *i)
 {
 	int j = 0;
 	char *token_val = NULL;
-	// ft_substr()
 	j = *i;
 	while(command_line[*i])
 	{
@@ -151,8 +150,8 @@ void print_type(int type)
 {
 	if (type == -1)
 		printf("| type: ----------- ERROR   |\n+---------------------------+\n");
-	else if (type == CMD)
-		printf("| type: ----------- CMD     |\n+---------------------------+\n");
+	else if (type == TOKEN)
+		printf("| type: ----------- TOKEN   |\n+---------------------------+\n");
 	else if (type == RED_OUT)
 		printf("| type: ----------- RED_OUT |\n+---------------------------+\n");
 	else if (type == RED_IN)
@@ -177,6 +176,17 @@ void print_type(int type)
 		printf("| type: ----------- FLE     |\n+---------------------------+\n\n");
 }
 
+void print_args(char **args)
+{
+	int i = 0;
+	while(args != NULL && *args)
+	{
+		printf("	+---------------------------+\n");
+		printf("	| arg[%d]: --------- [%s]\n", i++, *args++);
+		printf("	+---------------------------+\n");
+	}
+}
+
 void print_list(t_command *table)
 {
 	while (table != NULL)
@@ -184,17 +194,17 @@ void print_list(t_command *table)
 		printf("+---------------------------+\n");
 		printf("| token: ---------- [%s]\n", table->value);
 		print_type(table->type);
+		print_args(table->args);
 		table = table->next;
 	}
 }
 
 int get_token_type(char *token)
 {
-	// int i = -1;
-	// if (token[0] == '\'' || token[0] == '"')
-		//return (CMD);
 	if (token[0] == '|' && !token[1])
 		return (PIPE);
+	if (token[0] == '|' && token[1] == '|' && !token[2])
+		return (OR_OP);
 	else if (token[0] == '>' && !token[1])
 		return (RED_OUT);
 	else if (token[0] == '<' && !token[1])
@@ -203,13 +213,17 @@ int get_token_type(char *token)
 		return (APP);
 	else if (token[0] == '<' && token[1] == '<' && !token[2])
 		return (HER_DOC);
-	else if ((token[0] != '\'' || token[0] != '"') && ft_strchr("<|&>", token[0]) && ft_strlen(token) > 2)
+	else if (token[0] == '&' && !token[1])
+		return (BACK);	
+	else if (token[0] == '&' && token[1] == '&' && !token[2])
+		return (AND_OP);
+	else if (ft_strchr("<|&>", token[0]) && ft_strlen(token) > 2)
 		return (-1);
 	else
-		return (CMD);
+		return (TOKEN);
 }
 
-t_command *tokensizer(char *command_line)
+t_command *tokenzer_command(char *command_line)
 {
 	int i = 0;
 	t_command *table = NULL;
@@ -221,31 +235,91 @@ t_command *tokensizer(char *command_line)
 		int type = get_token_type(token);
 		add_back_list(&table, new_node(type, token));
 	}
-	print_list(table);
-	clear_list(&table);
-	return NULL;
+	return table;
+}
+
+t_command *free_node(t_command *_tokens_list)
+{
+	t_command *ptr = _tokens_list->next;
+	free(_tokens_list->value);
+	free(_tokens_list);
+	return (ptr);
+}
+int get_args_size(t_command *list)
+{
+	int i = 0;
+	while(list != NULL && list->type == TOKEN)
+	{
+		list = list->next;
+		i++;
+	}	
+	return (i);
+}
+
+t_command *parser_command(t_command *_tokens_list)
+{
+	t_command *head = NULL;
+	t_command *list_command;
+	int i;
+	
+	while(_tokens_list != NULL)
+	{
+		list_command = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
+		list_command->args = NULL;
+		if (_tokens_list->type == TOKEN)
+		{
+			i = 0;
+			int size = get_args_size(_tokens_list);
+			list_command->args = malloc((size + 1) * sizeof(char *));
+			while(_tokens_list != NULL && _tokens_list->type == TOKEN)
+			{
+				list_command->args[i++] = ft_strdup(_tokens_list->value);
+				_tokens_list = free_node(_tokens_list);
+			}
+			list_command->args[i] = NULL;
+		}
+		else if (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC)
+		{
+			_tokens_list = free_node(_tokens_list);
+			if (!_tokens_list)
+			{
+				printf("syntax error\n");
+				free(list_command->value);
+				free(list_command);
+				clear_list(&head);
+				list_command = NULL;
+				break;
+			}
+			list_command->args = malloc(2 * sizeof(char *));
+			list_command->args[0] = ft_strdup(_tokens_list->value);
+			list_command->args[1] = NULL;
+			_tokens_list = free_node(_tokens_list);
+		}
+		else
+		{
+			list_command->value = ft_strdup(_tokens_list->value);
+			_tokens_list = free_node(_tokens_list);
+		}
+		add_back_list(&head, list_command);
+	}
+	return (head);
 }
 
 int	parse_command(char *line)
 {
 	// printf("line befor lexer: %s\n", line);
-	line = lexer(line);
+	line = lexer_command(line);
 	if (line != NULL && line[0])
 		printf("line after lexer: %s\n", line);
-	t_command *tokens = tokensizer(line);
-	(void)tokens;
+	t_command *tokens_list = tokenzer_command(line);
+	// print_list(tokens_list);
+	t_command *list = parser_command(tokens_list);
+	print_list(list);
+	clear_list(&list);
+	// clear_list(&tokens_list);
 	free(line);
 	return (0);
 }	
-	// t_command *tokens = tokenize_command(command); // this function is the lexical analyser of lexer (tokenizer) its separate the input into a set tokens
-	// if (!tokens)
-		// return 0;
-	// printf("\nTokenising:\n\n");
-	// print_type(tokens);
-	// tokens = parser_command(tokens);
-	// printf("\n\n\nParsing:\n\n");
-	// print_list(tokens);
-
 
 	// for execute commands
 
