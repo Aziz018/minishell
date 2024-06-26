@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/25 21:49:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:33:40 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@ char *skip_white_spaces(char *command)
 		command++;
 	return (command);
 }
+// int check_unqoted(char *line)
+// {
+// 	int i = 0;
+// 	while(line[i])
+// 	{
+		
+// 	}	
+// }
 
 char *lexer(char *line)
 {
@@ -29,17 +37,44 @@ char *lexer(char *line)
 	char *unquoted_line = ft_calloc(ft_strlen(trimed_line) + 1, sizeof(char));
 	while(trimed_line[i])
 	{
-		if (trimed_line[i] && (trimed_line[i] == '\'' || trimed_line[i] == '"') && (trimed_line[i + 1] == '\'' || trimed_line[i + 1] == '"'))
+		if (trimed_line[i] && trimed_line[i] == '\'')
 		{
-			char quote = trimed_line[i];
-			if (trimed_line[i + 1] == quote)
+			if (trimed_line[i + 1] == '\'')
 				i += 2;
+			else if (trimed_line[i + 1] == '"')
+			{
+				unquoted_line[j++] = trimed_line[i++];
+				while(trimed_line[i] && trimed_line[i] != '\'')
+					unquoted_line[j++] = trimed_line[i++];
+				unquoted_line[j++] = trimed_line[i++];
+			}
+			else
+				unquoted_line[j++] = trimed_line[i++];
+		}
+		else if (trimed_line[i] && trimed_line[i] == '"')
+		{
+			if (trimed_line[i + 1] == '"')
+				i += 2;
+			else if (trimed_line[i + 1] == '\'')
+			{
+				unquoted_line[j++] = trimed_line[i++];
+				while(trimed_line[i] && trimed_line[i] != '"')
+					unquoted_line[j++] = trimed_line[i++];
+				unquoted_line[j++] = trimed_line[i++];
+			}
+			else
+				unquoted_line[j++] = trimed_line[i++];
 		}
 		else
 			unquoted_line[j++] = trimed_line[i++];
 	}
 	free(trimed_line);
     unquoted_line[j] = '\0';
+	// if (check_unqoted(unquoted_line))
+	// {
+	// 	free(unquoted_line);
+	// 	unquoted_line = NULL;
+	// }
 	return (unquoted_line);
 }
 char *get_token(char *command_line, int *i)
@@ -85,7 +120,9 @@ char *get_token(char *command_line, int *i)
 
 void print_type(int type)
 {
-	if (type == CMD)
+	if (type == -1)
+		printf("| type: ----------- ERROR   |\n+---------------------------+\n");
+	else if (type == CMD)
 		printf("| type: ----------- CMD     |\n+---------------------------+\n");
 	else if (type == RED_OUT)
 		printf("| type: ----------- RED_OUT |\n+---------------------------+\n");
@@ -122,6 +159,27 @@ void print_list(t_command *table)
 	}
 }
 
+int get_token_type(char *token)
+{
+	// int i = -1;
+	// if (token[0] == '\'' || token[0] == '"')
+		//return (CMD);
+	if (token[0] == '|' && !token[1])
+		return (PIPE);
+	else if (token[0] == '>' && !token[1])
+		return (RED_OUT);
+	else if (token[0] == '<' && !token[1])
+		return (RED_IN);
+	else if (token[0] == '>' && token[1] == '>' && !token[2])
+		return (APP);
+	else if (token[0] == '<' && token[1] == '<' && !token[2])
+		return (HER_DOC);
+	else if ((token[0] != '\'' || token[0] != '"') && ft_strchr("<|&>", token[0]) && ft_strlen(token) > 2)
+		return (-1);
+	else
+		return (CMD);
+}
+
 t_command *tokensizer(char *command_line)
 {
 	int i = 0;
@@ -129,8 +187,8 @@ t_command *tokensizer(char *command_line)
 	while(command_line[i])
 	{
 		char *token = get_token(command_line, &i);
-		add_back_list(&table, new_node(0, token));
-		// table.type = get_token_type(table.value);
+		int type = get_token_type(token);
+		add_back_list(&table, new_node(type, token));
 	}
 	print_list(table);
 	clear_list(&table);
@@ -139,11 +197,11 @@ t_command *tokensizer(char *command_line)
 
 int	parse_command(char *line)
 {
-	// printf("line befor lexer: %s\n", line);
+	printf("line befor lexer: %s\n", line);
 	line = lexer(line);
-	// printf("line after lexer: %s\n", line);
-	t_command *tokens = tokensizer(line);
-	(void)tokens;
+	printf("line after lexer: %s\n", line);
+	// t_command *tokens = tokensizer(line);
+	// (void)tokens;
 	free(line);
 	return (0);
 }	

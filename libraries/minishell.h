@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/13 15:30:27 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 08:53:55 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void			clear_list(t_command **lst);
 int				parse_command(char *command);
 t_command 		*tokenize_command(char *commads);
 char 			*get_token_value(t_token *token, char *commads);
-int 			get_token_type(t_token *token);
+// int 			get_token_type(t_token *token);
 void			parentheses(char *command);
 int 			check_syntax(char *command);
 
