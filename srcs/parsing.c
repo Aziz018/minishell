@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 10:33:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 10:51:02 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,34 @@ char *skip_white_spaces(char *command)
 		command++;
 	return (command);
 }
-// int check_unqoted(char *line)
-// {
-// 	int i = 0;
-// 	while(line[i])
-// 	{
-		
-// 	}	
-// }
+int check_unqoted(char *line)
+{
+	int i = 0;
+	while(line[i])
+	{
+		if (line[i] == '\'')
+		{
+			while(line[++i] && line[i] != '\'');
+				// i++;
+			if (!line[i])
+				return (1);
+			// else
+			i++;
+		}
+		else if (line[i] == '"')
+		{
+			while(line[++i] && line[i] != '"');
+				// i++;
+			if (!line[i])
+				return (1);
+			i++;
+		}
+		else
+			i++;
+		// i++;
+	}
+	return (0);
+}
 
 char *lexer(char *line)
 {
@@ -70,11 +90,12 @@ char *lexer(char *line)
 	}
 	free(trimed_line);
     unquoted_line[j] = '\0';
-	// if (check_unqoted(unquoted_line))
-	// {
-	// 	free(unquoted_line);
-	// 	unquoted_line = NULL;
-	// }
+	if (check_unqoted(unquoted_line))
+	{
+		printf("syntax error\n");
+		free(unquoted_line);
+		unquoted_line = NULL;
+	}
 	return (unquoted_line);
 }
 char *get_token(char *command_line, int *i)
