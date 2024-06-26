@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 11:14:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:02:50 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char *skip_white_spaces(char *command)
 int check_unqoted(char *line)
 {
 	int i = 0;
+	printf("line: %s\n", line);
 	while(line[i])
 	{
 		if (line[i] == '\'')
@@ -61,7 +62,7 @@ char *lexer(char *line)
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '\'')
 					unquoted_line[j++] = trimed_line[i++];
-				if (!unquoted_line[i])
+				if (!trimed_line[i])
 					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
@@ -77,12 +78,12 @@ char *lexer(char *line)
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '"')
 					unquoted_line[j++] = trimed_line[i++];
-				if (!unquoted_line[i])
+				if (!trimed_line[i])
 					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
-			else
-				unquoted_line[j++] = trimed_line[i++];
+			// else
+			// 	unquoted_line[j++] = trimed_line[i++];
 		}
 		else
 			unquoted_line[j++] = trimed_line[i++];
