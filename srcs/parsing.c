@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 12:02:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:11:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ char *lexer(char *line)
 					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
-			// else
-			// 	unquoted_line[j++] = trimed_line[i++];
+			else
+				unquoted_line[j++] = trimed_line[i++];
 		}
 		else
 			unquoted_line[j++] = trimed_line[i++];
