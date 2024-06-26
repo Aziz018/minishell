@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 11:10:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 11:14:17 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,6 +204,8 @@ t_command *tokensizer(char *command_line)
 {
 	int i = 0;
 	t_command *table = NULL;
+	if (!command_line)
+		return NULL;
 	while(command_line[i])
 	{
 		char *token = get_token(command_line, &i);
