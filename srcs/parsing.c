@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 12:11:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/26 12:54:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char *lexer(char *line)
 		{
 			if (trimed_line[i + 1] == '\'')
 				i += 2;
-			else if (trimed_line[i + 1] == '"')
+			else //if (trimed_line[i + 1] == '"')
 			{
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '\'')
@@ -66,14 +66,14 @@ char *lexer(char *line)
 					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
-			else
-				unquoted_line[j++] = trimed_line[i++];
+			// else
+			// 	unquoted_line[j++] = trimed_line[i++];
 		}
 		else if (trimed_line[i] && trimed_line[i] == '"')
 		{
 			if (trimed_line[i + 1] == '"')
 				i += 2;
-			else if (trimed_line[i + 1] == '\'')
+			else //if (trimed_line[i + 1] == '\'')
 			{
 				unquoted_line[j++] = trimed_line[i++];
 				while(trimed_line[i] && trimed_line[i] != '"')
@@ -82,8 +82,8 @@ char *lexer(char *line)
 					break;
 				unquoted_line[j++] = trimed_line[i++];
 			}
-			else
-				unquoted_line[j++] = trimed_line[i++];
+			// else
+			// 	unquoted_line[j++] = trimed_line[i++];
 		}
 		else
 			unquoted_line[j++] = trimed_line[i++];
@@ -123,18 +123,24 @@ char *get_token(char *command_line, int *i)
 			token_val = malloc((j - *i) * sizeof(char) + 1);
 			ft_strlcpy(token_val, &command_line[*i], j - *i + 1);
 			*i = j;
-			// printf("token value: %s\n", token_val);
-			// free(token_val);
 			return (token_val);
 		}
 		while(command_line[j] &&  !ft_strchr(" \t\v<|>", command_line[j]))
-			j++;
+		{
+			if (command_line[j] == '\'' || command_line[j] == '"')
+			{
+				char quote = command_line[j];
+				while(command_line[++j] && command_line[j] != quote);
+				if (command_line[j] == quote)
+					j++;
+			}		
+			if (command_line[j])
+				j++;
+		}
 		token_val = malloc((j - *i) * sizeof(char) + 1);
 		ft_strlcpy(token_val, &command_line[*i], j - *i + 1);
 		*i = j;
 		return (token_val);
-		// printf("token value: %s\n", token_val);
-		// free(token_val);
 	}
 	return (NULL);
 }
