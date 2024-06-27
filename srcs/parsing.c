@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 08:37:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 10:29:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,7 @@ t_command *parser_command(t_command *_tokens_list)
 			}
 			list_command->args[i] = NULL;
 		}
-		else if (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC)
+		else if ((_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC) && _tokens_list->next->type != PIPE)
 		{
 			_tokens_list = free_node(_tokens_list);
 			if (!_tokens_list)
@@ -316,7 +316,12 @@ t_command *expander_command(t_command *list)
 {
 	int i;
 	t_command *head = list;
-
+	if (list != NULL && (list->type == PIPE || list->type == OR_OP))
+	{
+		printf("syntax error\n");
+		clear_list(&head);
+		return (NULL);
+	}
 	while(list != NULL)
 	{
 		i = 0;
