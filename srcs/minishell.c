@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 14:57:17 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:07:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,28 +41,32 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-int	exec_command(char *command)
+int	exec_command(t_command *commands_list)
 {
-	pid_t	pid;
-	char	*cmd_path;
-	char **parsedcmd = ft_split(command, ' ');
-	if (command == NULL || command[0] == 0)
-		return (0);
-	cmd_path = ft_strjoin("/bin/", parsedcmd[0]);
-	if (access(cmd_path, X_OK) == 0)
+	while (commands_list != NULL)
 	{
-		pid = fork();
-		if (pid == -1)
-			return (0);
-		else if (pid == 0)
-			execve(cmd_path, &parsedcmd[1], NULL);
+		pid_t	pid;
+		char	*cmd_path;
+		// char ** = ft_split(command, ' ');
+		// if (command == NULL || command[0] == 0)
+		// 	return (0);
+		if (commands_list->type == TOKEN)
+			cmd_path = ft_strjoin("/bin/", commands_list->args[0]);
+		if (access(cmd_path, X_OK) == 0)
+		{
+			pid = fork();
+			if (pid == -1)
+				return (0);
+			else if (pid == 0)
+				execve(cmd_path, commands_list->args, data->envirenment);
+			else
+				wait(NULL);
+		}
 		else
-			wait(NULL);
+			printf("%s: command not found\n", commands_list->value);
+		// free(cmd_path);
+		commands_list = commands_list->next;
 	}
-	else
-		printf("%s: command not found\n", command);
-	free_array(parsedcmd);
-	free(cmd_path);
 	return (0);
 }
 
@@ -148,6 +152,7 @@ void	init_minishell(int ac, char **av, char **env)
 	//"┌──(aziz㉿aelkheta)-[/nfs/homes/aelkheta/Desktop/minishell]\n└─$ ";
 	data->ac = ac;
 	data->env = creat_env(env);
+	data->envirenment = env;
 	data->av = av;
 	data->syntax_error = false;
 	data->prompt = get_prompt();

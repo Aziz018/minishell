@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 16:57:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 19:09:05 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,8 +275,7 @@ t_command *parser_command(t_command *_tokens_list)
 		if (_tokens_list->type == TOKEN)
 		{
 			i = 0;
-			int size = get_args_size(_tokens_list);
-			list_command->args = malloc((size + 1) * sizeof(char *));
+			list_command->args = malloc((get_args_size(_tokens_list) + 1) * sizeof(char *));
 			while(_tokens_list != NULL && _tokens_list->type == TOKEN)
 			{
 				list_command->args[i++] = ft_strdup(_tokens_list->value);
@@ -290,10 +289,8 @@ t_command *parser_command(t_command *_tokens_list)
 			if (!_tokens_list || _tokens_list->type == PIPE || _tokens_list->type == OR_OP)
 			{
 				printf("syntax error parser\n");
-				
-				// free_node(_tokens_list);
-				clear_list(&_tokens_list);
 				free_node(list_command);
+				free_node(_tokens_list);
 				clear_list(&head);
 				return (NULL);
 			}
@@ -304,7 +301,6 @@ t_command *parser_command(t_command *_tokens_list)
 		}
 		else
 		{
-			// list_command->value = ft_strdup(_tokens_list->value);
 			_tokens_list = free_node(_tokens_list);
 			if (!_tokens_list)
 			{
@@ -327,39 +323,51 @@ char *get_var(char *env_var)
 		return (NULL);
 	while(env_var[i] && env_var[i] != ' ' && env_var[i] != '$')
 		i++;
-	if (env_var[i])
-	{
-		char *env_val = malloc((i + 1) * sizeof(char));
-		ft_strlcpy(env_val, env_var, i);
-		printf("env_val: [%s]\n", env_val);
-		return(env_val);
-	}	
-	return (NULL);
+	char *env_val = malloc((i + 1) * sizeof(char));
+	ft_strlcpy(env_val, env_var, i + 1);
+	// printf("env_val: [%s]\n", env_val);
+	return(env_val);
 }
 
-int get_arg_len(char *arg)
+char *unquote_arg(char *arg)
 {
-	int i = 0;
-	int len = 0;
-
-	while (arg[i])
+	int j = 0;
+	int k = 0;
+	
+	char *argument = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
+	while(arg[j])
 	{
-		if (arg[i] == '$')
+		if (arg[j] == '\'' || arg[j] == '"')
 		{
-			char *env = get_var(&arg[++i]);
-			// printf("%s\n", env);
-			len += ft_strlen(env);
-			while(arg[i] && (arg[i] != ' ' || arg[i] != '\t'))
-				i++;
+			char quote = arg[j++];
+			while(arg[j] && arg[j] != quote)
+				argument[k++] = arg[j++];
+			j++;
 		}
 		else
-		{
-			i++;
-			len++;
-		}
+			argument[k++] = arg[j++];
 	}
-	return (len);
+	free(arg);
+	return (argument);
 }
+
+char *expand_vars(char *argument)
+{
+	int i = 0;
+	
+	while(argument[i])
+	{
+		if (argument[i] == '$')
+		{
+			char *expanded = get_var(&argument[++i]);
+			return (expanded);
+			continue;
+		}
+		i++;
+	}
+	return (argument);
+}
+
 
 t_command *expander_command(t_command *list)
 {
@@ -382,24 +390,9 @@ t_command *expander_command(t_command *list)
 		}	
 		while(list->args != NULL && list->args[i] != NULL)
 		{
-			int j = 0;
-			int k = 0;
-
-			char *argument = ft_calloc(ft_strlen(list->args[i]) + 1, sizeof(char));
-			while(list->args[i][j])
-			{
-				if (list->args[i][j] == '\'' || list->args[i][j] == '"')
-				{
-					char quote = list->args[i][j++];
-					while(list->args[i][j] && list->args[i][j] != quote)
-						argument[k++] = list->args[i][j++];
-					j++;
-				}
-				else
-					argument[k++] = list->args[i][j++];
-			}
-			free(list->args[i]);
-			list->args[i] = argument;
+			list->value = unquote_arg(list->value);
+			list->args[i] = unquote_arg(list->args[i]);
+			// list->args[i] = expand_vars(list->args[i]);
 			i++;
 		}
 		list = list->next;
@@ -418,15 +411,11 @@ int	parse_command(char *line)
 	t_command *list = parser_command(tokens_list);
 	// print_list(list);
 	list = expander_command(list);
-	print_list(list);
+	// print_list(list);
+
+	// for execute commands
+	// exec_command(list);
+
 	clear_list(&list);
 	return (0);
 }	
-
-	// for execute commands
-
-	// if (built_in_cmd(parsedcmd))
-	// 	return (0);
-	// exec_command(command);
-    
-// }

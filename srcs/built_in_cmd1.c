@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 16:43:58 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/05/28 14:25:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 17:13:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,24 +98,24 @@ int	echo(char **cmd)
 		printf("\n");
 	return (0);
 }
-int	built_in_cmd(char **parsedcmd)
-{
-	if (parsedcmd == NULL || parsedcmd[0] == 0)
-		return (0);
-	else if (!ft_strncmp("exit", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		exit(0);
-	else if (!ft_strncmp("echo", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		echo(parsedcmd);
-	else if (!ft_strncmp("pwd", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		pwd();
-	else if (!ft_strncmp("cd", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		cd(parsedcmd[1]);
-	else if (!ft_strncmp("env", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		env(data->env);
-	else if (!ft_strncmp("export", parsedcmd[0], ft_strlen(parsedcmd[0])))
-		export(parsedcmd[1]);
-	else
-		return (0);
-	free_array(parsedcmd);
-	return (1);
-}
+
+// int	built_in_cmd(char **command)
+// {
+// 	if (command == NULL || command[0] == 0)
+// 		return (0);
+// 	else if (!ft_strncmp("exit", command, ft_strlen(command)))
+// 		exit(0);
+// 	else if (!ft_strncmp("echo", command, ft_strlen(command)))
+// 		echo(command);
+// 	else if (!ft_strncmp("pwd", command, ft_strlen(command)))
+// 		pwd();
+// 	else if (!ft_strncmp("cd", command, ft_strlen(command)))
+// 		cd(command);
+// 	else if (!ft_strncmp("env", command, ft_strlen(command)))
+// 		env(data->env);
+// 	else if (!ft_strncmp("export", command, ft_strlen(command)))
+// 		export(command);
+// 	else
+// 		return (0);
+// 	return (1);
+// }

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/26 14:56:15 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 18:59:38 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct s_data
 	char				*prompt;
 	char 				*new_command;
 	char  				*special_chars;
+	char				**envirenment;
 	bool				syntax_error; 			// boolean variable for syntax_error
 }				t_data;
 
@@ -140,5 +141,7 @@ int 			check_syntax(char *command);
 // parsing utiles
 
 int 			ft_strisalnum(char *str);
+
+int				exec_command(t_command *commands_list);
 
 #endif
