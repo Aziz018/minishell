@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 10:29:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:13:45 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,48 @@ t_command *parser_command(t_command *_tokens_list)
 	return (head);
 }
 
+char *get_var(char *env_var)
+{
+	int i = 0;
+
+	if (!env_var || !env_var[0])
+		return (NULL);
+	while(env_var[i] && env_var[i] != ' ' && env_var[i] != '$')
+		i++;
+	if (env_var[i])
+	{
+		char *env_val = malloc((i + 1) * sizeof(char));
+		ft_strlcpy(env_val, env_var, i);
+		printf("env_val: [%s]\n", env_val);
+		return(env_val);
+	}	
+	return (NULL);
+}
+
+int get_arg_len(char *arg)
+{
+	int i = 0;
+	int len = 0;
+
+	while (arg[i])
+	{
+		if (arg[i] == '$')
+		{
+			char *env = get_var(&arg[++i]);
+			// printf("%s\n", env);
+			len += ft_strlen(env);
+			while(arg[i] && (arg[i] != ' ' || arg[i] != '\t'))
+				i++;
+		}
+		else
+		{
+			i++;
+			len++;
+		}
+	}
+	return (len);
+}
+
 t_command *expander_command(t_command *list)
 {
 	int i;
@@ -335,7 +377,10 @@ t_command *expander_command(t_command *list)
 		{
 			int j = 0;
 			int k = 0;
-			char *argument = ft_calloc((ft_strlen(list->args[i]) + 1), sizeof(char));
+			int len = get_arg_len(list->args[i]) + 1;
+
+			printf("len: %d\n\n", len);
+			char *argument = ft_calloc(ft_strlen(list->args[i]) + 1, sizeof(char));
 			while(list->args[i][j])
 			{
 				if (list->args[i][j] == '\'' || list->args[i][j] == '"')
@@ -345,6 +390,11 @@ t_command *expander_command(t_command *list)
 						argument[k++] = list->args[i][j++];
 					j++;
 				}
+				// else if (list->args[i][j] == '$')
+				// {
+					// get_env_var(&list->args[i][j + 1]);
+					//char *env_val = get_env_var(&list->args[i][++j]);
+				// }
 				else
 					argument[k++] = list->args[i][j++];
 			}
