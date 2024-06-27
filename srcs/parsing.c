@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 15:13:45 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:57:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,9 @@ t_command *tokenzer_command(char *command_line)
 	{
 		char *token = get_token(command_line, &i);
 		int type = get_token_type(token);
-		add_back_list(&table, new_node(type, token));
+		t_command *node = new_node(type, token);
+		node->args = NULL;
+		add_back_list(&table, node);
 	}
 	free(command_line);
 	return table;
@@ -241,6 +243,8 @@ t_command *tokenzer_command(char *command_line)
 
 t_command *free_node(t_command *_tokens_list)
 {
+	if (!_tokens_list)
+		return (NULL);
 	t_command *ptr = _tokens_list->next;
 	free(_tokens_list->value);
 	free(_tokens_list);
@@ -280,12 +284,15 @@ t_command *parser_command(t_command *_tokens_list)
 			}
 			list_command->args[i] = NULL;
 		}
-		else if ((_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC) && _tokens_list->next->type != PIPE)
+		else if (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC)
 		{
 			_tokens_list = free_node(_tokens_list);
-			if (!_tokens_list)
+			if (!_tokens_list || _tokens_list->type == PIPE || _tokens_list->type == OR_OP)
 			{
-				printf("syntax error\n");
+				printf("syntax error parser\n");
+				
+				// free_node(_tokens_list);
+				clear_list(&_tokens_list);
 				free_node(list_command);
 				clear_list(&head);
 				return (NULL);
@@ -297,7 +304,7 @@ t_command *parser_command(t_command *_tokens_list)
 		}
 		else
 		{
-			list_command->value = ft_strdup(_tokens_list->value);
+			// list_command->value = ft_strdup(_tokens_list->value);
 			_tokens_list = free_node(_tokens_list);
 			if (!_tokens_list)
 			{
