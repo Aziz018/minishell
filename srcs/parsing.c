@@ -377,9 +377,7 @@ t_command *expander_command(t_command *list)
 		{
 			int j = 0;
 			int k = 0;
-			int len = get_arg_len(list->args[i]) + 1;
 
-			printf("len: %d\n\n", len);
 			char *argument = ft_calloc(ft_strlen(list->args[i]) + 1, sizeof(char));
 			while(list->args[i][j])
 			{
@@ -390,11 +388,6 @@ t_command *expander_command(t_command *list)
 						argument[k++] = list->args[i][j++];
 					j++;
 				}
-				// else if (list->args[i][j] == '$')
-				// {
-					// get_env_var(&list->args[i][j + 1]);
-					//char *env_val = get_env_var(&list->args[i][++j]);
-				// }
 				else
 					argument[k++] = list->args[i][j++];
 			}
