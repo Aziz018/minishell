@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/28 21:13:04 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:14:43 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -463,10 +463,12 @@ int	parse_command(char *line)
 	// print_list(list);
 	list = expander_command(list);
 	print_list(list);
+	
+	printf("\n\n");
 
 	// for execute commands
-	// exec_command(list);
+	exec_command(list);
 
-	// clear_list(&list);
+	clear_list(&list);
 	return (0);
 }	

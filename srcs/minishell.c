@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 19:07:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:15:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exec_command(t_command *commands_list)
 		}
 		else
 			printf("%s: command not found\n", commands_list->value);
-		// free(cmd_path);
+		free(cmd_path);
 		commands_list = commands_list->next;
 	}
 	return (0);
