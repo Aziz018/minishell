@@ -414,7 +414,7 @@ int	parse_command(char *line)
 	// print_list(list);
 
 	// for execute commands
-	// exec_command(list);
+	exec_command(list);
 
 	clear_list(&list);
 	return (0);

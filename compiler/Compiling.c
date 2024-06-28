@@ -16,7 +16,7 @@
 void compiling()
 {
     int i = 0;
-    while(i < 1)
+    while(i < 4)
     {
         write(1, "\rC             ", 16);
         usleep(100000);
