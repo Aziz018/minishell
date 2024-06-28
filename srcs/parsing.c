@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/28 12:41:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:13:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -325,7 +325,6 @@ char *get_var(char *env_var)
 		i++;
 	char *env_val = malloc((i + 1) * sizeof(char));
 	ft_strlcpy(env_val, env_var, i + 1);
-	// printf("env_val: [%s]\n", env_val);
 	return(env_val);
 }
 
@@ -351,21 +350,73 @@ char *unquote_arg(char *arg)
 	return (argument);
 }
 
+char	*ft_strnstr_l(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	if (*little == '\0')
+		return ((char *)big);
+	while (big[i] && i < len)
+	{
+		j = 0;
+		while (big[i + j] == little[j] && little[j] && (i + j) < len)
+			j++;
+		if (little[j] == '\0')
+			return ((char *)&big[i + j]);
+		i++;
+	}
+	return (NULL);
+}
+
+
+char *get_env_var(char *env_var)
+{
+	t_env *env = data->env;
+	while(env != NULL)
+	{
+		printf("%s\n", env_var);
+		char *str = ft_strnstr_l(env->value, env_var, ft_strlen(env_var));
+		if (str != NULL)
+			return (ft_strdup(&str[1]));	
+		env = env->next;
+	}
+	return (ft_strdup(""));
+}
+
+char *get_word(char *argument, int *i)
+{
+	char *str = NULL;
+	int j = *i;
+	while(argument[*i] && argument[*i] != '$')
+		(*i)++;
+	str = malloc((*i - j + 1) *sizeof(char));
+	ft_strlcpy(str, &argument[*i], (*i - j + 1));
+	return (str);
+}
+
 char *expand_vars(char *argument)
 {
 	int i = 0;
-	
+	char *expanded = "";
 	while(argument[i])
 	{
 		if (argument[i] == '$')
 		{
-			char *expanded = get_var(&argument[++i]);
-			return (expanded);
+			char *str = get_var(&argument[++i]);
+			printf("exp: %s\n", str);
+			str = get_env_var(str);
+			expanded = ft_strjoin(expanded, str);
+			// free(argument);
+			printf("exp after: %s\n", expanded);
+			// return (expanded);
 			continue;
 		}
-		i++;
+		expanded = ft_strjoin(expanded, get_word(&argument[i], &i));
+		// i++;
 	}
-	return (argument);
+	return (expanded);
 }
 
 
@@ -416,6 +467,6 @@ int	parse_command(char *line)
 	// for execute commands
 	// exec_command(list);
 
-	clear_list(&list);
+	// clear_list(&list);
 	return (0);
 }	
