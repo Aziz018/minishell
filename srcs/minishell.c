@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/28 21:15:44 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:40:35 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,40 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
+char *get_env_element(char *env_var)
+{
+	t_env *env = data->env;
+	while(env != NULL)
+	{
+		printf("%s\n", env_var);
+		char *str = ft_strnstr_l(env->value, env_var, ft_strlen(env_var));
+		if (str != NULL)
+			return (ft_strdup(&str[1]));	
+		env = env->next;
+	}
+	return (ft_strdup(""));
+}
+
 int	exec_command(t_command *commands_list)
 {
 	while (commands_list != NULL)
 	{
 		pid_t	pid;
 		char	*cmd_path;
-		// char ** = ft_split(command, ' ');
-		// if (command == NULL || command[0] == 0)
-		// 	return (0);
+		char	*env_ele = get_env_element("PATH");
+		char	**path = ft_split(env_ele, ':');
+		int i = 0;
 		if (commands_list->type == TOKEN)
-			cmd_path = ft_strjoin("/bin/", commands_list->args[0]);
-		if (access(cmd_path, X_OK) == 0)
+		{
+			while(path[i])
+			{
+				cmd_path = ft_strjoin(path[i], commands_list->args[0]);
+				if (access(cmd_path, X_OK) == 0)
+					break;
+				i++;
+			}
+		}
+		if (path[i] != NULL)
 		{
 			pid = fork();
 			if (pid == -1)

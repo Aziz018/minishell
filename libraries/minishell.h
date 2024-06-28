@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 18:59:38 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 21:39:49 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
 int				export(char *cmd);
-int				built_in_cmd(char **parsedcmd);
+// int				built_in_cmd(char **parsedcmd);
 
 
 // general purpose utiles
@@ -143,5 +143,5 @@ int 			check_syntax(char *command);
 int 			ft_strisalnum(char *str);
 
 int				exec_command(t_command *commands_list);
-
+char	*ft_strnstr_l(const char *big, const char *little, size_t len);
 #endif
