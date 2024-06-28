@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/27 19:09:05 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/28 12:41:44 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,10 +411,10 @@ int	parse_command(char *line)
 	t_command *list = parser_command(tokens_list);
 	// print_list(list);
 	list = expander_command(list);
-	// print_list(list);
+	print_list(list);
 
 	// for execute commands
-	exec_command(list);
+	// exec_command(list);
 
 	clear_list(&list);
 	return (0);
