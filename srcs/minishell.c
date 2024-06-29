@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 19:46:50 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:12:00 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char *get_env_element(char *env_var)
 	t_env *env = data->env;
 	while(env != NULL)
 	{
-		printf("%s\n", env_var);
+		// printf("%s\n", env_var);
 		char *str = ft_strnstr_l(env->value, env_var, ft_strlen(env_var));
 		if (str != NULL)
 			return (ft_strdup(&str[1]));	

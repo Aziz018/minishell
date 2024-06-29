@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 19:36:19 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 20:06:07 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,4 +145,5 @@ int 			ft_strisalnum(char *str);
 
 int				exec_command(t_command *commands_list);
 char	*ft_strnstr_l(const char *big, const char *little, size_t len);
+char *get_env_element(char *env_var);
 #endif
