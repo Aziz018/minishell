@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/28 21:40:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:13:42 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,11 @@ int	exec_command(t_command *commands_list)
 		char	*cmd_path;
 		char	*env_ele = get_env_element("PATH");
 		char	**path = ft_split(env_ele, ':');
-		int i = 0;
+
 		if (commands_list->type == TOKEN)
-		{
-			while(path[i])
-			{
-				cmd_path = ft_strjoin(path[i], commands_list->args[0]);
-				if (access(cmd_path, X_OK) == 0)
-					break;
-				i++;
-			}
-		}
+			cmd_path = get_cmd_path(commands_list->args[0]);
+		if (path[i] != NULL)
+			printf("path: %s\n", path[i]);
 		if (path[i] != NULL)
 		{
 			pid = fork();
@@ -86,7 +80,7 @@ int	exec_command(t_command *commands_list)
 		}
 		else
 			printf("%s: command not found\n", commands_list->value);
-		free(cmd_path);
+		// free(cmd_path);
 		commands_list = commands_list->next;
 	}
 	return (0);
