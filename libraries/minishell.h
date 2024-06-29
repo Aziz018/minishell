@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/28 21:39:49 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:36:19 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define MINISHELL_H
 
 # include "./colors.h"
-# include "./libft/libft.h" 				// libft functions
+# include "./libft/libft.h" 			// libft functions
+# include <fcntl.h>						// for open sytem call and others system calls
 # include <errno.h> 					// for errors specification
 # include <stdio.h> 					// for printf
 # include <stdlib.h> 					// for malloc and free

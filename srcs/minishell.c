@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 19:17:06 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:46:50 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,36 +55,62 @@ char *get_env_element(char *env_var)
 	return (ft_strdup(""));
 }
 
-// int	exec_command(t_command *commands_list)
-// {
-// 	while (commands_list != NULL)
-// 	{
-// 		pid_t	pid;
-// 		char	*cmd_path;
-// 		char	*env_ele = get_env_element("PATH");
-// 		char	**path = ft_split(env_ele, ':');
+char *get_cmd_path(char *cmd_)
+{
+	int 	i = 0;
+	char 	*cmd_path;
+	char	*env_ele = get_env_element("PATH");
+	char	**path = ft_split(env_ele, ':');
+	free(env_ele);
+	while(path[i])
+	{
+		char *cmd = ft_strjoin("/", cmd_);
+		cmd_path = ft_strjoin(path[i], cmd);
+		free(cmd);
+		if (access(cmd_path, X_OK) == 0)
+		{
+			free_array(path);
+			return (cmd_path);
+		}
+		printf("%s\n", cmd_path);
+		free(cmd_path);
+		i++;
+	}
+	free_array(path);
+	return (NULL);
+}
 
-// 		if (commands_list->type == TOKEN)
-// 			cmd_path = get_cmd_path(commands_list->args[0]);
-// 		if (path[i] != NULL)
-// 			printf("path: %s\n", path[i]);
-// 		if (path[i] != NULL)
-// 		{
-// 			pid = fork();
-// 			if (pid == -1)
-// 				return (0);
-// 			else if (pid == 0)
-// 				execve(cmd_path, commands_list->args, data->envirenment);
-// 			else
-// 				wait(NULL);
-// 		}
-// 		else
-// 			printf("%s: command not found\n", commands_list->value);
-// 		// free(cmd_path);
-// 		commands_list = commands_list->next;
-// 	}
-// 	return (0);
-// }
+int	exec_command(t_command *commands_list)
+{
+	while (commands_list != NULL)
+	{
+		pid_t	pid;
+		char	*cmd_path;
+		if (commands_list->type == TOKEN)
+		{
+			cmd_path = get_cmd_path(commands_list->value);
+			if (cmd_path != NULL)
+			{
+				pid = fork();
+				if (pid == -1)
+					return (0);
+				else if (pid == 0)
+					execve(cmd_path, commands_list->args, data->envirenment);
+				else
+					wait(NULL);
+			}
+			else
+				printf("%s: command not found\n", commands_list->value);
+			free(cmd_path);
+		}
+		else if (commands_list->type == RED_IN || commands_list->type == RED_OUT)
+		{
+			open(commands_list->args[0], O_RDWR | O_CREAT, 0644);
+		}
+		commands_list = commands_list->next;
+	}
+	return (0);
+}
 
 void	sig_handler(int signal)
 {

@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 19:15:40 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:30:09 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -467,7 +467,7 @@ int	parse_command(char *line)
 	printf("\n\n");
 
 	// for execute commands
-	// exec_command(list);
+	exec_command(list);
 
 	clear_list(&list);
 	return (0);
