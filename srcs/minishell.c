@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 19:13:42 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/29 19:17:06 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,36 +55,36 @@ char *get_env_element(char *env_var)
 	return (ft_strdup(""));
 }
 
-int	exec_command(t_command *commands_list)
-{
-	while (commands_list != NULL)
-	{
-		pid_t	pid;
-		char	*cmd_path;
-		char	*env_ele = get_env_element("PATH");
-		char	**path = ft_split(env_ele, ':');
+// int	exec_command(t_command *commands_list)
+// {
+// 	while (commands_list != NULL)
+// 	{
+// 		pid_t	pid;
+// 		char	*cmd_path;
+// 		char	*env_ele = get_env_element("PATH");
+// 		char	**path = ft_split(env_ele, ':');
 
-		if (commands_list->type == TOKEN)
-			cmd_path = get_cmd_path(commands_list->args[0]);
-		if (path[i] != NULL)
-			printf("path: %s\n", path[i]);
-		if (path[i] != NULL)
-		{
-			pid = fork();
-			if (pid == -1)
-				return (0);
-			else if (pid == 0)
-				execve(cmd_path, commands_list->args, data->envirenment);
-			else
-				wait(NULL);
-		}
-		else
-			printf("%s: command not found\n", commands_list->value);
-		// free(cmd_path);
-		commands_list = commands_list->next;
-	}
-	return (0);
-}
+// 		if (commands_list->type == TOKEN)
+// 			cmd_path = get_cmd_path(commands_list->args[0]);
+// 		if (path[i] != NULL)
+// 			printf("path: %s\n", path[i]);
+// 		if (path[i] != NULL)
+// 		{
+// 			pid = fork();
+// 			if (pid == -1)
+// 				return (0);
+// 			else if (pid == 0)
+// 				execve(cmd_path, commands_list->args, data->envirenment);
+// 			else
+// 				wait(NULL);
+// 		}
+// 		else
+// 			printf("%s: command not found\n", commands_list->value);
+// 		// free(cmd_path);
+// 		commands_list = commands_list->next;
+// 	}
+// 	return (0);
+// }
 
 void	sig_handler(int signal)
 {
