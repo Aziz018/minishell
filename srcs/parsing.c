@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 20:42:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/30 12:24:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,7 +399,7 @@ char *expand_vars(char *argument)
 			// printf("exp after: %s\n", expanded);
 		}
 		else
-			expanded = ft_strjoin(expanded, get_word(&argument[i], &i));
+			expanded = ft_strjoin(expanded, get_word(argument, &i));
 	}
 	free(argument);
 	return (expanded);
