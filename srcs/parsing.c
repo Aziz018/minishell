@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/30 12:24:01 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/30 12:34:33 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -380,7 +380,7 @@ char *get_word(char *argument, int *i)
 		(*i)++;
 	str = malloc((*i - j + 1) *sizeof(char));
 	ft_strlcpy(str, &argument[j], (*i - j + 1));
-	printf("str: %s\n", str);
+	// printf("str: %s\n", str);
 	return (str);
 }
 
@@ -393,13 +393,17 @@ char *expand_vars(char *argument)
 		if (argument[i] == '$')
 		{
 			char *str = get_var(&argument[++i], &i);
-			printf("exp: %s\n", str);
+			// printf("exp: %s\n", str);
 			str = get_env_element(str);
 			expanded = ft_strjoin(expanded, str);
 			// printf("exp after: %s\n", expanded);
 		}
 		else
-			expanded = ft_strjoin(expanded, get_word(argument, &i));
+		{
+			char *str = get_word(argument, &i);
+			expanded = ft_strjoin(expanded, str);
+			free(str);
+		}
 	}
 	free(argument);
 	return (expanded);
