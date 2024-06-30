@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 20:12:00 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/06/30 12:42:25 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char *get_cmd_path(char *cmd_)
 			free_array(path);
 			return (cmd_path);
 		}
-		printf("%s\n", cmd_path);
+		// printf("%s\n", cmd_path);
 		free(cmd_path);
 		i++;
 	}
@@ -105,7 +105,7 @@ int	exec_command(t_command *commands_list)
 		}
 		else if (commands_list->type == RED_IN || commands_list->type == RED_OUT)
 		{
-			open(commands_list->args[0], O_RDWR | O_CREAT, 0644);
+			open(commands_list->args[0], O_RDWR | O_CREAT | O_TRUNC, 0644);
 		}
 		commands_list = commands_list->next;
 	}
