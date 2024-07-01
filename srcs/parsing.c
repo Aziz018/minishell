@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/01 17:08:53 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:34:14 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,9 +314,10 @@ t_command *parser_command(t_command *_tokens_list)
 				while (_tokens_list != NULL && (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC))
 				{
 					// red_flag = 1;
+					printf("%s\n", _tokens_list->value);
 					_tokens_list = redirect_list(&head, list_command, _tokens_list, &rdrct_head);
-					if (!_tokens_list)
-						return (NULL);
+					// if (!_tokens_list)
+					// 	return (NULL);
 				}
 			}
 		}
@@ -332,8 +333,7 @@ t_command *parser_command(t_command *_tokens_list)
 			}
 		}
 		add_back_list(&head, list_command);
-		if (rdrct_head != NULL)
-			add_back_list(&head, rdrct_head);
+		add_back_list(&head, rdrct_head);
 	}
 	return (head);
 }
