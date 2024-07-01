@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/30 12:42:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/01 15:13:46 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,32 +254,57 @@ t_command *free_node(t_command *_tokens_list)
 int get_args_size(t_command *list)
 {
 	int i = 0;
-	while(list != NULL && list->type == TOKEN)
+	while(list != NULL)
 	{
+		if (list->type == PIPE)
+			return (i);
+		if (list->type == TOKEN)
+			i++;
 		list = list->next;
-		i++;
 	}	
 	return (i);
 }
 
 t_command *parser_command(t_command *_tokens_list)
 {
+	int i;
+	int red_flag = 0;
 	t_command *head = NULL;
 	t_command *list_command;
-	int i;
 	
 	while(_tokens_list != NULL)
 	{
 		list_command = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
 		list_command->args = NULL;
+		t_command *red_head = NULL;
 		if (_tokens_list->type == TOKEN)
 		{
 			i = 0;
 			list_command->args = malloc((get_args_size(_tokens_list) + 1) * sizeof(char *));
-			while(_tokens_list != NULL && _tokens_list->type == TOKEN)
+			while(_tokens_list != NULL && _tokens_list->type != PIPE)
 			{
+				red_flag = 0;
 				list_command->args[i++] = ft_strdup(_tokens_list->value);
 				_tokens_list = free_node(_tokens_list);
+				while (_tokens_list != NULL && (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC))
+				{
+					red_flag = 1;
+					t_command *redirection_node = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
+					_tokens_list = free_node(_tokens_list);
+					if (!_tokens_list || _tokens_list->type == PIPE)
+					{
+						printf("syntax error parser\n");
+						free_node(redirection_node);
+						free_node(_tokens_list);
+						clear_list(&head);
+						return (NULL);
+					}
+					redirection_node->args = malloc(2 * sizeof(char *));
+					redirection_node->args[0] = ft_strdup(_tokens_list->value);
+					redirection_node->args[1] = NULL;
+					_tokens_list = free_node(_tokens_list);
+					add_back_list(&red_head, redirection_node);
+				}
 			}
 			list_command->args[i] = NULL;
 		}
@@ -311,6 +336,7 @@ t_command *parser_command(t_command *_tokens_list)
 			}
 		}
 		add_back_list(&head, list_command);
+		add_back_list(&head, red_head);
 	}
 	return (head);
 }
@@ -321,7 +347,7 @@ char *get_var(char *env_var, int *i)
 
 	if (!env_var || !env_var[0])
 		return (NULL);
-	while(env_var[k] && env_var[k] != ' ' && env_var[k] != '$')
+	while(env_var[k] && env_var[k] != ' ' && env_var[k] != '$' && env_var[k] != ')')
 		k++;
 	*i += k;
 	char *env_val = malloc((k + 1) * sizeof(char));
@@ -450,11 +476,11 @@ int	parse_command(char *line)
 	t_command *tokens_list = tokenzer_command(line);
 	// print_list(tokens_list);
 	t_command *list = parser_command(tokens_list);
-	// print_list(list);
+	print_list(list);
 	list = expander_command(list);
+	printf("\n\n");
 	print_list(list);
 	
-	// printf("\n\n");
 
 	// for execute commands
 	exec_command(list);

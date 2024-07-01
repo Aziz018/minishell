@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/30 12:58:15 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/01 14:45:01 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-char *get_env_element(char *env_var)
+char *		get_env_element(char *env_var)
 {
 	t_env *env = data->env;
 	while(env != NULL)
