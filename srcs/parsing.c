@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/01 15:13:46 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:08:53 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,15 +260,39 @@ int get_args_size(t_command *list)
 			return (i);
 		if (list->type == TOKEN)
 			i++;
+		if (list->type == RED_IN || list->type == RED_OUT || list->type == HER_DOC || list->type == APP)
+			i--;
 		list = list->next;
 	}	
 	return (i);
 }
 
+t_command *redirect_list(t_command **head ,t_command *list_command, t_command *_tokens_list, t_command **redirect_head)
+{
+	t_command *redirection_node = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
+	_tokens_list = free_node(_tokens_list);
+	if (!_tokens_list || _tokens_list->type == PIPE)
+	{
+		printf("syntax error parser\n");
+		free_node(redirection_node);
+		free_array(list_command->args);
+		free_node(list_command);
+		free_node(_tokens_list);
+		clear_list(head);
+		return (NULL);
+	}
+	redirection_node->args = malloc(2 * sizeof(char *));
+	redirection_node->args[0] = ft_strdup(_tokens_list->value);
+	redirection_node->args[1] = NULL;
+	_tokens_list = free_node(_tokens_list);
+	add_back_list(redirect_head, redirection_node);
+	return (_tokens_list);
+}
+
 t_command *parser_command(t_command *_tokens_list)
 {
 	int i;
-	int red_flag = 0;
+	// int red_flag = 0;
 	t_command *head = NULL;
 	t_command *list_command;
 	
@@ -276,53 +300,25 @@ t_command *parser_command(t_command *_tokens_list)
 	{
 		list_command = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
 		list_command->args = NULL;
-		t_command *red_head = NULL;
+		t_command *rdrct_head = NULL;
 		if (_tokens_list->type == TOKEN)
 		{
 			i = 0;
 			list_command->args = malloc((get_args_size(_tokens_list) + 1) * sizeof(char *));
 			while(_tokens_list != NULL && _tokens_list->type != PIPE)
 			{
-				red_flag = 0;
+				// red_flag = 0;
 				list_command->args[i++] = ft_strdup(_tokens_list->value);
+				list_command->args[i] = NULL;
 				_tokens_list = free_node(_tokens_list);
 				while (_tokens_list != NULL && (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC))
 				{
-					red_flag = 1;
-					t_command *redirection_node = new_node(_tokens_list->type, ft_strdup(_tokens_list->value));
-					_tokens_list = free_node(_tokens_list);
-					if (!_tokens_list || _tokens_list->type == PIPE)
-					{
-						printf("syntax error parser\n");
-						free_node(redirection_node);
-						free_node(_tokens_list);
-						clear_list(&head);
+					// red_flag = 1;
+					_tokens_list = redirect_list(&head, list_command, _tokens_list, &rdrct_head);
+					if (!_tokens_list)
 						return (NULL);
-					}
-					redirection_node->args = malloc(2 * sizeof(char *));
-					redirection_node->args[0] = ft_strdup(_tokens_list->value);
-					redirection_node->args[1] = NULL;
-					_tokens_list = free_node(_tokens_list);
-					add_back_list(&red_head, redirection_node);
 				}
 			}
-			list_command->args[i] = NULL;
-		}
-		else if (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC)
-		{
-			_tokens_list = free_node(_tokens_list);
-			if (!_tokens_list || _tokens_list->type == PIPE || _tokens_list->type == OR_OP)
-			{
-				printf("syntax error parser\n");
-				free_node(list_command);
-				free_node(_tokens_list);
-				clear_list(&head);
-				return (NULL);
-			}
-			list_command->args = malloc(2 * sizeof(char *));
-			list_command->args[0] = ft_strdup(_tokens_list->value);
-			list_command->args[1] = NULL;
-			_tokens_list = free_node(_tokens_list);
 		}
 		else
 		{
@@ -336,7 +332,8 @@ t_command *parser_command(t_command *_tokens_list)
 			}
 		}
 		add_back_list(&head, list_command);
-		add_back_list(&head, red_head);
+		if (rdrct_head != NULL)
+			add_back_list(&head, rdrct_head);
 	}
 	return (head);
 }
@@ -474,12 +471,12 @@ int	parse_command(char *line)
 	// if (line != NULL && line[0])
 		// printf("line after lexer: %s\n", line);
 	t_command *tokens_list = tokenzer_command(line);
-	// print_list(tokens_list);
+	print_list(tokens_list);
+	printf("\n\n");
 	t_command *list = parser_command(tokens_list);
 	print_list(list);
 	list = expander_command(list);
-	printf("\n\n");
-	print_list(list);
+	// print_list(list);
 	
 
 	// for execute commands
