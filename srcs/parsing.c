@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/01 17:34:14 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:49:57 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,6 @@ t_command *parser_command(t_command *_tokens_list)
 				while (_tokens_list != NULL && (_tokens_list->type == RED_IN || _tokens_list->type == RED_OUT || _tokens_list->type == APP || _tokens_list->type == HER_DOC))
 				{
 					// red_flag = 1;
-					printf("%s\n", _tokens_list->value);
 					_tokens_list = redirect_list(&head, list_command, _tokens_list, &rdrct_head);
 					// if (!_tokens_list)
 					// 	return (NULL);
@@ -352,23 +351,27 @@ char *get_var(char *env_var, int *i)
 	return(env_val);
 }
 
-char *unquote_arg(char *arg)
+char *unquote_arg(t_command *list ,char *arg)
 {
 	int j = 0;
 	int k = 0;
-	
+	char quote;
 	char *argument = ft_calloc(ft_strlen(arg) + 1, sizeof(char));
 	while(arg[j])
 	{
 		if (arg[j] == '\'' || arg[j] == '"')
 		{
-			char quote = arg[j++];
+			quote = arg[j++];
 			while(arg[j] && arg[j] != quote)
 				argument[k++] = arg[j++];
 			j++;
 		}
 		else
 			argument[k++] = arg[j++];
+		if (arg[0] == quote && quote == '\'')
+			list->quoted = 1;
+		else if (arg[0] == quote && quote == '"')
+			list->quoted = 2;
 	}
 	free(arg);
 	return (argument);
@@ -446,6 +449,7 @@ t_command *expander_command(t_command *list)
 	while(list != NULL)
 	{
 		i = 0;
+		list->quoted = 0;
 		if (list->type == -1)
 		{
 			printf("syntax error\n");
@@ -454,9 +458,10 @@ t_command *expander_command(t_command *list)
 		}	
 		while(list->args != NULL && list->args[i] != NULL)
 		{
-			list->value = unquote_arg(list->value);
-			list->args[i] = unquote_arg(list->args[i]);
-			list->args[i] = expand_vars(list->args[i]);
+			list->value = unquote_arg(list ,list->value);
+			list->args[i] = unquote_arg(list ,list->args[i]);
+			if (list->quoted != 1)
+				list->args[i] = expand_vars(list->args[i]);
 			i++;
 		}
 		list = list->next;
@@ -471,12 +476,12 @@ int	parse_command(char *line)
 	// if (line != NULL && line[0])
 		// printf("line after lexer: %s\n", line);
 	t_command *tokens_list = tokenzer_command(line);
-	print_list(tokens_list);
-	printf("\n\n");
+	// print_list(tokens_list);
 	t_command *list = parser_command(tokens_list);
-	print_list(list);
-	list = expander_command(list);
 	// print_list(list);
+	list = expander_command(list);
+	print_list(list);
+	printf("\n\n");
 	
 
 	// for execute commands

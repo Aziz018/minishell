@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/06/29 20:06:07 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/02 11:43:36 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,9 @@ typedef struct s_command
 {
 	int					type;
 	// char				*file;
+	int					in_file;
+	int					out_file;
+	int					quoted;
 	char				*value;
 	char 				**args;
 	struct s_command	*next;
