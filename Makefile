@@ -6,7 +6,7 @@
 #    By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/13 14:40:15 by aelkheta          #+#    #+#              #
-#    Updated: 2024/06/30 12:39:17 by aelkheta         ###   ########.fr        #
+#    Updated: 2024/07/03 20:22:45 by aelkheta         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,8 @@ RLFLAG = -lreadline
 SRCDIR = ./srcs
 OBJDIR = ./objs
 
+EXECDIR = ./exec
+
 SRC = 	$(SRCDIR)/minishell.c \
 		$(SRCDIR)/built_in_cmd1.c \
 		$(SRCDIR)/built_in_cmd2.c \
@@ -26,6 +28,14 @@ SRC = 	$(SRCDIR)/minishell.c \
 		$(SRCDIR)/tokenizer.c \
 		$(SRCDIR)/parsing.c \
 		$(SRCDIR)/parsing_utiles.c \
+		$(EXECDIR)/allcmd.c\
+		$(EXECDIR)/error.c\
+		$(EXECDIR)/excute.c\
+		$(EXECDIR)/here_doc.c\
+		$(EXECDIR)/link_list.c\
+		$(EXECDIR)/main.c\
+		$(EXECDIR)/one_cmd.c\
+		$(EXECDIR)/open_file.c\
 
 OBJ = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRC)) # for pathern substitution // $(patsubst pattern,replacement,text)
 

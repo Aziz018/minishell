@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/03 14:33:52 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/03 20:29:45 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -485,7 +485,8 @@ int	parse_command(char *line)
 	
 
 	// for execute commands
-	exec_command(list);
+	// exec_command(list);
+	func(list);
 
 	clear_list(&list);
 	return (0);
