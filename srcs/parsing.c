@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/04 14:10:54 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/04 15:11:18 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,23 @@ t_command *parser_command(t_command *_tokens_list)
 				}
 			}
 		}
+		else if (_tokens_list->type == RED_IN)
+		{
+			_tokens_list = free_node(_tokens_list);
+			if (!_tokens_list || _tokens_list->type != TOKEN)
+			{
+				printf("syntax error parser\n");
+				free_array(list_command->args);
+				free_node(list_command);
+				free_node(_tokens_list);
+				data->syntax_error = 1;
+				return (NULL);
+			}
+			list_command->args = malloc(2 * sizeof(char *));
+			list_command->args[0] = ft_strdup(_tokens_list->value);
+			list_command->args[1] = NULL;
+			_tokens_list = free_node(_tokens_list);
+		}
 		else
 		{
 			_tokens_list = free_node(_tokens_list);
@@ -474,7 +491,7 @@ int	parse_command(char *line)
 {
 	// printf("line befor lexer: %s\n", line);
 	data->syntax_error = 0;
-	printf("\n\n");
+	// printf("\n\n");
 	line = lexer_command(line);
 	// if (line != NULL && line[0])
 	// 	printf("line after lexer: %s\n", line);

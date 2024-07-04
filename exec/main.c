@@ -50,7 +50,13 @@ int func(t_command *list)
     if (pipex.count_pipe == 0 && pipex.count_read_out == 0)
     {
         if (pipex.count_here_doc == 0 && pipex.count_read_in == 0)
-            ft_excute(list->args, data->envirenment);
+        {
+            int pp = fork();
+            if (pp == 0)
+                ft_excute(list->args, data->envirenment);
+            else if (pp > 0)
+                wait(NULL);
+        }
         else if (pipex.count_here_doc == 0 && pipex.count_read_in != 0)
         {
             printf("rin\n");
@@ -61,9 +67,15 @@ int func(t_command *list)
                 else
                     break;
             }
-            dup2(pipex.infile, 0);
-            close(pipex.infile);
-            ft_excute(list->args, data->envirenment);
+            int pp = fork();
+            if (pp == 0)
+            {
+                dup2(pipex.infile, 0);
+                close(pipex.infile);
+                ft_excute(list->args, data->envirenment);
+            }
+            else
+                wait(NULL);
         }
         else
         {
@@ -88,12 +100,22 @@ int func(t_command *list)
             unlink("file_here_doc.txt");
         }
         else
-            ft_onecmd(list, data->envirenment, &pipex);
+        {
+            int pid = fork();
+            if (pid == 0)
+                ft_onecmd(list, data->envirenment, &pipex);
+            else
+                wait(NULL);
+        }
     }
     else
     {
         printf("existing pipe\n");
+            // int pid = fork();
+            // if (pid == 0)
         ft_pipe(list, data->envirenment, &pipex);
+            // else
+            //     wait(NULL);
     }
     return (0);
 }

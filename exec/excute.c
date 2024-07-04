@@ -78,16 +78,17 @@ void	ft_excute(char **av, char **env)
 	// 	ft_error(av);
 	// else
 	// {
-		mycmdargs = av;//ft_split(av, ' ');
-		path = search_path(mycmdargs[0], env);
-		if (!path)
-		{
-			while (mycmdargs[++i])
-				free(mycmdargs[i]);
-			free(mycmdargs);
-			//ft_error(av);
-		}
-		if (execve(path, mycmdargs, env) == -1)
-			exit(127);
+
+	mycmdargs = av;//ft_split(av, ' ');
+	path = search_path(mycmdargs[0], env);
+	if (!path)
+	{
+		while (mycmdargs[++i])
+			free(mycmdargs[i]);
+		free(mycmdargs);
+		//ft_error(av);
+	}
+	if (execve(path, mycmdargs, env) == -1)
+		exit(127);
 	// }
 }
