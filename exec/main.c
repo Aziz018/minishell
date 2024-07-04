@@ -42,8 +42,10 @@ int func(t_command *list)
     ft_count_read_out(list, &pipex);
     ft_count_read_in(list, &pipex);
     ft_count_here_doc(list, &pipex);
-    open_infile(list, &pipex);
-    open_outfile(list, &pipex);
+    if (pipex.count_read_in)
+        open_infile(list, &pipex);
+    if (pipex.count_read_out)
+        open_outfile(list, &pipex);
     //open_herdoc(node1, &pipex);
     if (pipex.count_pipe == 0 && pipex.count_read_out == 0)
     {

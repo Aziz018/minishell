@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:40:09 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/04 11:29:59 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/04 14:10:54 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ char *lexer_command(char *line)
 	}
 	return (unquoted_line);
 }
+
 char *get_token(char *command_line, int *i)
 {
 	int j = 0;
@@ -205,7 +206,7 @@ int get_token_type(char *token)
 {
 	if (token[0] == '|' && !token[1])
 		return (PIPE);
-	if (token[0] == '|' && token[1] == '|' && !token[2])
+	else if (token[0] == '|' && token[1] == '|' && !token[2])
 		return (OR_OP);
 	else if (token[0] == '>' && !token[1])
 		return (RED_OUT);
@@ -473,15 +474,17 @@ int	parse_command(char *line)
 {
 	// printf("line befor lexer: %s\n", line);
 	data->syntax_error = 0;
+	printf("\n\n");
 	line = lexer_command(line);
 	// if (line != NULL && line[0])
-		// printf("line after lexer: %s\n", line);
+	// 	printf("line after lexer: %s\n", line);
+	// printf("\n\n");
 	t_command *tokens_list = tokenzer_command(line);
-	print_list(tokens_list);
-	printf("\n\n");
+	// print_list(tokens_list);
+	// printf("\n\n");
 	t_command *list = parser_command(tokens_list);
-	print_list(list);
-	printf("\n\n");
+	// print_list(list);
+	// printf("\n\n");
 	list = expander_command(list);
 	print_list(list);
 	printf("\n\n");
@@ -489,7 +492,7 @@ int	parse_command(char *line)
 
 	// for execute commands
 	// exec_command(list);
-	// func(list);
+	func(list);
 
 	clear_list(&list);
 	return (0);
