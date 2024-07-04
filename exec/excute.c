@@ -87,16 +87,7 @@ void	ft_excute(char **av, char **env)
 			free(mycmdargs);
 			//ft_error(av);
 		}
-		int pid = fork();
-		if (pid == -1)
-			return ;
-		else if (pid == 0)
-		{
-			if (execve(path, mycmdargs, env) == -1)
-				exit(127);
-		}
-			// execve(cmd_path, commands_list->args, data->envirenment);
-		else
-					wait(NULL);
+		if (execve(path, mycmdargs, env) == -1)
+			exit(127);
 	// }
 }

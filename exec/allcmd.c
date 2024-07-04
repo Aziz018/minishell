@@ -54,10 +54,13 @@ void	fork_pipe(t_command *node1, char **env, t_pipex *p)
             ft_excute(node1->args, env);
         }
     }
+    else
+    {
+        close(p->end[1]);
+        dup2(p->end[0], STDIN_FILENO);
+        close(p->end[0]);
+        wait(NULL);
+    }
         // all_cmd(node1, env, pipex);
-	close(p->end[1]);
-	dup2(p->end[0], STDIN_FILENO);
-	close(p->end[0]);
-    wait(NULL);
 	//return (pid);
 }
