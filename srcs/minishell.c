@@ -44,6 +44,8 @@ void	print_prompt(void)
 char *		get_env_element(char *env_var)
 {
 	t_env *env = data->env;
+	if (!env_var)
+		return (NULL);
 	while(env != NULL)
 	{
 		// printf("%s\n", env_var);

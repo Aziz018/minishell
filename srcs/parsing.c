@@ -436,9 +436,23 @@ char *expand_vars(char *argument)
 	{
 		if (argument[i] == '$')
 		{
+			if (!argument[i + 1])
+			{
+				data->syntax_error = 1;
+				return (NULL);
+			}
+			else if (argument[i + 1] == '?')
+			{
+				i += 2;
+				expanded = ft_strjoin(expanded, ft_strdup("$?"));
+				continue;
+				// return (ft_strdup("$?"));
+			}
 			char *str = get_var(&argument[++i], &i);
-			// printf("exp: %s\n", str);
+			printf("exp: %s\n", str);
 			str = get_env_element(str);
+			if (!str)
+				return (NULL);
 			expanded = ft_strjoin(expanded, str);
 			// printf("exp after: %s\n", expanded);
 		}
@@ -480,6 +494,13 @@ t_command *expander_command(t_command *list)
 			list->args[i] = unquote_arg(list ,list->args[i]);
 			if (list->quoted != 1)
 				list->args[i] = expand_vars(list->args[i]);
+			if (data->syntax_error)
+			{
+				clear_list(&head);
+				printf("syntax error\n");
+				data->syntax_error = 0;
+				return (NULL);
+			}
 			i++;
 		}
 		list = list->next;
@@ -509,7 +530,7 @@ int	parse_command(char *line)
 
 	// for execute commands
 	// exec_command(list);
-	func(list);
+	// func(list);
 
 	clear_list(&list);
 	return (0);
