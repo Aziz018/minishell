@@ -526,12 +526,13 @@ int	parse_command(char *line)
 	list = expander_command(list);
 	print_list(list);
 	printf("\n\n");
-	
+	data->list = list;
 
 	// for execute commands
-	// exec_command(list);
+	exec_command(list);
+	
 	// func(list);
 
-	clear_list(&list);
+	// clear_list(&list);
 	return (0);
 }	

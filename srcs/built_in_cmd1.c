@@ -21,31 +21,42 @@ int change_dir(char *path)
 	return (1);
 }
 
-int	cd(char *path)
+void ft_perror(char *message)
 {
-	if (path != NULL && path[0] == '-' && path[1] == '\0')
+	ft_putstr_fd(message, 2);
+}
+
+int	cd(char **args)
+{
+	// printf("affas\n");
+	if (args[0] != NULL && args[1] != NULL)
 	{
-		path = getenv("OLDPWD");
-		printf("%s\n", path);
-		change_dir(path);
+		ft_perror("cd: string not in pwd\n");
+		return (0);
+	}
+	else if (args[0] != NULL && args[0][0] == '-' && args[0][1] == '\0')
+	{
+		args[0] = getenv("OLDPWD");
+		printf("%s\n", args[0]);
+		change_dir(args[0]);
 		return (1);
 	}
-	else if (path == NULL || (path[0] == '~' && path[1] == '\0'))
+	else if (args[0] == NULL || (args[0][0] == '~' && args[0][1] == '\0'))
 	{
-		path = getenv("HOME");
-		change_dir(path);
+		args[0] = getenv("HOME");
+		change_dir(args[0]);
 		return (1);
 	}
-	else if (path != NULL && change_dir(path))
+	else if (args != NULL && change_dir(args[0]))
 		return (1);
 	else
 	{
 		if (errno == EACCES)
-			printf("minishell: cd: %s Permission denied\n", path);
+			printf("minishell: cd: %s Permission denied\n", args[0]);
 		else if (errno == ENOENT)
-			printf("minishell: cd: %s No such file or directory\n", path);
+			printf("minishell: cd: %s No such file or directory\n", args[0]);
 		else if (errno == ENOTDIR)
-			printf("minishell: cd: %s No such file or directory\n", path);
+			printf("minishell: cd: %s No such file or directory\n", args[0]);
 	}
 	return (0);
 }

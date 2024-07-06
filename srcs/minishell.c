@@ -82,13 +82,38 @@ char *get_cmd_path(char *cmd_)
 	return (NULL);
 }
 
+int is_builtin_cmd(t_command *command)
+{
+	if (ft_strcmp(command->value, "echo") == 0)
+		printf("echo\n");
+	else if (ft_strcmp(command->value, "pwd") == 0)
+		printf("pwd\n");
+	else if (ft_strcmp(command->value, "cd") == 0)
+		cd(&command->args[1]);
+	else if (ft_strcmp(command->value, "env") == 0)
+		env(data->env);	
+	else if (ft_strcmp(command->value, "export") == 0)
+		export(command, data->env);
+	else if (ft_strcmp(command->value, "exit") == 0)
+	{
+		printf("exit\n");
+		clear_list(&data->list);
+		exit(0);
+	}
+	return (0);
+}
+
 int	exec_command(t_command *commands_list)
 {
 	while (commands_list != NULL)
 	{
 		pid_t	pid;
 		char	*cmd_path;
-		if (commands_list->type == TOKEN)
+		if (is_builtin_cmd(commands_list) && commands_list->type == TOKEN)
+		{
+			break;
+		}
+		else if (commands_list->type == TOKEN)
 		{
 			cmd_path = get_cmd_path(commands_list->value);
 			if (cmd_path != NULL)
@@ -105,10 +130,10 @@ int	exec_command(t_command *commands_list)
 				printf("%s: command not found\n", commands_list->value);
 			free(cmd_path);
 		}
-		else if (commands_list->type == RED_IN || commands_list->type == RED_OUT)
-		{
-			open(commands_list->args[0], O_RDWR | O_CREAT | O_TRUNC, 0644);
-		}
+		// else if (commands_list->type == RED_IN || commands_list->type == RED_OUT)
+		// {
+		// 	open(commands_list->args[0], O_RDWR | O_CREAT | O_TRUNC, 0644);
+		// }
 		commands_list = commands_list->next;
 	}
 	return (0);

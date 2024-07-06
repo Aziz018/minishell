@@ -48,13 +48,22 @@ void	pwd(void)
 // 	return (1);
 // }
 
-int	export(char *cmd)
+int	export(t_command *cmd, t_env *envir)
 {
 	// int	i;
 
 	// i = 0;
-
-	printf("%s\n", cmd);
+	if (!cmd->args[1])
+		env(envir);
+	else
+	{
+		char *str = ft_strchr(cmd->args[1], '=');
+		if (str != NULL && str[-1] == '+')
+			add_back(&data->env, lstnew(&str[1]));
+		else
+			add_back(&data->env, lstnew(&str[1]));
+	}
+		// printf("%s\n", cmd->value);
 	// if (cmd[1] == NULL)
 	// {
 	// 	env(data->env);

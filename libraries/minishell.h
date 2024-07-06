@@ -84,6 +84,7 @@ typedef struct s_data
 	int 				j;
 	int					ac;
 	t_env				*env;
+	t_command			*list;
 	char				**av;
 	char				*prompt;
 	char 				*new_command;
@@ -148,12 +149,12 @@ void			free_array(char **array);
 
 // buit-in commands:
 
-int				cd(char *path);
+int				cd(char **args);
 char			*get_prompt(void);
 void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
-int				export(char *cmd);
+int				export(t_command *cmd, t_env *env);
 // int				built_in_cmd(char **parsedcmd);
 
 
@@ -178,6 +179,11 @@ int				parse_command(char *command);
 // void			parentheses(char *command);
 // int 			check_syntax(char *command);
 
+
+// envirenement utiles
+
+void			add_back(t_env **lst, t_env *new);
+t_env			*lstnew(char *content);
 
 // parsing utiles
 
