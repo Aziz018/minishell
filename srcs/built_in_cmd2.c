@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 14:17:53 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/07 12:48:35 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/07 17:08:04 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,28 @@ void	pwd(void)
 // 	new_env[++len] = NULL;
 // 	return (1);
 // }
-char *get_word(char *line, int del)
-{
-	int i = 0;
-	if (!line)
-		return (NULL);
-	while (line[i] && line[i] != del)
-		i++;
-	char *word = malloc((i + 1) * sizeof(char));
-	ft_strlcpy(word, line, i + 1);
-	return (word);
-}
-t_env *get_env_ele_ptr(char *env_val)
-{
-	t_env *env = data->env;
-	while()
-	{
+
+
+// char *get_word(char *line, int del)
+// {
+// 	int i = 0;
+// 	if (!line)
+// 		return (NULL);
+// 	while (line[i] && line[i] != del)
+// 		i++;
+// 	char *word = malloc((i + 1) * sizeof(char));
+// 	ft_strlcpy(word, line, i + 1);
+// 	return (word);
+// }
+
+// t_env *get_env_ele_ptr(char *env_val)
+// {
+// 	t_env *env = data->env;
+// 	while()
+// 	{
 		
-	}
-}
+// 	}
+// }
 
 int	export(t_command *cmd, t_env *envir)
 {
@@ -77,9 +80,9 @@ int	export(t_command *cmd, t_env *envir)
 	else
 	{
 		char *str = ft_strchr(cmd->args[1], '=');
-		char *word = get_word(cmd->args[1], '=');
-		char *env_var = get_env_ele_ptr(word);
-		free(word);
+		// char *word = get_word(cmd->args[1], '=');
+		// char *env_var = get_env_ele_ptr(word);
+		// free(word);
 		if (str != NULL && str[-1] == '+')
 		{
 			// get_env_element();
@@ -87,7 +90,7 @@ int	export(t_command *cmd, t_env *envir)
 		}
 		else if (str != NULL)
 		{
-			if (env_var != NULL)
+			// if (env_var != NULL)
 			add_back(&data->env, lstnew(ft_strdup(cmd->args[1])));
 		}
 	}
