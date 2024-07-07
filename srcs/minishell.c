@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:42:13 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/03 20:11:08 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/07 12:50:16 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	print_prompt(void)
 	write(1, reset_color, ft_strlen(reset_color));
 }
 
-char *		get_env_element(char *env_var)
+char *get_env_element(char *env_var)
 {
 	t_env *env = data->env;
 	if (!env_var)
@@ -51,7 +51,7 @@ char *		get_env_element(char *env_var)
 		// printf("%s\n", env_var);
 		char *str = ft_strnstr_l(env->value, env_var, ft_strlen(env_var));
 		if (str != NULL)
-			return (ft_strdup(&str[1]));	
+			return (ft_strdup(&str[1]));
 		env = env->next;
 	}
 	return (ft_strdup(""));
@@ -100,7 +100,7 @@ int is_builtin_cmd(t_command *command)
 		clear_list(&data->list);
 		exit(0);
 	}
-	return (0);
+	return (1);
 }
 
 int	exec_command(t_command *commands_list)
@@ -111,7 +111,7 @@ int	exec_command(t_command *commands_list)
 		char	*cmd_path;
 		if (is_builtin_cmd(commands_list) && commands_list->type == TOKEN)
 		{
-			break;
+			return (0);
 		}
 		else if (commands_list->type == TOKEN)
 		{

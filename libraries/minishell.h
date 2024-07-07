@@ -6,7 +6,7 @@
 /*   By: aelkheta <aelkheta@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 14:43:39 by aelkheta          #+#    #+#             */
-/*   Updated: 2024/07/03 20:20:48 by aelkheta         ###   ########.fr       */
+/*   Updated: 2024/07/07 12:09:29 by aelkheta         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ char			*get_prompt(void);
 void			pwd(void);
 int				env(t_env *env);
 int				echo(char **cmd);
-int				export(t_command *cmd, t_env *env);
+int				export(t_command *cmd, t_env *envir);
 // int				built_in_cmd(char **parsedcmd);
 
 
